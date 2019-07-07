@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content%}
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th class="text-center">部門</th>
+        <th class="text-center">課程名稱</th>
+        <th class="text-center">教室</th>
+        <th class="text-center">日期</th>
+        <th class="text-center">開始時間</th>
+        <th class="text-center">結束時間</th>
+        <th class="text-center">授課老師</th>
+        <th class="text-center">calendar</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for class in all_class %}
+      <tr>
+        <th class="text-center">{{ class.department }}</th>
+        <td class="text-center">{{ class.subject }}</td>
+        <td class="text-center">{{ class.classroom }}</td>
+        <td class="text-center">{{ class.date }}</td>
+        <td class="text-center">{{ class.start_time }}</td>
+        <td class="text-center">{{ class.end_time }}</td>
+        <td class="text-center">{{ class.teacher }}</td>
+        <td class="text-center"><a href="{{ class.link }}" target="_blank" >新增</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

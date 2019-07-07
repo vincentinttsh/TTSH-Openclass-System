@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content%}
+{% if user.is_authenticated  %}
+<form class="form-login" action="" method="post" role="form"> {% csrf_token %}
+  <h2 class="form-login-heading font-weight-bolder">公開觀課紀錄表</h2>
+  {% if message %}
+  <div class="alert alert-danger" role="alert">
+    <h2 class="text-center font-weight-bolder">警告</h2>
+    <h4 class="text-center font-weight-bolder">{{ message }}</h4>
+  </div>
+  {% endif %}
+  <div class="form-group">
+    <label for="author" class="font-weight-bolder">觀課者姓名</label>
+    <input type="text" class="form-control" name="author" value="{{ user.teacher_name }}" disabled>
+  </div>
+  <div class="form-group">
+    <label for="observation_date" class="font-weight-bolder">觀課日期</label>
+    <input type="date" class="form-control" name="observation_date" required>
+  </div>
+  <div class="form-group">
+    <label for="teach_teacher" class="font-weight-bolder">教學者</label>
+    <input type="text" class="form-control" name="teach_teacher" placeholder="輸入教學者" required>
+  </div>
+  <div class="form-group">
+    <label for="subject" class="font-weight-bolder">科目</label>
+    <input type="text" class="form-control" name="subject" placeholder="輸入科目" required>
+  </div>
+  <div class="form-group">
+    <label for="class_name" class="font-weight-bolder">單元名稱</label>
+    <input type="text" class="form-control" name="class_name" placeholder="輸入單元名稱" required>
+  </div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>面向</th>
+        <th>觀課參考檢核項目</th>
+        <th>觀課紀錄</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1.全班學習氣氛</td>
+        <td>
+          1-1是否有安心學習的環境？<br>
+          1-2老師說明時是否專注傾聽？<br>
+          1-3自學時是否有認真參與？<br>
+          1-4練習活動時是否盡力參與？<br>
+          1-5 全班活動時？或者分組活動時，是否有不恰當行為？哪一位？做什麼？
+        </td>
+        <td><textarea class="form-control box" name="learning_atmosphere" rows="5" required></textarea></td>
+      </tr>
+      <tr>
+        <td>2.學生學習歷程</td>
+        <td>
+          2-1老師是否關照每個學生學習？<br>
+          2-2學生是否相互關注與傾聽？<br>
+          2-3學生是否相互協助與討論？<br>
+          2-4學生是否投入參與學習？<br>
+          2-5是否發現有特殊表現的學生？(例如學習停滯、學習超前和學習具潛力的學生)
+        </td>
+        <td><textarea class="form-control box" name="learning_process" rows="5" required></textarea></td>
+      </tr>
+      <tr>
+        <td>3.學生學習結果</td>
+        <td>
+          3-1學生的學習是否成立？如何發生?何時發生？<br>
+          3-2學生學習的困難之處是什麼？<br>
+          3-3伸展跳耀(jump)的學習是否產生？<br>
+          3-4學生的學習思考程度是否深化？<br>
+          3-5學生是否樂於學習？
+        </td>
+        <td><textarea class="form-control box" name="learning_result" rows="5" required></textarea></td>
+      </tr>
+      <tr>
+        <td>4.觀課的心得與學習</td>
+        <td colspan="2"><textarea class="form-control box" name="experience_and_learning" rows="5" required></textarea></td>
+      </tr>
+    </tbody>
+  </table>
+  <input type="hidden" name="orid" value="submit">
+  <div class="form-login-submit text-center">
+    <button type="submit" class="btn btn-primary " name="submit" value="submit">提交</button>
+  </div>
+</form>
+{% else %}
+<h2 class="text-center">警告</h2>
+<h4 class="text-center">你未登入</h4>
+{% endif %}
+{% endblock %}

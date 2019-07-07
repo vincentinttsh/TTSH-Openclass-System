@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content%}
+{% if user.is_authenticated  %}
+<form class="form-login" action="" method="post" role="form"> {% csrf_token %}
+  <h2 class="form-login-heading font-weight-bolder" >課程教學活動設計表</h2>
+  {% if message %}
+  <div class="alert alert-danger" role="alert">
+    <h2 class="text-center font-weight-bolder">警告</h2>
+    <h4 class="text-center font-weight-bolder">{{ message }}</h4>
+  </div>
+  {% endif %}
+  <div class="form-group ">
+    <label for="class_name" class="font-weight-bolder">單元名稱</label>
+    <input type="text" class="form-control" name="class_name" placeholder="輸入單元名稱" required>
+  </div>
+  <div class="form-group ">
+    <label for="teacher" class="font-weight-bolder">授課教師</label>
+    <input type="text" class="form-control" name="teacher" value="{{ user.teacher_name }}" disabled>
+  </div>
+  <div class="form-group ">
+    <label for="teach_class" class="font-weight-bolder">授課班級</label>
+    <input type="text" class="form-control" name="teach_class" placeholder="輸入授課班級" required>
+  </div>
+  <div class="form-group ">
+    <label for="teaching_objectives" class="font-weight-bolder">教學目標</label>
+    <input type="text" class="form-control" name="teaching_objectives" placeholder="輸入教學目標" required>
+  </div>
+  <div class="form-group">
+    <table id="myTable" class="table table-hover">
+      <thead>
+        <tr>
+          <th class="text-center">教學活動</th>
+          <th class="text-center">使用教具</th>
+          <th class="text-center">評量方式</th>
+          <th class="text-center">教學方法</th>
+          <th class="text-center">時間分配</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" class="form-control" name="activity_1" placeholder="輸入教學活動" required></td>
+          <td><input type="text" class="form-control" name="aid_1" placeholder="輸入使用教具" required></td>
+          <td><input type="text" class="form-control" name="assessment_1" placeholder="輸入評量方式" required></td>
+          <td><input type="text" class="form-control" name="teaching_1" placeholder="輸入教學方法" required></td>
+          <td><input type="text" class="form-control" name="time_1" placeholder="輸入時間分配" required></td>
+        </tr>
+      </tbody>
+    </table>
+    <input type="button" class="btn btn-success" onclick="addtable()" value="新增一行">
+    <input type="button" class="btn btn-danger" onclick="deltable()" value="刪除一行">
+  </div>
+  <input type="hidden" name="dtid" value="submit" />
+  <div class="form-login-submit text-center">
+    <button type="submit" class="btn btn-primary " name="submit" value="submit">提交</button>
+  </div>
+</form>
+<script>
+  var num = 2
+  var min_num = 2
+  function addtable() {
+    var row = document.getElementById("myTable").insertRow(num);
+    num++;
+    row.insertCell(0).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"activity_" + String(num - 1) +"\" placeholder=\"輸入教學活動\" required>";
+    row.insertCell(1).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"aid_" + String(num - 1) +"\" placeholder=\"輸入使用教具\" required>";
+    row.insertCell(2).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"assessment_" + String(num - 1) +"\" placeholder=\"輸入評量方式\" required>";
+    row.insertCell(3).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"teaching_" + String(num - 1) +"\" placeholder=\"輸入教學方法\" required>";
+    row.insertCell(4).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"time_" + String(num - 1) +"\" placeholder=\"輸入時間分配\" required>";
+  }
+  function deltable() {
+    var table = document.getElementById("myTable");
+    if (num - 1 >= min_num) {
+      num--;
+      table.deleteRow(num);
+    } else {
+      alert("最少需有" + (min_num - 1) + "列");
+    }
+  }
+</script>
+{% else %}
+<h2 class="text-center">警告</h2>
+<h4 class="text-center">你未登入</h4>
+{% endif %}
+{% endblock %}

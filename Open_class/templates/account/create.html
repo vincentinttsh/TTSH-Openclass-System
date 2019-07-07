@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content%}
+{% if user.is_authenticated  %}
+<form class="form-login" action="" method="post" role="form"> {% csrf_token %}
+  <h2 class="form-login-heading">註冊</h2>
+  {% if error_message %}
+  <div class="alert alert-danger" role="alert">
+    <h2 class="text-center">警告</h2>
+    <h4 class="text-center">{{ error_message }}</h4>
+  </div>
+  {% endif %}
+  <div class="form-group ">
+    <label for="name">姓名</label>
+    <input type="text" class="form-control" name="name" placeholder="輸入姓名" required>
+  </div>
+  <div class="form-group ">
+    <label for="department">部門</label>
+    <select class="form-control" name="department">
+      {% for choice in department_choice %}
+      　<option value="{{ choice }}">{{ choice }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="form-group ">
+    <label for="subject">科目</label>
+    <select class="form-control" name="subject">
+      {% for choice in subject_choice %}
+      　<option value="{{ choice }}">{{ choice }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="form-group ">
+    <label for="email">Email</label>
+    <input type="email" readonly class="form-control" name="email" aria-describedby="emailHelp" value="{{ email }}">
+  </div>
+  <input type="hidden" name="rid" value="submit" />
+  <div class="form-login-submit">
+    <button type="submit" class="btn btn-primary " name="submit">註冊</button>
+  </div>
+</form>
+{% else %}
+<h2 class="text-center">警告</h2>
+<h4 class="text-center">你未登入</h4>
+{% endif %}
+{% endblock %}

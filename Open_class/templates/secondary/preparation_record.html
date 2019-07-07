@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content%}
+{% if user.is_authenticated  %}
+<form class="form-login" action="" method="post" role="form"> {% csrf_token %}
+  <h2 class="form-login-heading font-weight-bolder">共同備課記錄表</h2>
+  {% if message %}
+  <div class="alert alert-danger" role="alert">
+    <h2 class="text-center font-weight-bolder">警告</h2>
+    <h4 class="text-center font-weight-bolder">{{ message }}</h4>
+  </div>
+  {% endif %}
+  <div class="form-group ">
+    <label for="date" class="font-weight-bolder">教學日期</label>
+    <input type="date" class="form-control" name="date" required>
+  </div>
+  <div class="form-group ">
+    <label for="start_time" class="font-weight-bolder">教學開始時間</label>
+    <input type="time" class="form-control" name="start_time" value="13:00" required>
+  </div>
+  <div class="form-group ">
+    <label for="end_time" class="font-weight-bolder">教學結束時間</label>
+    <input type="time" class="form-control" name="end_time" value="14:00" required>
+  </div>
+  <div class="form-group " class="font-weight-bolder">
+    <label for="teaching_grade">教學年級</label>
+    <input type="text" class="form-control" name="teaching_grade" placeholder="輸入教學年級" required>
+  </div>
+  <div class="form-group ">
+    <label for="class_name" class="font-weight-bolder">教學單元</label>
+    <input type="text" class="form-control" name="class_name" placeholder="輸入教學單元" required>
+  </div>
+  <div class="form-group " class="font-weight-bolder">
+    <label for="teaching_sessions">教學節數</label>
+    <input type="number" class="form-control" name="teaching_sessions" min="0" max="8" placeholder="輸入教學節數" required>
+  </div>
+  <div class="form-group " class="font-weight-bolder">
+    <label for="teaching_material">教材來源</label>
+    <input type="text" class="form-control" name="teaching_material" placeholder="輸入教材來源" required>
+  </div>
+  <div class="form-group ">
+    <label for="teacher" class="font-weight-bolder">教學者</label>
+    <input type="text" class="form-control" name="teacher" value="{{ user.teacher_name }}" disabled>
+  </div>
+  <div class="form-group">
+    <label for="content" class="font-weight-bolder">教材內容</label>
+    <textarea class="form-control box" name="content" rows="6" placeholder="輸入教材內容" required></textarea>
+  </div>
+  <div class="form-group">
+    <label for="teaching_objectives" class="font-weight-bolder">教學目標</label>
+    <textarea class="form-control box" name="teaching_objectives" rows="6" placeholder="輸入教學目標" required></textarea>
+  </div>
+  <div class="form-group">
+    <label for="student_experience" class="font-weight-bolder">學生經驗或學習背景分析</label>
+    <textarea class="form-control box" name="student_experience" rows="6" placeholder="輸入學生經驗或學習背景分析" required></textarea>
+  </div>
+  <div class="form-group">
+    <label for="teaching_activity" class="font-weight-bolder">教學活動</label>
+    <textarea class="form-control box" name="teaching_activity" rows="6" placeholder="輸入教學活動" required></textarea>
+  </div>
+  <div class="form-group">
+    <label for="evaluation_method" class="font-weight-bolder">學生學習成效評估方式</label>
+    <textarea class="form-control box" name="evaluation_method" rows="8" placeholder="輸入學生學習成效評估方式" required></textarea>
+  </div>
+  <input type="hidden" name="prid" value="submit">
+  <div class="form-login-submit text-center">
+    <button type="submit" class="btn btn-primary " name="submit" value="submit">提交</button>
+  </div>
+</form>
+{% else %}
+<h2 class="text-center">警告</h2>
+<h4 class="text-center">你未登入</h4>
+{% endif %}
+{% endblock %}

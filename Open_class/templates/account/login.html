@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content%}
+{% if user.is_authenticated  %}
+<h2 class="text-center">警告</h2>
+<h4 class="text-center">你已登入</h4>
+{% else %}
+<form class="form-login" action="" method="post" role="form"> {% csrf_token %}
+  <h2 class="form-login-heading">登入</h2>
+  <div class="form-group ">
+    <label for="username">Email address</label>
+    <input type="email" class="form-control" name="username" aria-describedby="emailHelp" placeholder="Enter email"
+      required autofocus>
+  </div>
+  <div class="form-group ">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" name="password" placeholder="Password" required>
+  </div>
+  <div class="form-group">
+    <a href="" class="ForgetPwd">忘記密碼?</a>
+  </div>
+  <input type="hidden" name="sid" value="login" />
+  <div class="form-login-submit">
+    <button type="submit" class="btn btn-primary " name="login">登入</button>
+  </div>
+  <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a><br>
+</form>
+{% endif %}
+{% endblock %}

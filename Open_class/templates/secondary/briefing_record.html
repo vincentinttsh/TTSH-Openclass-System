@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block content%}
+{% if user.is_authenticated  %}
+<form class="form-login" action="" method="post" role="form"> {% csrf_token %}
+  <h2 class="form-login-heading font-weight-bolder">共同議課紀錄表</h2>
+  {% if message %}
+  <div class="alert alert-danger" role="alert">
+    <h2 class="text-center font-weight-bolder">警告</h2>
+    <h4 class="text-center font-weight-bolder">{{ message }}</h4>
+  </div>
+  {% endif %}
+  <div class="form-group ">
+    <label for="teach_teacher" class="font-weight-bolder">教學者</label>
+    <input type="text" class="form-control" name="teach_teacher" value="{{ user.teacher_name }}" disabled>
+  </div>
+  <div class="form-group ">
+    <label for="observer" class="font-weight-bolder">觀察者</label>
+    <textarea class="form-control box" name="observer" rows="3" placeholder="觀察者" required></textarea>
+  </div>
+  <div class="form-group ">
+    <label for="briefing_date" class="font-weight-bolder">議課日期</label>
+    <input type="date" class="form-control" name="briefing_date" required>
+  </div>
+  <div class="form-group ">
+    <label for="briefing_time" class="font-weight-bolder">議課時間</label>
+    <input type="time" class="form-control" name="briefing_time" value="13:00" required>
+  </div>
+  <h6>請依據觀察工具之紀錄分析內容，與授課教師討論後填寫：</h6>
+  <div class="form-group ">
+    <label for="advantages_and_features" class="font-weight-bolder">一、教與學之優點及特色（含教師教學行為、學生學習表現、師生互動與學生同儕互動之情形）：</label>
+    <textarea class="form-control box" name="advantages_and_features" rows="4" required></textarea>
+  </div>
+  <div class="form-group ">
+    <label for="adjust_or_change" class="font-weight-bolder">二、教與學待調整或改變之處（含教師教學行為、學生學習表現、師生互動與學生同儕互動之情形）：</label>
+    <textarea class="form-control box" name="adjust_or_change" rows="4" required></textarea>
+  </div>
+  <div class="form-group">
+    <label for="adjust_or_change" class="font-weight-bolder">三、授課教師預定專業成長計畫（於回饋人員與授課教師討論後，由回饋人員填寫）：</label>
+    <table id="myTable" class="table table-hover">
+      <thead>
+        <tr>
+          <th>成長方式 可自行文字敘述</th>
+          <th>內容概要說明</th>
+          <th>協助或合作人員</th>
+          <th>預計完成日期</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" list="mode" class="form-control" name="growth_mode_1" required></td>
+          <td><input type="text" class="form-control" name="abstract_1" required></td>
+          <td><input type="text" class="form-control" name="member_1" required></td>
+          <td><input type="date" class="form-control" name="done_date_1" required></td>
+        </tr>
+      </tbody>
+    </table>
+    <datalist id="mode">
+      <option disabled>其他：請文字敘述</option>
+      <option>研讀書籍</option>
+      <option>參加研習</option>
+      <option>觀看錄影帶</option>
+      <option">諮詢資深教師</option>
+      <option>參加學習社群</option>
+      <option>重新試驗教學</option>
+    </datalist>
+    <input type="button" class="btn btn-success" onclick="addtable()" value="新增一行">
+    <input type="button" class="btn btn-danger" onclick="deltable()" value="刪除一行">
+  </div>
+  <div class="form-group">
+    <label for="learning_and_harvesting" class="font-weight-bolder">四、回饋人員的學習與收穫：</label>
+    <textarea class="form-control box" name="learning_and_harvesting" rows="4" required></textarea>
+  </div>
+  <input type="hidden" name="brid" value="submit" />
+  <div class="form-login-submit text-center">
+    <button type="submit" class="btn btn-primary " name="submit" value="submit">提交</button>
+  </div>
+</form>
+<script>
+  var num = 2
+  var min_num = 2
+  function addtable() {
+    var row = document.getElementById("myTable").insertRow(num);
+    num++;
+    row.insertCell(0).innerHTML = "<input type=\"text\" list=\"mode\" class=\"form-control\" name=\"growth_mode_" + String(num - 1) + "\"required>";
+    row.insertCell(1).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"abstract_" + String(num - 1) + "\" required>";
+    row.insertCell(2).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"member_" + String(num - 1) + "\" required>";
+    row.insertCell(3).innerHTML = "<input type=\"date\" class=\"form-control\" name=\"done_date_" + String(num - 1) + "\" required>";
+  }
+  function deltable() {
+    var table = document.getElementById("myTable");
+    if (num - 1 >= min_num) {
+      num--;
+      table.deleteRow(num);
+    } else {
+      alert("最少需有" + (min_num - 1) + "列");
+    }
+  }
+</script>
+{% else %}
+<h2 class="text-center">警告</h2>
+<h4 class="text-center">你未登入</h4>
+{% endif %}
+{% endblock %}

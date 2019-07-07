@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content%}
+{% if user.is_authenticated  %}
+<form class="form-login" action="" method="post" role="form"> {% csrf_token %}
+  <h2 class="form-login-heading">新增</h2>
+  {% if error_message %}
+  <div class="alert alert-danger" role="alert">
+    <h2 class="text-center">警告</h2>
+    <h4 class="text-center">{{ error_message }}</h4>
+  </div>
+  {% endif %}
+  <div class="form-group ">
+    <label for="name">課程名稱</label>
+    <input type="text" class="form-control" name="subject" placeholder="輸入課程名稱" required>
+  </div>
+  <div class="form-group ">
+    <label for="room">上課教室</label>
+    <input type="text" class="form-control" name="room" placeholder="輸入上課教室" required>
+  </div>
+  <div class="form-group ">
+    <label for="date">上課日期</label>
+    <input type="date" class="form-control" name="date" required>
+  </div>
+  <div class="form-group ">
+    <label for="start_time">開始時間</label>
+    <input type="time" class="form-control" name="start_time" value="13:00" required>
+  </div>
+  <div class="form-group ">
+    <label for="end_time">結束時間</label>
+    <input type="time" class="form-control" name="end_time" value="14:00" required>
+  </div>
+  <input type="hidden" name="cid" value="submit" />
+  <div class="form-login-submit">
+    <button type="submit" class="btn btn-primary " name="submit" value="submit">新增</button>
+  </div>
+</form>
+{% else %}
+<h2 class="text-center">警告</h2>
+<h4 class="text-center">你未登入</h4>
+{% endif %}
+{% endblock %}

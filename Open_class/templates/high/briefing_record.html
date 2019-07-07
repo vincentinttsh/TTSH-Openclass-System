@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content%}
+{% if user.is_authenticated  %}
+<form class="form-login" action="" method="post" role="form"> {% csrf_token %}
+  <h2 class="form-login-heading font-weight-bolder">共同議課紀錄表</h2>
+  {% if message %}
+  <div class="alert alert-danger" role="alert">
+    <h2 class="text-center font-weight-bolder">警告</h2>
+    <h4 class="text-center font-weight-bolder">{{ message }}</h4>
+  </div>
+  {% endif %}
+  <div class="form-group ">
+    <label for="teach_teacher" class="font-weight-bolder">教學者</label>
+    <input type="text" class="form-control" name="teach_teacher" value="{{ user.teacher_name }}" disabled>
+  </div>
+  <div class="form-group ">
+    <label for="observer" class="font-weight-bolder">觀察者</label>
+    <textarea class="form-control box" name="observer" rows="3" placeholder="觀察者" required></textarea>
+  </div>
+  <div class="form-group ">
+    <label for="briefing_date" class="font-weight-bolder">議課日期</label>
+    <input type="date" class="form-control" name="briefing_date" required>
+  </div>
+  <div class="form-group ">
+    <label for="briefing_time" class="font-weight-bolder">議課時間</label>
+    <input type="time" class="form-control" name="briefing_time" value="13:00" required>
+  </div>
+  <div class="form-group ">
+    <label for="affirmation_teaching_performance" class="font-weight-bolder">一、肯定教學表現：</label>
+    <textarea class="form-control box" name="affirmation_teaching_performance" rows="4" required></textarea>
+  </div>
+  <div class="form-group ">
+    <label for="guide_discussion_teaching_performance" class="font-weight-bolder">二、肯定教學表現</label>
+    <textarea class="form-control box" name="guide_discussion_teaching_performance" rows="4" required></textarea>
+  </div>
+  <div class="form-group ">
+    <label for="judgment_performance" class="font-weight-bolder">三、判斷表現程度：</label>
+    <textarea class="form-control box" name="judgment_performance" rows="4" required></textarea>
+  </div>
+  <div class="form-group">
+    <label for="suggest" class="font-weight-bolder">四、改進學生學習能力提供之建議：</label>
+    <textarea class="form-control box" name="suggest" rows="4" required></textarea>
+  </div>
+  <div class="form-group ">
+    <label for="growth_activity" class="font-weight-bolder">五、協助擬定成長活動：</label>
+    <textarea class="form-control box" name="growth_activity" rows="4" required></textarea>
+  </div>
+  <input type="hidden" name="brid" value="submit" />
+  <div class="form-login-submit text-center">
+    <button type="submit" class="btn btn-primary " name="submit" value="submit">提交</button>
+  </div>
+</form>
+<script>
+  var num = 2
+  var min_num = 2
+  function addtable() {
+    var row = document.getElementById("myTable").insertRow(num);
+    num++;
+    row.insertCell(0).innerHTML = "<input type=\"text\" list=\"mode\" class=\"form-control\" name=\"growth_mode_" + String(num - 1) + "\"required>";
+    row.insertCell(1).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"abstract_" + String(num - 1) + "\" required>";
+    row.insertCell(2).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"member_" + String(num - 1) + "\" required>";
+    row.insertCell(3).innerHTML = "<input type=\"date\" class=\"form-control\" name=\"done_date_" + String(num - 1) + "\" required>";
+  }
+  function deltable() {
+    var table = document.getElementById("myTable");
+    if (num - 1 >= min_num) {
+      num--;
+      table.deleteRow(num);
+    } else {
+      alert("最少需有" + (min_num - 1) + "列");
+    }
+  }
+</script>
+{% else %}
+<h2 class="text-center">警告</h2>
+<h4 class="text-center">你未登入</h4>
+{% endif %}
+{% endblock %}

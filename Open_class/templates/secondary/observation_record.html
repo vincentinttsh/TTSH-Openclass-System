@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% block content%}
+{% if user.is_authenticated  %}
+<form class="form-login" action="" method="post" role="form"> {% csrf_token %}
+  <h2 class="form-login-heading font-weight-bolder">臺北市立大同高級中學入班觀課、教室走察觀課教師回饋表</h2>
+  {% if message %}
+  <div class="alert alert-danger" role="alert">
+    <h2 class="text-center font-weight-bolder">警告</h2>
+    <h4 class="text-center font-weight-bolder">{{ message }}</h4>
+  </div>
+  {% endif %}
+  <div class="form-group">
+    <label for="observation_date" class="font-weight-bolder">日期</label>
+    <input type="date" class="form-control" name="observation_date" required>
+  </div>
+  <div class="form-group">
+    <label for="subject" class="font-weight-bolder">科目</label>
+    <input type="text" class="form-control" name="subject" placeholder="輸入科目" required>
+  </div>
+  <div class="form-group">
+    <label for="teach_teacher" class="font-weight-bolder">授課教師</label>
+    <input type="text" class="form-control" name="teach_teacher" placeholder="輸入授課教師" required>
+  </div>
+  <div class="form-group">
+    <label for="teach_class" class="font-weight-bolder">觀課班級</label>
+    <input type="text" class="form-control" name="teach_class" placeholder="輸入觀課班級" required>
+  </div>
+  <div class="form-group" >
+    <label for="author" class="font-weight-bolder">填表人</label>
+    <input type="text" class="form-control " name="author" value= "{{ user.teacher_name }}" disabled>
+  </div>
+  <h6 class="text-center font-weight-bolder">量化結果: 5值得推薦、4通過、3普通、2待改進、1不適用</h6>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th colspan="2" class="text-center">教學策略</th>
+        <th class="text-center">量化結果</th>
+        <th class="text-center">質性描述</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>要求學生參與教學活動</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="teaching_strategy_1" required></td>
+        <td><input type="text" class="form-control" name="teaching_strategy_1_text" required></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>延伸學生的反應或表現</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="teaching_strategy_2" required></td>
+        <td><input type="text" class="form-control" name="teaching_strategy_2_text" required></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>在學習活動進行中掌握學生的表現</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="teaching_strategy_3" required></td>
+        <td><input type="text" class="form-control" name="teaching_strategy_3_text" required></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>提供正確的回饋或修正，澄清學生錯誤的觀念</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="teaching_strategy_4" required></td>
+        <td><input type="text" class="form-control" name="teaching_strategy_4_text" required></td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr>
+        <th colspan="2" class="text-center">教室經營與管理</th>
+        <th class="text-center">量化結果</th>
+        <th class="text-center">質性描述</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>5</td>
+        <td>善用有助於教學的管理步驟與常規</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="classroom_management_1" required></td>
+        <td><input type="text" class="form-control" name="classroom_management_1_text" required></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>能進行適當有序的教學活動，能調整上課速度</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="classroom_management_2" required></td>
+        <td><input type="text" class="form-control" name="classroom_management_2_text" required></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>將重點放在教學目標上並掌握學生的注意力</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="classroom_management_3" required></td>
+        <td><input type="text" class="form-control" name="classroom_management_3_text" required></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>妥善處理學生不當行為</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="classroom_management_4" required></td>
+        <td><input type="text" class="form-control" name="classroom_management_4_text" required></td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr>
+        <th colspan="2" class="text-center">呈現主題</th>
+        <th class="text-center">量化結果</th>
+        <th class="text-center">質性描述</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>9</td>
+        <td>循序漸進由簡而繁有組織的呈現教材內容</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="presenting_1" required></td>
+        <td><input type="text" class="form-control" name="presenting_1_text" required></td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>運用概念、定義、例證說明</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="presenting_2" required></td>
+        <td><input type="text" class="form-control" name="presenting_2_text" required></td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td>依據教學需要適切的運用教學媒體</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="presenting_3" required></td>
+        <td><input type="text" class="form-control" name="presenting_3_text" required></td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>適切提供練習或作業，引導學生精熟學習</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="presenting_4" required></td>
+        <td><input type="text" class="form-control" name="presenting_4_text" required></td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr>
+        <th colspan="2" class="text-center">學習環境</th>
+        <th class="text-center">量化結果</th>
+        <th class="text-center">質性描述</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>13</td>
+        <td>給予學生適當的挑戰</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="learning_environment_1" required></td>
+        <td><input type="text" class="form-control" name="learning_environment_1_text" required></td>
+      </tr>
+      <tr>
+        <td>14</td>
+        <td>教師在教學中表現熱忱、給予學生關切、鼓勵學生表達</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="learning_environment_2" required></td>
+        <td><input type="text" class="form-control" name="learning_environment_2_text" required></td>
+      </tr>
+      <tr>
+        <td>15</td>
+        <td>形成積極參與的學習氣氛、引導合作學習的同儕互動關係</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="learning_environment_3" required></td>
+        <td><input type="text" class="form-control" name="learning_environment_3_text" required></td>
+      </tr>
+      <tr>
+        <td>16</td>
+        <td>建立互信相互尊重的班級氣氛</td>
+        <td><input type="number" min="1" max="5" class="form-control" name="learning_environment_4" required></td>
+        <td><input type="text" class="form-control" name="learning_environment_4_text" required></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="form-group">
+    <label for="context" class="font-weight-bolder">摘記</label>
+    <textarea class="form-control box" name="context" rows="3" placeholder="輸入摘記" required></textarea>
+  </div>
+  <input type="hidden" name="orid" value="submit">
+  <div class="form-login-submit text-center">
+    <button type="submit" class="btn btn-primary " name="submit" value="submit">提交</button>
+  </div>
+</form>
+{% else %}
+<h2 class="text-center">警告</h2>
+<h4 class="text-center">你未登入</h4>
+{% endif %}
+{% endblock %}

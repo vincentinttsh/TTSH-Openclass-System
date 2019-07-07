@@ -1,0 +1,15 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+autopep8 = "*"
+
+[packages]
+django = "==2.2.2"
+social-auth-app-django = "==3.1.0"
+django-generate-secret-key = "==1.0.2"
+
+[requires]
+python_version = "3.7"

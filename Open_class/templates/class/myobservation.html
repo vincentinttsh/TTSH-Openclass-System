@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content%}
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th class="text-center">課程名稱</th>
+        <th class="text-center">日期</th>
+        <th class="text-center">觀課紀錄表</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for class in all_class %}
+      <tr>
+        <td class="text-center">{{ class.subject }}</td>
+        <td class="text-center">{{ class.date }}</td>
+        <td class="text-center"><a href="{{ class.link }}" target="_blank" >觀課紀錄表</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
