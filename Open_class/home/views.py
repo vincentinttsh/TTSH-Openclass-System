@@ -12,7 +12,7 @@ def home(request):
     if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
         return HttpResponseRedirect('/account/create')
     all_class = list()
-    calendar_link = 'http://www.google.com/calendar/event?action=TEMPLATE&text=公開觀課'
+    calendar_link = 'http://www.google.com/calendar/event?action=TEMPLATE&text=公開觀課（'
     Class = HClass
     if request.user.teacher_department == '國中部':
         Class = SClass
@@ -31,7 +31,7 @@ def home(request):
             'date' : x.teach_date,
             'start_time' : x.teach_start_time,
             'end_time' : x.teach_end_time,
-            'link' : calendar_link + '&dates=' + datelink + startlink + '/' + datelink + endlink + '&details=' + department + x.subject + '公開觀課%0A授課老師：' + x.teach_teacher + '&location=' + x.class_room + '&trp=false'
+            'link' : calendar_link + x.teach_teacher + '）' + '&dates=' + datelink + startlink + '/' + datelink + endlink + '&details=' + department + x.subject + '公開觀課%0A授課老師：' + x.teach_teacher + '&location=' + x.class_room + '&trp=false'
         })
     return render(request, 'home/home.html',{ 'all_class' : all_class })
 

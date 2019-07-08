@@ -5,6 +5,7 @@ import time
 from .models import Design_table, Design_table_datail, Preparation_record, Observation_record, Growth_plan, Briefing_record
 from .models import Secondary_Class as Class
 from .random_code import randomString
+from django.conf import settings
 
 def create(request):
     if request.user.is_authenticated == False: # 未登入
@@ -61,7 +62,7 @@ def myclass(request) :
     if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
         return HttpResponseRedirect('/account/create')
     all_class = list()
-    calendar_link = 'http://www.google.com/calendar/event?action=TEMPLATE&text=公開觀課'
+    calendar_link = 'http://www.google.com/calendar/event?action=TEMPLATE&text=公開觀課（'
     for x in list(Class.objects.all()) :
         if x.teach_teacher_email != request.user.email : # 不是自己的
             continue
@@ -72,12 +73,12 @@ def myclass(request) :
             'subject' : x.subject,
             'date' : x.teach_date,
             'attend_number' : x.attend_number,
-            'attend_link' : 'localhost:8000/class/secondary/attend/' + str(x.id) + '/' + x.attend_password,
-            'attend_qr' : 'https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=localhost:8000/class/secondary/attend/' + str(x.id) + '/' + x.attend_password +'&format=png',
+            'attend_link' : settings.HOST_NAME + '/class/secondary/attend/' + str(x.id) + '/' + x.attend_password,
+            'attend_qr' : 'https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=' + settings.HOST_NAME  + '/class/secondary/attend/' + str(x.id) + '/' + x.attend_password +'&format=png',
             'design' : '/class/secondary/design/' + str(x.id),
             'preparation' : '/class/secondary/preparation/' + str(x.id),
             'briefing' : '/class/secondary/briefing/' + str(x.id),
-            'link' : calendar_link + '&dates=' + datelink + startlink + '/' + datelink + endlink + '&details=' + request.user.teacher_department + x.subject + '公開觀課%0A授課老師：' + x.teach_teacher + '&location=' + x.class_room + '&trp=false'
+            'link' : calendar_link + x.teach_teacher + '）' + '&dates=' + datelink + startlink + '/' + datelink + endlink + '&details=' + request.user.teacher_department + x.subject + '公開觀課%0A授課老師：' + x.teach_teacher + '&location=' + x.class_room + '&trp=false'
         })
     return render(request, 'class/myclass.html',{ 'all_class' : all_class })
 
