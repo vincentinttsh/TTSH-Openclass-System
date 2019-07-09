@@ -73,7 +73,7 @@ def myclass(request) :
             'subject' : x.subject,
             'date' : x.teach_date,
             'attend_number' : x.attend_number,
-            'attend_link' : settings.HOST_NAME + '/class/secondary/attend/' + str(x.id) + '/' + x.attend_password,
+            'attend_link' : '/class/secondary/attend/' + str(x.id) + '/' + x.attend_password,
             'attend_qr' : 'https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=' + settings.HOST_NAME  + '/class/secondary/attend/' + str(x.id) + '/' + x.attend_password +'&format=png',
             'design' : '/class/secondary/design/' + str(x.id),
             'preparation' : '/class/secondary/preparation/' + str(x.id),
