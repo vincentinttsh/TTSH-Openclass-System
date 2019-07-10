@@ -7,4 +7,5 @@ urlpatterns = [
     path('class/high/', include('public_class_high.urls')),
     path('account/', include('account.urls')),
     path('auth/', include('social_django.urls'), name='social'),
+    path('about/', include('about.urls')),
 ]
