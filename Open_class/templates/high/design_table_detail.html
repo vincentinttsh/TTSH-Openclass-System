@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block content%}
+{% if user.is_authenticated  %}
+<div class="row my-2">
+  <div class="col">
+    <h2 class="font-weight-bolder">課程教學活動設計表</h2>
+  </div>
+</div>
+<hr class="my-4 ">
+<div class="row my-2">
+  <div class="col-sm-2 col-3">
+    <label class="font-weight-bolder">單元名稱</label>
+  </div>
+  <div class="col-9 col-sm-4">
+    <input type="text" class="form-control" value="{{class_name}}" disabled>
+  </div>
+  <div class="col-sm-2 col-3">
+    <label class="font-weight-bolder">授課教師</label>
+  </div>
+  <div class="col-9 col-sm-4">
+    <input type="text" class="form-control" value="{{ teach_teacher }}" disabled>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-sm-2 col-3">
+    <label class="font-weight-bolder">教材來源</label>
+  </div>
+  <div class="col-9 col-sm-4">
+    <input type="text" class="form-control" value="{{teaching_material}}" disabled>
+  </div>
+  <div class="col-sm-2 col-3">
+    <label class="font-weight-bolder">授課班級</label>
+  </div>
+  <div class="col-9 col-sm-4">
+    <input type="text" class="form-control" value="{{ teach_class }}" disabled>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-sm-2 col-12">
+    <label class="font-weight-bolder">教學時間</label>
+  </div>
+  <div class="col-sm-4 col-5">
+    <input type="text" class="form-control" value="{{date}}" disabled>
+  </div>
+  <div class="col-sm-6 col-5">
+    <input type="text" class="form-control" value="{{ start_time }} 至 {{ end_time }}" disabled>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-2">
+    <label class="font-weight-bolder">學生學習背景分析</label>
+  </div>
+  <div class="col-10">
+    <textarea class="form-control box" disabled>{{background_analysis}}</textarea>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-2">
+    <label class="font-weight-bolder">教學方法</label>
+  </div>
+  <div class="col-10">
+    <textarea class="form-control box" disabled>{{big_teaching_method}}</textarea>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-2">
+    <label class="font-weight-bolder">教學資源</label>
+  </div>
+  <div class="col-10">
+    <textarea class="form-control box" disabled>{{teaching_resources}}</textarea>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-2">
+    <label class="font-weight-bolder">參考資料</label>
+  </div>
+  <div class="col-10">
+    <textarea class="form-control box" disabled>{{reference_material}}</textarea>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-2">
+    <label class="font-weight-bolder">教學目標</label>
+  </div>
+  <div class="col-10">
+    <textarea class="form-control box" disabled>{{big_teaching_objectives}}</textarea>
+  </div>
+</div>
+<div class="my-2 table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th rowspan="2" class="text-center align-middle">教學目標</th>
+        <th colspan="2" class="text-center">教學活動</th>
+        <th rowspan="2" class="text-center align-middle">使用教具</th>
+        <th rowspan="2" class="text-center align-middle">評量方式</th>
+        <th rowspan="2" class="text-center align-middle">教學方法</th>
+        <th rowspan="2" class="text-center align-middle">時間分配</th>
+      </tr>
+      <tr>
+        <th class="text-center">教師活動</th>
+        <th class="text-center">學生活動</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for x in detail %}
+      <tr>
+        <td class="text-center align-middle">{{x.teaching_objectives}}</td>
+        <td class="text-center align-middle">{{x.teacher_activity}}</td>
+        <td class="text-center align-middle">{{x.student_activities}}</td>
+        <td class="text-center align-middle">{{x.teaching_aid}}</td>
+        <td class="text-center align-middle">{{x.assessment_method}}</td>
+        <td class="text-center align-middle">{{x.teaching_method}}</td>
+        <td class="text-center align-middle">{{x.time_allocation}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<h2 class="text-center">警告</h2>
+<h4 class="text-center">你未登入</h4>
+{% endif %}
+{% endblock %}

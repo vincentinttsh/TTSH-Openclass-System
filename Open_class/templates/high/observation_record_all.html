@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content%}
+{% if user.is_authenticated  %}
+{% if message %}
+<div class="alert alert-danger" role="alert">
+  <h2 class="text-center font-weight-bolder">警告</h2>
+  <h4 class="text-center font-weight-bolder">{{ message }}</h4>
+</div>
+{% else %}
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="text-center align-middle">教師姓名</th>
+        <th class="text-center align-middle">是否已填寫</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for x in people %}
+      {% load static %}
+      <tr>
+        <td class="text-center align-middle">{{x.name}}</td>
+        {% if x.link %}
+        <td class="text-center align-middle"><a href="{{x.link}}"><img src="{% static 'check.png' %}" height="32"></a>
+        </td>
+        {% else %}
+        <td class="text-center align-middle"><img src="{% static 'error.png' %}" height="30"></td>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% else %}
+<h2 class="text-center">警告</h2>
+<h4 class="text-center">你未登入</h4>
+{% endif %}
+{% endblock %}
