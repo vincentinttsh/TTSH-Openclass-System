@@ -2,21 +2,30 @@ from django.db import models
 from django.contrib import admin
 from account.models import User
 
+class Attend_data(models.Model) :
+    attend_password = models.CharField(max_length = 10, verbose_name='參加密碼')
+    attend_number = models.IntegerField(default=0, verbose_name='參加人數')
+    attend_people = models.ManyToManyField(User, verbose_name='參加的人')
+    class Meta:
+        verbose_name, verbose_name_plural = '高中公開觀課報名人數', '高中公開觀課報名人數'
+    def __str__(self):
+        return self.the_class.teach_teacher.teacher_name + '-' + self.the_class.subject
+@admin.register(Attend_data)
+class Attend_dataAdmin(admin.ModelAdmin):
+    pass
+
 class High_Class(models.Model) :
-    teach_teacher = models.CharField(max_length = 6, verbose_name='老師名字')
-    teach_teacher_email = models.EmailField(default = 'example@ttsh.tp.edu.tw', verbose_name='老師信箱') 
+    teach_teacher = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='老師')
     subject = models.CharField(max_length = 20, verbose_name='上課科目')
     class_room = models.CharField(max_length = 10, verbose_name='上課教室')
     teach_date = models.DateField(verbose_name='上課日期')
     teach_start_time = models.TimeField(verbose_name='上課開始時間')
     teach_end_time = models.TimeField(verbose_name='上課結束時間')
-    attend_password = models.CharField(max_length = 10, verbose_name='參加密碼')
-    attend_number = models.IntegerField(default=0, verbose_name='參加人數')
-    attend_people = models.ManyToManyField(User, verbose_name='參加的人')
+    attend_data = models.OneToOneField(Attend_data, on_delete=models.CASCADE, verbose_name='參加資料', related_name='the_class')
     class Meta:
         verbose_name, verbose_name_plural = '高中公開觀課報名資料', '高中公開觀課報名資料'
     def __str__(self):
-        return self.teach_teacher + '-' + self.subject
+        return self.teach_teacher.teacher_name + '-' + self.subject
 
 @admin.register(High_Class)
 class High_ClassAdmin(admin.ModelAdmin):
@@ -41,7 +50,7 @@ class Design_table(models.Model) :
     class Meta:
         verbose_name, verbose_name_plural = '高中課程教學活動設計表', '高中課程教學活動設計表'
     def __str__(self):
-        return self.the_class.teach_teacher + '-' + self.the_class.subject
+        return self.the_class.teach_teacher.teacher_name + '-' + self.the_class.subject
 
 @admin.register(Design_table)
 class Design_tableAdmin(admin.ModelAdmin):
@@ -86,7 +95,7 @@ class Preparation_record(models.Model) :
     class Meta:
         verbose_name, verbose_name_plural = '高中共同備課記錄表', '高中共同備課記錄表'
     def __str__(self):
-        return self.the_class.teach_teacher + '-' + self.the_class.subject
+        return self.the_class.teach_teacher.teacher_name + '-' + self.the_class.subject
 
 @admin.register(Preparation_record)
 class Preparation_recordAdmin(admin.ModelAdmin) :
@@ -95,7 +104,7 @@ class Preparation_recordAdmin(admin.ModelAdmin) :
     ordering = ('teach_date', 'teach_start_time', 'teach_end_time', 'teach_teacher')
 
 class Observation_record(models.Model) :
-    author = models.CharField(max_length = 6, verbose_name='觀課者姓名')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='觀課者姓名')
     observation_date = models.DateField(verbose_name='觀課日期')
     teach_teacher = models.CharField(max_length = 6, verbose_name='教學者')
     subject = models.CharField(max_length = 20, verbose_name='科目')
@@ -108,7 +117,7 @@ class Observation_record(models.Model) :
     class Meta:
         verbose_name, verbose_name_plural = '高中公開觀課紀錄表', '高中公開觀課紀錄表'
     def __str__(self):
-        return self.the_class.teach_teacher + '-' + self.the_class.subject
+        return self.the_class.teach_teacher.teacher_name + '-' + self.the_class.subject
 
 @admin.register(Observation_record)
 class Observation_recordAdmin(admin.ModelAdmin) :
@@ -130,7 +139,7 @@ class Briefing_record(models.Model) :
     class Meta:
         verbose_name, verbose_name_plural = '高中共同議課紀錄表', '高中共同議課紀錄表'
     def __str__(self):
-        return self.the_class.teach_teacher + '-' + self.the_class.subject
+        return self.the_class.teach_teacher.teacher_name + '-' + self.the_class.subject
 
 @admin.register(Briefing_record)
 class Briefing_recordAdmin(admin.ModelAdmin) :

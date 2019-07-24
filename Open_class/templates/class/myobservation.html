@@ -6,6 +6,8 @@
       <tr>
         <th class="text-center">課程名稱</th>
         <th class="text-center">日期</th>
+        <th class="text-center">活動設計表</th>
+        <th class="text-center">備課記錄表</th>
         <th class="text-center">觀課紀錄表</th>
       </tr>
     </thead>
@@ -14,7 +16,20 @@
       <tr>
         <td class="text-center">{{ class.subject }}</td>
         <td class="text-center">{{ class.date }}</td>
-        <td class="text-center"><a href="{{ class.link }}" target="_blank" >觀課紀錄表</a></td>
+        {% load static %}
+        {% if class.design %}
+        <td class="text-center align-middle"><a href="{{ class.design }}"><img src="{% static 'check.png' %}" height="32"></a>
+        </td>
+        {% else %}
+        <td class="text-center align-middle"><img src="{% static 'error.png' %}" height="30"></td>
+        {% endif %}
+        {% if class.preparation %}
+        <td class="text-center align-middle"><a href="{{ class.preparation }}"><img src="{% static 'check.png' %}" height="32"></a>
+        </td>
+        {% else %}
+        <td class="text-center align-middle"><img src="{% static 'error.png' %}" height="30"></td>
+        {% endif %}
+        <td class="text-center"><a href="{{ class.observation }}">觀課紀錄表</a></td>
       </tr>
       {% endfor %}
     </tbody>

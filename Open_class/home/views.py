@@ -22,7 +22,7 @@ def home(request):
         datelink = str(x.teach_date).replace('-', '') + 'T' # 轉日期格式 YYYY-MM-DD to YYYYMMDD
         startlink = str(x.teach_start_time).replace(':', '') # 轉時間格式 HH:MM:SS to HHMMSS
         endlink = str(x.teach_end_time).replace(':', '') # 轉時間格式 HH:MM:SS to HHMMSS
-        department = User.objects.get(email = x.teach_teacher_email).teacher_department # 部門
+        department = x.teach_teacher.teacher_department # 部門
         all_class.append({
             'department' : department,
             'teacher' : x.teach_teacher,
@@ -31,7 +31,7 @@ def home(request):
             'date' : x.teach_date,
             'start_time' : x.teach_start_time,
             'end_time' : x.teach_end_time,
-            'link' : calendar_link + x.teach_teacher + '）' + '&dates=' + datelink + startlink + '/' + datelink + endlink + '&details=' + department + x.subject + '公開觀課%0A授課老師：' + x.teach_teacher + '&location=' + x.class_room + '&trp=false'
+            'link' : calendar_link + x.teach_teacher.teacher_name + '）' + '&dates=' + datelink + startlink + '/' + datelink + endlink + '&details=' + x.teach_teacher.teacher_department + x.subject + '公開觀課%0A授課老師：' + x.teach_teacher.teacher_name + '&location=' + x.class_room + '&trp=false'
         })
     return render(request, 'home/home.html',{ 'all_class' : all_class })
 
