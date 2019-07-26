@@ -2,65 +2,65 @@
 {% block content%}
 {% load static %}
 <div class="row my-2 text-center">
-  <div class="col">
+  <div class="col-3 col-sm">
     <label class="font-weight-bold">部門</label>
   </div>
-  <div class="col">
+  <div class="col-5 col-sm">
     <label class="font-weight-bold">課程名稱</label>
   </div>
-  <div class="col">
+  <div class="col-4 col-sm">
     <label class="font-weight-bold">教室</label>
   </div>
-  <div class="col-2">
+  <div class="col-6 col-sm-2">
     <label class="font-weight-bold">日期</label>
   </div>
-  <div class="col">
+  <div class="col-3 col-sm">
     <label class="font-weight-bold">開始時間</label>
   </div>
-  <div class="col">
+  <div class="col-3 col-sm">
     <label class="font-weight-bold">結束時間</label>
   </div>
-  <div class="col">
+  <div class="col-3 col-sm">
     <label class="font-weight-bold">授課老師</label>
   </div>
-  <div class="col">
+  <div class="col-3 col-sm">
     <label class="font-weight-bold">參加人數</label>
   </div>
-  <div class="col">
+  <div class="col-3 col-sm">
     <label class="font-weight-bold">詳情</label>
   </div>
-  <div class="col">
+  <div class="col-3 col-sm">
     <label class="font-weight-bold">calendar</label>
   </div>
 </div>
 {% for class in all_class %}
 <hr>
 <div class="row my-2 text-center">
-  <div class="col">
+  <div class="col-3 col-sm">
     <span>{{ class.department }}</span>
   </div>
-  <div class="col">
+  <div class="col-5 col-sm">
     <span>{{ class.subject }}</span>
   </div>
-  <div class="col">
+  <div class="col-4 col-sm">
     <span>{{ class.classroom }}</span>
   </div>
-  <div class="col-2">
+  <div class="col-6 col-sm-2">
     <span>{{ class.date }}</span>
   </div>
-  <div class="col">
+  <div class="col-3 col-sm">
     <span>{{ class.start_time }}</span>
   </div>
-  <div class="col">
+  <div class="col-3 col-sm">
     <span>{{ class.end_time }}</span>
   </div>
-  <div class="col">
+  <div class="col-3 col-sm">
     <span>{{ class.teacher }}</span>
   </div>
-  <div class="col">
+  <div class="col-3 col-sm">
     <span>{{ class.attend_number }}</span>
   </div>
-  <div class="col">
+  <div class="col-3 col-sm">
     <span>
       <a data-toggle="collapse" href="#collapsedata{{ forloop.counter }}" aria-expanded="false"
         aria-controls="collapseExample">
@@ -68,7 +68,7 @@
       </a>
     </span>
   </div>
-  <div class="col">
+  <div class="col-3 col-sm">
     <span><a href="{{ class.link }}" target="_blank">新增</a></span>
   </div>
 </div>
