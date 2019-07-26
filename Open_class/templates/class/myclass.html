@@ -6,7 +6,6 @@
       <tr>
         <th class="text-center">課程名稱</th>
         <th class="text-center">日期</th>
-        <th class="text-center">報到網址</th>
         <th class="text-center">報到QR CODE</th>
         <th class="text-center">參加人數</th>
         <th class="text-center">活動設計表</th>
@@ -21,7 +20,6 @@
       <tr>
         <td class="text-center">{{ class.subject }}</td>
         <td class="text-center">{{ class.date }}</td>
-        <td class="text-center"><a href="{{ class.attend_link }}" target="_blank"> 報到網址 </a></td>
         <td class="text-center"><a href="{{ class.attend_qr }}" target="_blank"> 報到QR CODE </a></td>
         <td class="text-center">{{ class.attend_number }}</td>
         <td class="text-center"><a href="{{ class.design }}">活動設計表</a></td>

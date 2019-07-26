@@ -28,7 +28,8 @@ def create(request) :
                 'subject_choice' : subject_choice,
                 'department_choice' : department_choice
             })
-        User.objects.filter(email = request.user.email).update(teacher_subject = request.POST['subject'], teacher_name = request.POST['name'], teacher_department = request.POST['department'])
+        User.objects.filter(email = request.user.email).update(teacher_subject = request.POST['subject'], teacher_name = request.POST['name'], 
+            teacher_department = request.POST['department'], power = False)
         return HttpResponseRedirect('/')
     return render(request , 'account/create.html',{
         'email' : request.user.email,

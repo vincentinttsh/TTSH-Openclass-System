@@ -15,4 +15,6 @@ urlpatterns = [
     path('observation/one/view/<int:no>/',views.observation_one_view.as_view()),
     path('briefing/create/<int:no>/',views.briefing_create.as_view()),
     path('briefing/view/<int:no>/',views.briefing_view.as_view()),
+    path('admin/',views.admin.as_view()),
+    path('check/<int:no>/',views.check.as_view()),
 ]

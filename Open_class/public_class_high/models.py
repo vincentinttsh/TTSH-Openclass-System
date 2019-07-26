@@ -21,6 +21,7 @@ class High_Class(models.Model) :
     teach_date = models.DateField(verbose_name='上課日期')
     teach_start_time = models.TimeField(verbose_name='上課開始時間')
     teach_end_time = models.TimeField(verbose_name='上課結束時間')
+    teaching_photo = models.URLField(verbose_name='上課照片', default = '')
     attend_data = models.OneToOneField(Attend_data, on_delete=models.CASCADE, verbose_name='參加資料', related_name='the_class')
     class Meta:
         verbose_name, verbose_name_plural = '高中公開觀課報名資料', '高中公開觀課報名資料'

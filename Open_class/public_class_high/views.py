@@ -28,7 +28,7 @@ class create(View) :
             data.save()
             Class(teach_teacher=request.user, subject=request.POST['subject'], class_room=request.POST['room'], 
                 teach_date=request.POST['date'], teach_start_time=request.POST['start_time'], 
-                teach_end_time=request.POST['end_time'], attend_data = data ).save()  # 新增至database
+                teach_end_time=request.POST['end_time'], attend_data = data, teaching_photo = '').save()  # 新增至database
         except:
             return render(request, 'class/create.html', { 'error_message': '新增錯誤', })
         return render(request, 'class/success.html')
@@ -77,7 +77,6 @@ class myclass(View) :
                 'subject' : x.subject,
                 'date' : x.teach_date,
                 'attend_number' : x.attend_data.attend_number,
-                'attend_link' : '/class/high/attend/' + str(x.id) + '/' + x.attend_data.attend_password,
                 'attend_qr' : 'https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=' + settings.HOST_NAME  + '/class/high/attend/' + str(x.id) + '/' + x.attend_data.attend_password +'&format=png',
                 'design' : '/class/high/design/create/' + str(x.id),
                 'preparation' : '/class/high/preparation/create/' + str(x.id),
@@ -255,7 +254,7 @@ class observation_all_view(View) :
             now_class = Class.objects.get(pk = no)# 取得課程
         except :
             return render(request, 'high/observation_record_all.html', { 'message': '錯誤' })
-        if now_class.teach_teacher!= request.user : # 不是你的
+        if now_class.teach_teacher!= request.user and request.user.power == False : # 沒權限
             return HttpResponseRedirect('/')
         for x in now_class.attend_data.attend_people.all() :
             if Observation_record.objects.filter(the_class = now_class, author = x).count() > 0 :
@@ -279,7 +278,7 @@ class observation_one_view(View) :
             now_record = Observation_record.objects.get(pk = no)
         except :
             return render(request, 'high/observation_record_detail.html', { 'message': '錯誤' })
-        if now_record.the_class.teach_teacher != request.user and now_record.author != request.user :
+        if now_record.the_class.teach_teacher != request.user and now_record.author != request.user and request.user.power == False :  # 沒權限
             return HttpResponseRedirect('/')
         return render(request, 'high/observation_record_detail.html',{
             'author' : now_record.author,
@@ -303,7 +302,7 @@ class briefing_view(View) :
             now_class = Class.objects.get(pk = no)# 取得課程
         except :
             return HttpResponseRedirect('/')
-        if now_class.teach_teacher != request.user : # 不是你的
+        if now_class.teach_teacher != request.user and request.user.power == False : # 沒權限
             return HttpResponseRedirect('/')
         if Briefing_record.objects.filter(the_class = now_class).count() > 0 : #取得議課紀錄表
             now_record = Briefing_record.objects.get(the_class = now_class)
@@ -335,7 +334,7 @@ class preparation_view(View) :
             now_record = Preparation_record.objects.get(the_class = now_class)
         else :
             return render(request, 'high/observation_record_detail.html', { 'message': '錯誤' })
-        if now_record.the_class.teach_teacher != request.user and request.user not in now_record.the_class.attend_data.attend_people.all():
+        if now_record.the_class.teach_teacher != request.user and request.user not in now_record.the_class.attend_data.attend_people.all() and request.user.power == False : # 沒權限
             return HttpResponseRedirect('/')
         return render(request, 'high/preparation_record_detail.html',{
                 'subject' : now_record.subject,
@@ -368,7 +367,7 @@ class design_table_view(View) :
             now_table = Design_table.objects.get(the_class = now_class)
         else :
             return render(request, 'high/observation_record_detail.html', { 'message': '錯誤' })
-        if now_table.the_class.teach_teacher != request.user and request.user not in now_table.the_class.attend_data.attend_people.all():
+        if now_table.the_class.teach_teacher != request.user and request.user not in now_table.the_class.attend_data.attend_people.all() and request.user.power == False : # 沒權限
             return HttpResponseRedirect('/')
         return render(request, 'high/design_table_detail.html',{
                 'class_name' : now_table.class_name ,
@@ -385,3 +384,82 @@ class design_table_view(View) :
                 'big_teaching_objectives' : now_table.teaching_objectives,
                 'detail' : Design_table_datail.objects.filter(the_design = now_table).all()
             })
+
+class admin(View):
+    calendar_link = 'http://www.google.com/calendar/event?action=TEMPLATE&text=公開觀課（'
+    def get(self, request) :
+        if request.user.is_authenticated == False: # 未登入
+            return HttpResponseRedirect('/account/login')
+        if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
+            return HttpResponseRedirect('/account/create')
+        if request.user.power == False : # 沒權限
+            return HttpResponseRedirect('/')
+        all_class = list()
+        for x in list(Class.objects.all()) :
+            datelink = str(x.teach_date).replace('-', '') + 'T' # 轉日期格式 YYYY-MM-DD to YYYYMMDD
+            startlink, endlink  = str(x.teach_start_time).replace(':', ''), str(x.teach_end_time).replace(':', '') # 轉時間格式 HH:MM:SS to HHMMSS
+            all_class.append({
+                'department' : x.teach_teacher.teacher_department,
+                'teacher' : x.teach_teacher.teacher_name,
+                'subject' : x.subject,
+                'classroom' : x.class_room,
+                'date' : x.teach_date,
+                'start_time' : x.teach_start_time,
+                'end_time' : x.teach_end_time,
+                'attend_number' : x.attend_data.attend_number,
+                'attend_qr' : 'https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=' + settings.HOST_NAME  + '/class/high/attend/' + str(x.id) + '/' + x.attend_data.attend_password +'&format=png',
+                'observation' : '/class/high/observation/all/view/' + str(x.id),
+                'check' : '/class/high/check/' + str(x.id),
+                'link' : self.calendar_link + x.teach_teacher.teacher_name + '）' + '&dates=' + datelink + startlink + '/' + datelink + endlink + '&details=' + x.teach_teacher.teacher_department + x.subject + '公開觀課%0A授課老師：' + x.teach_teacher.teacher_name + '&location=' + x.class_room + '&trp=false'
+            })
+            if Design_table.objects.filter(the_class = x).count() > 0 :
+                all_class[-1]['design'] = '/class/high/design/view/' + str(x.id)
+            if Preparation_record.objects.filter(the_class = x).count() > 0 :
+                all_class[-1]['preparation'] = '/class/high/preparation/view/' + str(x.id)
+            if Briefing_record.objects.filter(the_class = x).count() > 0 :
+                all_class[-1]['briefing'] = '/class/high/briefing/view/' + str(x.id)
+        return render(request, 'class/admin.html',{ 'all_class' : all_class })
+
+class check(View) :
+    def get(self, request, no):
+        if request.user.is_authenticated == False: # 未登入
+            return HttpResponseRedirect('/account/login')
+        if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
+            return HttpResponseRedirect('/account/create')
+        if request.user.power == False : # 沒權限
+            return HttpResponseRedirect('/')
+        try:
+            now_class = Class.objects.get(pk = no)# 取得課程
+        except :
+            return HttpResponseRedirect('/')
+        record, people = dict(), list()
+        if Design_table.objects.filter(the_class = now_class).count() > 0 :
+            record['design'] = '/class/high/design/view/' + str(no)
+        if Preparation_record.objects.filter(the_class = now_class).count() > 0 :
+            record['preparation'] = '/class/high/preparation/view/' + str(no)
+        if Briefing_record.objects.filter(the_class = now_class).count() > 0 :
+            record['briefing'] = '/class/high/briefing/view/' + str(no)
+        for x in now_class.attend_data.attend_people.all() :
+            if Observation_record.objects.filter(the_class = now_class, author = x).count() > 0 :
+                people.append({
+                    'name' : x.teacher_name,
+                    'link' : '/class/high/observation/one/view/' + str(Observation_record.objects.get(the_class = now_class, author = x).id)
+                })
+            else :
+                people.append({
+                    'name' : x.teacher_name,
+                })
+        return render(request, 'class/check.html',{ 'class' : record, 'people' : people, 'link' : now_class.teaching_photo })
+    def post(self, request, no) :
+        if request.POST['link'] == '' :
+            return render(request, 'class/check.html', { 'message': '未填寫' })
+        try:
+            now_class = Class.objects.get(pk = no)# 取得課程
+        except :
+            return HttpResponseRedirect('/')
+        try:
+            now_class.teaching_photo = request.POST['link']
+            now_class.save()
+        except :
+            return render(request, 'class/check.html', { 'message': '錯誤' })
+        return render(request, 'class/success.html')

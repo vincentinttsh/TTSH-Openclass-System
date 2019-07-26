@@ -32,6 +32,18 @@
           <a class="nav-link" href="/admin/" target="_blank"> 管理界面</a>
         </li>
         {% endif %}
+        {% if user.power %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            管理課程
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/class/high/admin">高中部</a>
+            <a class="dropdown-item" href="/class/secondary/admin">國中部</a>
+          </div>
+        </li>
+        {% endif %}
         {% if user.is_authenticated  %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"

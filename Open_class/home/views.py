@@ -25,7 +25,7 @@ def home(request):
         department = x.teach_teacher.teacher_department # 部門
         all_class.append({
             'department' : department,
-            'teacher' : x.teach_teacher,
+            'teacher' : x.teach_teacher.teacher_name,
             'subject' : x.subject,
             'classroom' : x.class_room,
             'date' : x.teach_date,

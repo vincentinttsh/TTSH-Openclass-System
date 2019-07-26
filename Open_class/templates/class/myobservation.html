@@ -18,16 +18,16 @@
         <td class="text-center">{{ class.date }}</td>
         {% load static %}
         {% if class.design %}
-        <td class="text-center align-middle"><a href="{{ class.design }}"><img src="{% static 'check.png' %}" height="32"></a>
+        <td class="text-center"><a href="{{ class.design }}"><img src="{% static 'check.png' %}" height="32"></a>
         </td>
         {% else %}
-        <td class="text-center align-middle"><img src="{% static 'error.png' %}" height="30"></td>
+        <td class="text-center"><img src="{% static 'error.png' %}" height="30"></td>
         {% endif %}
         {% if class.preparation %}
-        <td class="text-center align-middle"><a href="{{ class.preparation }}"><img src="{% static 'check.png' %}" height="32"></a>
+        <td class="text-center"><a href="{{ class.preparation }}"><img src="{% static 'check.png' %}" height="32"></a>
         </td>
         {% else %}
-        <td class="text-center align-middle"><img src="{% static 'error.png' %}" height="30"></td>
+        <td class="text-center"><img src="{% static 'error.png' %}" height="30"></td>
         {% endif %}
         <td class="text-center"><a href="{{ class.observation }}">觀課紀錄表</a></td>
       </tr>
