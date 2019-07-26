@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content%}
+{% load static %}
 <div class="table-responsive">
   <table class="table table-hover">
     <thead>
@@ -12,6 +13,7 @@
         <th class="text-center">備課記錄表</th>
         <th class="text-center">議課紀錄表</th>
         <th class="text-center">觀課紀錄表</th>
+        <th class="text-center" data-toggle="tooltip" data-placement="bottom" title="由管理員上傳">上課照片</th>
         <th class="text-center">calendar</th>
       </tr>
     </thead>
@@ -26,6 +28,12 @@
         <td class="text-center"><a href="{{ class.preparation }}">備課記錄表</a></td>
         <td class="text-center"><a href="{{ class.briefing }}">議課紀錄表</a></td>
         <td class="text-center"><a href="{{ class.observation }}">觀課紀錄表</a></td>
+        {% if class.photo %}
+        <td class="text-center"><a href="{{ class.photo }}"><img src="{% static 'check.png' %}" height="30"></a>
+        </td>
+        {% else %}
+        <td class="text-center"><img src="{% static 'error.png' %}" height="30"></td>
+        {% endif %}
         <td class="text-center"><a href="{{ class.link }}" target="_blank">新增</a></td>
       </tr>
       {% endfor %}

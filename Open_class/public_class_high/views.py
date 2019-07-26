@@ -84,6 +84,8 @@ class myclass(View) :
                 'observation' : '/class/high/observation/all/view/' + str(x.id),
                 'link' : self.calendar_link + x.teach_teacher.teacher_name + '）' + '&dates=' + datelink + startlink + '/' + datelink + endlink + '&details=' + x.teach_teacher.teacher_department + x.subject + '公開觀課%0A授課老師：' + x.teach_teacher.teacher_name + '&location=' + x.class_room + '&trp=false'
             })
+            if x.teaching_photo !='':
+                all_class[-1]['photo'] = x.teaching_photo
         return render(request, 'class/myclass.html',{ 'all_class' : all_class })
 
 class myobservation(View) :
