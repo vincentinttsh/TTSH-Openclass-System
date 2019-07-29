@@ -13,56 +13,50 @@
 </div>
 <hr class="my-4 ">
 <div class="row my-2">
-  <div class="col-sm-2 col-3">
-    <label class="font-weight-bolder">學科</label>
-  </div>
-  <div class="col-9 col-sm-4">
-    <input type="text" class="form-control" value="{{subject}}" disabled>
-  </div>
-  <div class="col-sm-2 col-3">
-    <label class="font-weight-bolder">填寫者</label>
-  </div>
-  <div class="col-9 col-sm-4">
-    <input type="text" class="form-control" value="{{ author }}" disabled>
-  </div>
-</div>
-<div class="row my-2">
   <div class="col-sm-2 col-12">
     <label class="font-weight-bolder">教學時間</label>
   </div>
-  <div class="col-sm-4 col-5">
+  <div class="col-sm-4 col-6">
     <input type="text" class="form-control" value="{{date}}" disabled>
   </div>
-  <div class="col-sm-6 col-5">
+  <div class="col-sm-6 col-6">
     <input type="text" class="form-control" value="{{ start_time }} 至 {{ end_time }}" disabled>
   </div>
 </div>
 <div class="row my-2">
-  <div class="col-sm-2 col-3">
+  <div class="col-4 col-sm-2">
     <label class="font-weight-bolder">教學年級</label>
   </div>
-  <div class="col-9 col-sm-4">
+  <div class="col-8 col-sm-4">
     <input type="text" class="form-control" value="{{teaching_grade}}" disabled>
   </div>
-  <div class="col-sm-2 col-3">
-    <label class="font-weight-bolder">教學單元</label>
+  <div class="col-4 col-sm-2">
+    <label class="font-weight-bolder">教學節數</label>
   </div>
-  <div class="col-9 col-sm-4">
-    <input type="text" class="form-control" value="{{ class_name }}" disabled>
+  <div class="col-8 col-sm-4">
+    <input type="text" class="form-control" value="{{teaching_sessions}}" disabled>
   </div>
 </div>
 <div class="row my-2">
-  <div class="col-sm-2 col-3">
+  <div class="col-4">
+    <label class="font-weight-bolder">教學單元</label>
+  </div>
+  <div class="col-8">
+    <input type="text" class="form-control" value="{{class_name}}" disabled>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-4 col-sm-2">
     <label class="font-weight-bolder">教材來源</label>
   </div>
-  <div class="col-9 col-sm-4">
+  <div class="col-8 col-sm-6">
     <input type="text" class="form-control" value="{{teaching_material}}" disabled>
   </div>
-  <div class="col-sm-2 col-3">
+  <div class="col-4 col-sm-2">
     <label class="font-weight-bolder">教學者</label>
   </div>
-  <div class="col-9 col-sm-4">
-    <input type="text" class="form-control" value="{{ teach_teacher }}" disabled>
+  <div class="col-8 col-sm-2">
+    <input type="text" class="form-control" value="{{teacher}}" disabled>
   </div>
 </div>
 <div class="row my-2">
@@ -79,7 +73,7 @@
 </div>
 <div class="row my-2">
   <div class="col">
-    <label class="font-weight-bolder">三、學生經驗：</label>
+    <label class="font-weight-bolder">三、學生經驗或學習背景分析：</label>
     <textarea class="form-control box" disabled>{{student_experience}}</textarea>
   </div>
 </div>
@@ -92,7 +86,7 @@
 <div class="row my-2">
   <div class="col">
     <label class="font-weight-bolder">五、學生學習成效評估方式：</label>
-    <textarea class="form-control box" disabled>{{teaching_activity}}</textarea>
+    <textarea class="form-control box" disabled>{{evaluation_method}}</textarea>
   </div>
 </div>
 {% endif %}

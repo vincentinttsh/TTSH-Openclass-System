@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block content%}
-{% if user.is_authenticated  %}
+{% if message %}
+<div class="alert alert-danger" role="alert">
+  <h2 class="text-center font-weight-bold">警告</h2>
+  <h4 class="text-center font-weight-bold">{{ message }}</h4>
+</div>
+{% else %}
 <div class="row my-2">
   <div class="col">
     <h2 class="font-weight-bolder">共同議課紀錄表</h2>
@@ -64,8 +69,5 @@
     <textarea class="form-control box" disabled>{{growth_activity}}</textarea>
   </div>
 </div>
-{% else %}
-<h2 class="text-center">警告</h2>
-<h4 class="text-center">你未登入</h4>
 {% endif %}
 {% endblock %}

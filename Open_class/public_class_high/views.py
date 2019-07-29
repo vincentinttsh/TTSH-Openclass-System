@@ -67,6 +67,8 @@ class myclass(View) :
             return HttpResponseRedirect('/account/login')
         if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
             return HttpResponseRedirect('/account/create')
+        if request.user.teacher_department == '國中部' :
+            return HttpResponseRedirect('/')
         all_class = list()
         for x in list(Class.objects.all()) :
             if x.teach_teacher != request.user : # 不是自己的
@@ -114,11 +116,11 @@ class design_table_create(View) :
         if request.user.is_authenticated == False:  #未登入
             return HttpResponseRedirect('/account/login')
         if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/account/create')
         try:
             now_class = Class.objects.get(pk = no)# 取得課程
         except :
-            return render(request, 'high/design_table.html', { 'message': '錯誤', })
+            return HttpResponseRedirect('/')
         if now_class.teach_teacher != request.user : # 不是你的
             return HttpResponseRedirect('/')
         if Design_table.objects.filter(the_class = now_class).count() > 0 :
@@ -156,7 +158,7 @@ class preparation_create(View) :
         if request.user.is_authenticated == False:  #未登入
             return HttpResponseRedirect('/account/login')
         if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/account/create')
         try:
             now_class = Class.objects.get(pk = no)# 取得課程
         except :
@@ -191,7 +193,7 @@ class observation_create(View) :
         if request.user.is_authenticated == False:  #未登入
             return HttpResponseRedirect('/account/login')
         if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/account/create')
         try:
             now_class = Class.objects.get(pk = no)# 取得課程
         except :
@@ -220,7 +222,7 @@ class briefing_create(View) :
         if request.user.is_authenticated == False:  #未登入
             return HttpResponseRedirect('/account/login')
         if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/account/create')
         try:
             now_class = Class.objects.get(pk = no)# 取得課程
         except :

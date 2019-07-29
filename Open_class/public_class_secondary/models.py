@@ -2,21 +2,31 @@ from django.db import models
 from django.contrib import admin
 from account.models import User
 
+class Attend_data(models.Model) :
+    attend_password = models.CharField(max_length = 10, verbose_name='參加密碼')
+    attend_number = models.IntegerField(default=0, verbose_name='參加人數')
+    attend_people = models.ManyToManyField(User, verbose_name='參加的人',related_name='attend_class')
+    class Meta:
+        verbose_name, verbose_name_plural = '國中公開觀課報名人數', '國中公開觀課報名人數'
+    def __str__(self):
+        return self.the_class.teach_teacher.teacher_name + '-' + self.the_class.subject
+@admin.register(Attend_data)
+class Attend_dataAdmin(admin.ModelAdmin):
+    pass
+
 class Secondary_Class(models.Model) :
-    teach_teacher = models.CharField(max_length = 6, verbose_name='老師名字')
-    teach_teacher_email = models.EmailField(default = 'example@ttsh.tp.edu.tw', verbose_name='老師信箱')
+    teach_teacher = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='老師')
     subject = models.CharField(max_length = 20, verbose_name='上課科目')
     class_room = models.CharField(max_length = 10, verbose_name='上課教室')
     teach_date = models.DateField(verbose_name='上課日期')
     teach_start_time = models.TimeField(verbose_name='上課開始時間')
     teach_end_time = models.TimeField(verbose_name='上課結束時間')
-    attend_password = models.CharField(max_length = 10, verbose_name='參加密碼')
-    attend_number = models.IntegerField(default=0, verbose_name='參加人數')
-    attend_people = models.ManyToManyField(User, verbose_name='參加的人')
+    teaching_photo = models.URLField(verbose_name='上課照片', default = '')
+    attend_data = models.OneToOneField(Attend_data, on_delete=models.CASCADE, verbose_name='參加資料', related_name='the_class')
     class Meta:
         verbose_name, verbose_name_plural = '國中公開觀課報名資料', '國中公開觀課報名資料'
     def __str__(self):
-        return self.teach_teacher + '-' + self.subject
+        return self.teach_teacher.teacher_name + '-' + self.subject
 
 @admin.register(Secondary_Class)
 class Secondary_ClassAdmin(admin.ModelAdmin):
@@ -33,7 +43,7 @@ class Design_table(models.Model) :
     class Meta:
         verbose_name, verbose_name_plural = '國中課程教學活動設計表', '國中課程教學活動設計表'
     def __str__(self):
-        return self.the_class.teach_teacher + '-' + self.the_class.subject
+        return self.the_class.teach_teacher.teacher_name + '-' + self.the_class.subjects
 
 @admin.register(Design_table)
 class Design_tableAdmin(admin.ModelAdmin):
@@ -86,7 +96,7 @@ class Preparation_recordAdmin(admin.ModelAdmin) :
 class Observation_record(models.Model) :
     the_class = models.ForeignKey(Secondary_Class, on_delete=models.CASCADE, verbose_name='課程')
     context = models.TextField(verbose_name='摘記')
-    author = models.CharField(max_length = 6, verbose_name='填表人')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='填表人', related_name='class_observation')
     observation_date = models.DateField(verbose_name='觀課日期')
     teach_teacher = models.CharField(max_length = 6, verbose_name='授課教師')
     subject = models.CharField(max_length = 20, verbose_name='科目')

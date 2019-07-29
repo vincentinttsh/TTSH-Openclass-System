@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block content%}
 {% if user.is_authenticated  %}
-<form class="form-login" action="" method="post" role="form"> {% csrf_token %}
+<form class="form-login" action="" method="post" role="form"> 
+  {% csrf_token %}
   <h2 class="form-login-heading font-weight-bolder" >課程教學活動設計表</h2>
   {% if message %}
   <div class="alert alert-danger" role="alert">
@@ -49,7 +50,6 @@
     <input type="button" class="btn btn-success" onclick="addtable()" value="新增一行">
     <input type="button" class="btn btn-danger" onclick="deltable()" value="刪除一行">
   </div>
-  <input type="hidden" name="dtid" value="submit" />
   <div class="form-login-submit text-center">
     <button type="submit" class="btn btn-primary " name="submit" value="submit">提交</button>
   </div>
