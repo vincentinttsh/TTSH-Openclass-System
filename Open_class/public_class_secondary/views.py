@@ -61,7 +61,7 @@ class attend(View) :
             return render(request, 'class/attend.html', { 'message': '密碼錯誤', })
 
 class myclass(View) :
-    calendar_link = 'http://www.google.com/calendar/event?action=TEMPLATE&text=公開觀課（'
+    calendar_link = 'http://www.google.com/calendar/event?action=TEMPLATE&text=公開授課（'
     def get(self, request) :
         if request.user.is_authenticated == False: # 未登入
             return HttpResponseRedirect('/account/login')
@@ -82,7 +82,7 @@ class myclass(View) :
                 'preparation' : '/class/secondary/preparation/create/' + str(x.id),
                 'briefing' : '/class/secondary/briefing/create/' + str(x.id),
                 'observation' : '/class/secondary/observation/all/view/' + str(x.id),
-                'link' : self.calendar_link + x.teach_teacher.teacher_name + '）' + '&dates=' + datelink + startlink + '/' + datelink + endlink + '&details=' + x.teach_teacher.teacher_department + x.subject + '公開觀課%0A授課老師：' + x.teach_teacher.teacher_name + '&location=' + x.class_room + '&trp=false'
+                'link' : self.calendar_link + x.teach_teacher.teacher_name + '）' + '&dates=' + datelink + startlink + '/' + datelink + endlink + '&details=' + x.teach_teacher.teacher_department + x.subject + '公開授課%0A授課老師：' + x.teach_teacher.teacher_name + '&location=' + x.class_room + '&trp=false'
             })
             if x.teaching_photo !='':
                 all_class[-1]['photo'] = x.teaching_photo
@@ -385,7 +385,7 @@ class design_table_view(View) :
             })
 
 class admin(View):
-    calendar_link = 'http://www.google.com/calendar/event?action=TEMPLATE&text=公開觀課（'
+    calendar_link = 'http://www.google.com/calendar/event?action=TEMPLATE&text=公開授課（'
     def get(self, request) :
         if request.user.is_authenticated == False: # 未登入
             return HttpResponseRedirect('/account/login')
@@ -409,7 +409,7 @@ class admin(View):
                 'attend_qr' : 'https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=' + settings.HOST_NAME  + '/class/secondary/attend/' + str(x.id) + '/' + x.attend_data.attend_password +'&format=png',
                 'observation' : '/class/secondary/observation/all/view/' + str(x.id),
                 'check' : '/class/secondary/check/' + str(x.id),
-                'link' : self.calendar_link + x.teach_teacher.teacher_name + '）' + '&dates=' + datelink + startlink + '/' + datelink + endlink + '&details=' + x.teach_teacher.teacher_department + x.subject + '公開觀課%0A授課老師：' + x.teach_teacher.teacher_name + '&location=' + x.class_room + '&trp=false'
+                'link' : self.calendar_link + x.teach_teacher.teacher_name + '）' + '&dates=' + datelink + startlink + '/' + datelink + endlink + '&details=' + x.teach_teacher.teacher_department + x.subject + '公開授課%0A授課老師：' + x.teach_teacher.teacher_name + '&location=' + x.class_room + '&trp=false'
             })
             if Design_table.objects.filter(the_class = x).count() > 0 :
                 all_class[-1]['design'] = '/class/secondary/design/view/' + str(x.id)
