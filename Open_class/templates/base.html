@@ -27,7 +27,7 @@
   <nav class="navbar navbar-expand-md navbar-light bg-light">
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
       <ul class="navbar-nav mr-auto">
-        {% if user.is_superuser %}
+        {% if user.is_staff %}
         <li class="nav-item ">
           <a class="nav-link" href="/admin/" target="_blank"> 管理界面</a>
         </li>

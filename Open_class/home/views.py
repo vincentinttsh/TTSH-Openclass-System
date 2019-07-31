@@ -16,9 +16,7 @@ def home(request):
     Class = HClass
     if request.user.teacher_department == '國中部':
         Class = SClass
-    for x in list(Class.objects.all()) :
-        if x.teach_date < datetime.date.today() :
-            continue
+    for x in list(Class.objects.filter(teach_date__gte = datetime.date.today()).order_by('teach_date')) :
         datelink = str(x.teach_date).replace('-', '') + 'T' # 轉日期格式 YYYY-MM-DD to YYYYMMDD
         startlink = str(x.teach_start_time).replace(':', '') # 轉時間格式 HH:MM:SS to HHMMSS
         endlink = str(x.teach_end_time).replace(':', '') # 轉時間格式 HH:MM:SS to HHMMSS

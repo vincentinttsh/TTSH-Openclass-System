@@ -394,7 +394,14 @@ class admin(View):
         if request.user.power == False : # 沒權限
             return HttpResponseRedirect('/')
         all_class = list()
-        for x in list(Class.objects.all()) :
+        if datetime.date.today().month >= 2 or datetime.date.today().month <= 7 :
+            start_date, end_date = datetime.date(datetime.date.today().year, 2, 1), datetime.date(datetime.date.today().year, 7, 31)
+        else :
+            if datetime.date.today().month == 1 :
+                start_date, end_date  = datetime.date(datetime.date.today().year - 1, 8, 1), datetime.date(datetime.date.today().year, 1, 31)
+            else :
+                start_date, end_date = datetime.date(datetime.date.today().year, 8, 1), datetime.date(datetime.date.today().year + 1, 1, 31)
+        for x in list(Class.objects.filter(teach_date__range=(start_date, end_date))) :
             datelink = str(x.teach_date).replace('-', '') + 'T' # 轉日期格式 YYYY-MM-DD to YYYYMMDD
             startlink, endlink  = str(x.teach_start_time).replace(':', ''), str(x.teach_end_time).replace(':', '') # 轉時間格式 HH:MM:SS to HHMMSS
             all_class.append({
