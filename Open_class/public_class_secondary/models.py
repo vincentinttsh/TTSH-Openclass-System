@@ -41,7 +41,7 @@ class Design_table(models.Model) :
     class Meta:
         verbose_name, verbose_name_plural = '國中課程教學活動設計表', '國中課程教學活動設計表'
     def __str__(self):
-        return self.the_class.teach_teacher.teacher_name + '-' + self.the_class.subjects
+        return self.the_class.teach_teacher.teacher_name + '-' + self.the_class.subject
 
 @admin.register(Design_table)
 class Design_tableAdmin(admin.ModelAdmin):
@@ -83,7 +83,7 @@ class Preparation_record(models.Model) :
     class Meta:
         verbose_name, verbose_name_plural = '國中共同備課記錄表', '國中共同備課記錄表'
     def __str__(self):
-        return self.the_class.teach_teacher + '-' + self.the_class.subject
+        return self.the_class.teach_teacher.teacher_name + '-' + self.the_class.subject
 
 @admin.register(Preparation_record)
 class Preparation_recordAdmin(admin.ModelAdmin) :
@@ -138,7 +138,7 @@ class Observation_record(models.Model) :
     class Meta:
         verbose_name, verbose_name_plural = '國中公開觀課紀錄表', '國中公開觀課紀錄表'
     def __str__(self):
-        return self.the_class.teach_teacher + '-' + self.the_class.subject
+        return self.the_class.teach_teacher.teacher_name + '-' + self.the_class.subject
 
 @admin.register(Observation_record)
 class Observation_recordAdmin(admin.ModelAdmin) :
@@ -158,7 +158,7 @@ class Briefing_record(models.Model) :
     class Meta:
         verbose_name, verbose_name_plural = '國中共同議課紀錄表', '國中共同議課紀錄表'
     def __str__(self):
-        return self.the_class.teach_teacher + '-' + self.the_class.subject
+        return self.the_class.teach_teacher.teacher_name + '-' + self.the_class.subject
 
 
 @admin.register(Briefing_record)
@@ -176,7 +176,7 @@ class Growth_plan(models.Model) :
     class Meta:
         verbose_name, verbose_name_plural = '授課教師預定專業成長計畫', '授課教師預定專業成長計畫'
     def __str__(self):
-        return self.the_briefing.the_class.teach_teacher + '-' + self.the_briefing.the_class.subject
+        return self.the_briefing.the_class.teach_teacher.teacher_name + '-' + self.the_briefing.the_class.subject
 
 @admin.register(Growth_plan)
 class Growth_planAdmin(admin.ModelAdmin) :
