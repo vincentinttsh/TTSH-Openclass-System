@@ -8,6 +8,11 @@ class Attend_data(models.Model) :
     attend_people = models.ManyToManyField(User, verbose_name='參加的人')
     class Meta:
         verbose_name, verbose_name_plural = '高中公開觀課報名人數', '高中公開觀課報名人數'
+    def __str__(self):
+        try :
+            return self.the_class.teach_teacher.teacher_name + '-' + self.the_class.subject
+        except :
+            return "invalid data"
 @admin.register(Attend_data)
 class Attend_dataAdmin(admin.ModelAdmin):
     pass
