@@ -394,7 +394,7 @@ class admin(View):
         if request.user.power == False : # 沒權限
             return HttpResponseRedirect('/')
         all_class = list()
-        if datetime.date.today().month >= 2 or datetime.date.today().month <= 7 :
+        if datetime.date.today().month >= 2 and datetime.date.today().month <= 7 :
             start_date, end_date = datetime.date(datetime.date.today().year, 2, 1), datetime.date(datetime.date.today().year, 7, 31)
         else :
             if datetime.date.today().month == 1 :
