@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block content%}
 {% if user.is_authenticated  %}
-<form class="form-login" action="" method="post" role="form"> {% csrf_token %}
+<form class="form-login" action="" method="post" role="form">
+  {% csrf_token %}
   <h2 class="form-login-heading font-weight-bolder">臺北市立大同高級中學入班觀課、教室走察觀課教師回饋表</h2>
   {% if message %}
   <div class="alert alert-danger" role="alert">
@@ -168,7 +169,6 @@
     <label for="context" class="font-weight-bolder">摘記</label>
     <textarea class="form-control box" name="context" rows="3" placeholder="輸入摘記" required></textarea>
   </div>
-  <input type="hidden" name="orid" value="submit">
   <div class="form-login-submit text-center">
     <button type="submit" class="btn btn-primary " name="submit" value="submit">提交</button>
   </div>

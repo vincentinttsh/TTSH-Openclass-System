@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content%}
+{% if message %}
+<div class="alert alert-danger" role="alert">
+  <h2 class="text-center font-weight-bold">警告</h2>
+  <h4 class="text-center font-weight-bold">{{ message }}</h4>
+</div>
+{% else %}
+<div class="row my-2">
+  <div class="col">
+    <h2 class="font-weight-bolder">共同議課紀錄表</h2>
+  </div>
+</div>
+<hr class="my-4 ">
+<div class="row my-2">
+  <div class="col-sm-2 col-2">
+    <label class="font-weight-bolder">教學者</label>
+  </div>
+  <div class="col-sm-10 col-10">
+    <input type="text" class="form-control" value="{{ teach_teacher }}" disabled>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-2">
+    <label class="font-weight-bolder">觀察者</label>
+  </div>
+  <div class="col-10">
+    <textarea class="form-control box" disabled>{{observer}}</textarea>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-sm-2 col-12">
+    <label class="font-weight-bolder">議課日期</label>
+  </div>
+  <div class="col-sm-4 col-5">
+    <input type="text" class="form-control" value="{{briefing_date}}" disabled>
+  </div>
+  <div class="col-sm-6 col-5">
+    <input type="text" class="form-control" value="{{ briefing_time }}" disabled>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col">
+    <label class="font-weight-bolder">一、肯定教學表現：</label>
+    <textarea class="form-control box" disabled>{{affirmation_teaching_performance}}</textarea>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col">
+    <label class="font-weight-bolder">二、肯定教學表現</label>
+    <textarea class="form-control box" disabled>{{guide_discussion_teaching_performance}}</textarea>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col">
+    <label class="font-weight-bolder">三、判斷表現程度：</label>
+    <textarea class="form-control box" disabled>{{judgment_performance}}</textarea>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col">
+    <label class="font-weight-bolder">四、改進學生學習能力提供之建議：</label>
+    <textarea class="form-control box" disabled>{{suggest}}</textarea>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col">
+    <label class="font-weight-bolder">五、協助擬定成長活動：</label>
+    <textarea class="form-control box" disabled>{{growth_activity}}</textarea>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

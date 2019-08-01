@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content%}
+{% if message %}
+<div class="alert alert-danger" role="alert">
+  <h2 class="text-center font-weight-bold">警告</h2>
+  <h4 class="text-center font-weight-bold">{{ message }}</h4>
+</div>
+{% else %}
+<div class="row my-2">
+  <div class="col">
+    <h2 class="font-weight-bolder">課程教學活動設計表</h2>
+  </div>
+</div>
+<hr class="my-4 ">
+<div class="row my-2">
+  <div class="col-4">
+    <label class="font-weight-bolder">單元名稱</label>
+  </div>
+  <div class="col-8">
+    <input type="text" class="form-control" value="{{class_name}}" disabled>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-sm-2 col-4">
+    <label class="font-weight-bolder">授課教師</label>
+  </div>
+  <div class="col-sm-4 col-8">
+    <input type="text" class="form-control" value="{{ teacher }}" disabled>
+  </div>
+  <div class="col-sm-2 col-4">
+    <label class="font-weight-bolder">授課班級</label>
+  </div>
+  <div class="col-sm-4 col-8">
+    <input type="text" class="form-control" value="{{teach_class}}" disabled>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-4">
+    <label class="font-weight-bolder">教學目標</label>
+  </div>
+  <div class="col-8">
+    <input type="text" class="form-control" value="{{teaching_objectives}}" disabled>
+  </div>
+</div>
+<div class="my-2 table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="text-center">授課教師</th>
+        <th class="text-center">使用教具</th>
+        <th class="text-center">評量方式</th>
+        <th class="text-center">教學方法</th>
+        <th class="text-center">時間分配</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for x in detail %}
+      <tr>
+        <td class="text-center">{{x.teaching_activity}}</td>
+        <td class="text-center">{{x.teaching_aid}}</td>
+        <td class="text-center">{{x.assessment_method}}</td>
+        <td class="text-center">{{x.teaching_method}}</td>
+        <td class="text-center">{{x.time_allocation}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}

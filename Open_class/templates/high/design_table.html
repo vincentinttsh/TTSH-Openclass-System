@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block content%}
 {% if user.is_authenticated  %}
-<form class="form-login" action="" method="post" role="form"> {% csrf_token %}
-  <h2 class="form-login-heading font-weight-bolder">課程教學活動設計表</h2>
+<form method="post" role="form"> 
+  {% csrf_token %}
+  <h2 class="font-weight-bolder">課程教學活動設計表</h2>
   {% if message %}
   <div class="alert alert-danger" role="alert">
     <h2 class="text-center font-weight-bolder">警告</h2>
@@ -10,52 +11,52 @@
   </div>
   {% endif %}
   <div class="form-group ">
-    <label for="class_name" class="font-weight-bolder">單元名稱</label>
+    <label class="font-weight-bolder">單元名稱</label>
     <input type="text" class="form-control" name="class_name" placeholder="輸入單元名稱" required>
   </div>
   <div class="form-group ">
-    <label for="teacher" class="font-weight-bolder">授課教師</label>
+    <label class="font-weight-bolder">授課教師</label>
     <input type="text" class="form-control" name="teacher" value="{{ user.teacher_name }}" disabled>
   </div>
   <div class="form-group ">
-    <label for="teaching_material" class="font-weight-bolder">教材來源</label>
+    <label class="font-weight-bolder">教材來源</label>
     <input type="text" class="form-control" name="teaching_material" placeholder="輸入教材來源" required>
   </div>
   <div class="form-group ">
-    <label for="teach_class" class="font-weight-bolder">授課班級</label>
+    <label class="font-weight-bolder">授課班級</label>
     <input type="text" class="form-control" name="teach_class" placeholder="輸入授課班級" required>
   </div>
   <div class="form-group ">
-    <label for="date" class="font-weight-bolder">教學日期</label>
+    <label class="font-weight-bolder">教學日期</label>
     <input type="date" class="form-control" name="date" required>
   </div>
   <div class="form-group ">
-    <label for="start_time" class="font-weight-bolder">教學開始時間</label>
+    <label class="font-weight-bolder">教學開始時間</label>
     <input type="time" class="form-control" name="start_time" value="13:00" required>
   </div>
   <div class="form-group ">
-    <label for="end_time" class="font-weight-bolder">教學結束時間</label>
+    <label class="font-weight-bolder">教學結束時間</label>
     <input type="time" class="form-control" name="end_time" value="14:00" required>
   </div>
   <div class="form-group">
-    <label for="background_analysis" class="font-weight-bolder">學生學習背景分析</label>
+    <label class="font-weight-bolder">教學目標</label>
+    <textarea class="form-control box" name="big_teaching_objectives" rows="6" required></textarea>
+  </div>
+  <div class="form-group">
+    <label class="font-weight-bolder">學生學習背景分析</label>
     <textarea class="form-control box" name="background_analysis" rows="6" required></textarea>
   </div>
   <div class="form-group">
-    <label for="big_teaching_method" class="font-weight-bolder">教學方法</label>
+    <label class="font-weight-bolder">教學方法</label>
     <textarea class="form-control box" name="big_teaching_method" rows="6" required></textarea>
   </div>
   <div class="form-group">
-    <label for="teaching_resources" class="font-weight-bolder">教學資源</label>
+    <label class="font-weight-bolder">教學資源</label>
     <textarea class="form-control box" name="teaching_resources" rows="6" required></textarea>
   </div>
   <div class="form-group">
-    <label for="reference_material" class="font-weight-bolder">參考資料</label>
+    <label class="font-weight-bolder">參考資料</label>
     <textarea class="form-control box" name="reference_material" rows="6" required></textarea>
-  </div>
-  <div class="form-group">
-    <label for="teaching_objectives" class="font-weight-bolder">教學目標</label>
-    <textarea class="form-control box" name="big_teaching_objectives" rows="6" required></textarea>
   </div>
   <div class="form-group">
     <table id="myTable" class="table table-hover">
@@ -88,7 +89,6 @@
     <input type="button" class="btn btn-success" onclick="addtable()" value="新增一行">
     <input type="button" class="btn btn-danger" onclick="deltable()" value="刪除一行">
   </div>
-  <input type="hidden" name="dtid" value="submit" />
   <div class="form-login-submit text-center">
     <button type="submit" class="btn btn-primary " name="submit" value="submit">提交</button>
   </div>

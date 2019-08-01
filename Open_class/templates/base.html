@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>公開觀課系統</title>
-  <link rel="icon" href="{% static 'ttsh.ico' %}" />
+  <link rel="icon" href="{% static 'favicon.ico' %}" />
   <!-- bootstrap -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -27,9 +27,21 @@
   <nav class="navbar navbar-expand-md navbar-light bg-light">
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
       <ul class="navbar-nav mr-auto">
-        {% if user.is_superuser %}
+        {% if user.is_staff %}
         <li class="nav-item ">
           <a class="nav-link" href="/admin/" target="_blank"> 管理界面</a>
+        </li>
+        {% endif %}
+        {% if user.power %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            管理課程
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/class/high/admin">高中部</a>
+            <a class="dropdown-item" href="/class/secondary/admin">國中部</a>
+          </div>
         </li>
         {% endif %}
         {% if user.is_authenticated  %}

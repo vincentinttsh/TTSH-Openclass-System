@@ -1,0 +1,352 @@
+{% extends "base.html" %}
+{% block content%}
+{% if message %}
+<div class="alert alert-danger" role="alert">
+  <h2 class="text-center font-weight-bold">警告</h2>
+  <h4 class="text-center font-weight-bold">{{ message }}</h4>
+</div>
+{% else %}
+<div class="row my-2">
+  <div class="col">
+    <h2 class="font-weight-bold">公開觀課紀錄表</h2>
+  </div>
+</div>
+<hr class="my-4 ">
+<div class="row my-2">
+  <div class="col-3 col-sm-2">
+    <label class="font-weight-bold">日期</label>
+  </div>
+  <div class="col-9 col-sm-4">
+    <input type="text" class="form-control" value="{{ observation_date }}" disabled>
+  </div>
+  <div class="col-3 col-sm-2">
+    <label class="font-weight-bold">科目</label>
+  </div>
+  <div class="col-9 col-sm-4">
+    <input type="text" class="form-control" value="{{ subject }}" disabled>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-3 col-sm-2">
+    <label class="font-weight-bold">授課教師</label>
+  </div>
+  <div class="col-9 col-sm-4">
+    <input type="text" class="form-control" value="{{ teach_teacher }}" disabled>
+  </div>
+  <div class="col-3 col-sm-2">
+    <label class="font-weight-bold">觀課班級</label>
+  </div>
+  <div class="col-9 col-sm-4">
+    <input type="text" class="form-control" value="{{ teach_class }}" disabled>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-3">
+    <label class="font-weight-bold">填表人</label>
+  </div>
+  <div class="col-9">
+    <input type="text" class="form-control" value="{{ author }}" disabled>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col">
+    <h6 class="text-center font-weight-bold">量化結果: 5值得推薦、4通過、3普通、2待改進、1不適用</h6>
+  </div>
+</div>
+<div class="row my-2 text-center">
+  <div class="col-12 col-sm-8">
+    <label class="font-weight-bold">教學策略</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <label class="font-weight-bold">量化結果</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <label class="font-weight-bold">質性描述</label>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>1</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>要求學生參與教學活動</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ teaching_strategy_1 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ teaching_strategy_1_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>2</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>延伸學生的反應或表現</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ teaching_strategy_2 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ teaching_strategy_2_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>3</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>在學習活動進行中掌握學生的表現</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ teaching_strategy_3 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ teaching_strategy_3_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>4</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>提供正確的回饋或修正，澄清學生錯誤的觀念</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ teaching_strategy_4 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ teaching_strategy_4_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2 text-center">
+  <div class="col-12 col-sm-8">
+    <label class="font-weight-bold">教室經營與管理</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <label class="font-weight-bold">量化結果</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <label class="font-weight-bold">質性描述</label>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>5</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>善用有助於教學的管理步驟與常規</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ classroom_management_1 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ classroom_management_1_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>6</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>能進行適當有序的教學活動，能調整上課速度</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ classroom_management_2 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ classroom_management_2_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>7</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>將重點放在教學目標上並掌握學生的注意力</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ classroom_management_3 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ classroom_management_3_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>8</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>妥善處理學生不當行為</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ classroom_management_4 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ classroom_management_4_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2 text-center">
+  <div class="col-12 col-sm-8">
+    <label class="font-weight-bold">呈現主題</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <label class="font-weight-bold">量化結果</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <label class="font-weight-bold">質性描述</label>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>9</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>循序漸進由簡而繁有組織的呈現教材內容</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ presenting_1 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ presenting_1_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>10</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>運用概念、定義、例證說明</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ presenting_2 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ presenting_2_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>11</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>依據教學需要適切的運用教學媒體</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ presenting_3 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ presenting_3_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>12</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>適切提供練習或作業，引導學生精熟學習</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ presenting_4 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ presenting_4_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2 text-center">
+  <div class="col-12 col-sm-8">
+    <label class="font-weight-bold">學習環境</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <label class="font-weight-bold">量化結果</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <label class="font-weight-bold">質性描述</label>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>13</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>給予學生適當的挑戰</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ learning_environment_1 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ learning_environment_1_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>14</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>教師在教學中表現熱忱、給予學生關切、鼓勵學生表達</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ learning_environment_2 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ learning_environment_2_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>15</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>形成積極參與的學習氣氛、引導合作學習的同儕互動關係</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ learning_environment_3 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ learning_environment_3_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-1 col-sm-2">
+    <label>16</label>
+  </div>
+  <div class="col-11 col-sm-6">
+    <label>建立互信相互尊重的班級氣氛</label>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="number" class="form-control" value="{{ learning_environment_4 }}" disabled>
+  </div>
+  <div class="col-6 col-sm-2">
+    <input type="text" class="form-control" value="{{ learning_environment_4_text }}" disabled>
+  </div>
+</div>
+<hr>
+<div class="row my-2">
+  <div class="col-12">
+    <label>摘記</label>
+  </div>
+  <div class="col-12">
+    <textarea class="form-control box" disabled>{{context}}</textarea>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
