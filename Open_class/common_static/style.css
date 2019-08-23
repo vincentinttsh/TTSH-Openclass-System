@@ -1,1 +1,12 @@
-a,title{font-family:'Noto Sans TC',sans-serif}
+a,title{
+  font-family:'Noto Sans TC',sans-serif ;
+}
+#brand{
+  font-size : 1.5rem;
+}
+.sidenav li > a {
+  font-size: 18px;
+}
+.modal-footer{
+  text-align: center !important;
+}
