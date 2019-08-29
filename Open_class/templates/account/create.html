@@ -1,45 +1,74 @@
-{% extends "base.html" %}
-{% block content%}
-{% if user.is_authenticated  %}
-<form class="form-login" action="" method="post" role="form"> {% csrf_token %}
-  <h2 class="form-login-heading">註冊</h2>
-  {% if error_message %}
-  <div class="alert alert-danger" role="alert">
-    <h2 class="text-center">警告</h2>
-    <h4 class="text-center">{{ error_message }}</h4>
-  </div>
-  {% endif %}
-  <div class="form-group ">
-    <label for="name">姓名</label>
-    <input type="text" class="form-control" name="name" placeholder="輸入姓名" required>
-  </div>
-  <div class="form-group ">
-    <label for="department">部門</label>
-    <select class="form-control" name="department">
-      {% for choice in department_choice %}
-      　<option value="{{ choice }}">{{ choice }}</option>
-      {% endfor %}
-    </select>
-  </div>
-  <div class="form-group ">
-    <label for="subject">科目</label>
-    <select class="form-control" name="subject">
-      {% for choice in subject_choice %}
-      　<option value="{{ choice }}">{{ choice }}</option>
-      {% endfor %}
-    </select>
-  </div>
-  <div class="form-group ">
-    <label for="email">Email</label>
-    <input type="email" readonly class="form-control" name="email" aria-describedby="emailHelp" value="{{ email }}">
-  </div>
-  <input type="hidden" name="rid" value="submit" />
-  <div class="form-login-submit">
-    <button type="submit" class="btn btn-primary " name="submit">註冊</button>
-  </div>
-</form>
-{% else %}
-<h2 class="text-center">警告</h2>
-<h4 class="text-center">你未登入</h4>
-{% endif %}
-{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>公開授課系統</title>
+  {% include 'head_source.html' %}
+</head>
+
+<body class="grey lighten-3">
+  <header>
+    {% include 'nav.html' %}
+  </header>
+  <main class="mt-2 p-3">
+    <div class="container">
+      <form class="border border-black p-5" method="post" role="form">
+        {% csrf_token %}
+        <p class="h4 mb-4 text-center font-weight-bold">註冊</p>
+        {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+          <h2 class="text-center">警告</h2>
+          <h4 class="text-center">{{ error_message }}</h4>
+        </div>
+        {% endif %}
+        <div class="row">
+          <div class="input-field col s12">
+            <i class="fas fa-user prefix"></i>
+            <input type="text" id="name" name="name" class="validate" required>
+            <label for="name">姓名</label>
+          </div>
+          <div class="input-field col s12 m6">
+            <i class="fas fa-chalkboard-teacher prefix"></i>
+            <select id="department" name="department" required>
+              <option disabled selected value="">選擇部門</option>
+              {% for choice in department_choice %}
+              　<option value="{{ choice }}">{{ choice }}</option>
+              {% endfor %}
+            </select>
+            <label>部門</label>
+          </div>
+          <div class="input-field col s12 m6">
+            <i class="fas fa-address-card prefix"></i>
+            <select id="subject" name="subject" required>
+              <option disabled selected>選擇授課科目</option>
+              {% for choice in subject_choice %}
+              　<option value="{{ choice }}">{{ choice }}</option>
+              {% endfor %}
+            </select>
+            <label>授課科目</label>
+          </div>
+          <div class="input-field col s12">
+            <i class="fas fa-envelope prefix"></i>
+            <input type="email" id="email" name="email" value="{{ email }}" readonly>
+            <label for="email">電子信箱</label>
+          </div>
+        </div>
+        <button class="btn btn-info btn-block my-4" type="submit">註冊 <i class="fas fa-paper-plane"></i></button>
+      </form>
+    </div>
+  </main>
+  {% include 'footer.html' %}
+  {% include 'foot_source.html' %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('select');
+      var instances = M.FormSelect.init(elems);
+    });
+  </script>
+</body>
+
+</html>

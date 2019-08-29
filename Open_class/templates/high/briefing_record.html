@@ -1,78 +1,87 @@
-{% extends "base.html" %}
-{% block content%}
-{% if user.is_authenticated  %}
-<form class="form-login" action="" method="post" role="form"> 
-  {% csrf_token %}
-  <h2 class="form-login-heading font-weight-bolder">共同議課紀錄表</h2>
-  {% if message %}
-  <div class="alert alert-danger" role="alert">
-    <h2 class="text-center font-weight-bolder">警告</h2>
-    <h4 class="text-center font-weight-bolder">{{ message }}</h4>
-  </div>
-  {% endif %}
-  <div class="form-group ">
-    <label class="font-weight-bolder">教學者</label>
-    <input type="text" class="form-control" name="teach_teacher" value="{{ user.teacher_name }}" disabled>
-  </div>
-  <div class="form-group ">
-    <label class="font-weight-bolder">觀察者</label>
-    <textarea class="form-control box" name="observer" rows="3" placeholder="觀察者" required></textarea>
-  </div>
-  <div class="form-group ">
-    <label class="font-weight-bolder">議課日期</label>
-    <input type="date" class="form-control" name="briefing_date" required>
-  </div>
-  <div class="form-group ">
-    <label class="font-weight-bolder">議課時間</label>
-    <input type="time" class="form-control" name="briefing_time" value="13:00" required>
-  </div>
-  <div class="form-group ">
-    <label class="font-weight-bolder">一、肯定教學表現：</label>
-    <textarea class="form-control box" name="affirmation_teaching_performance" rows="4" required></textarea>
-  </div>
-  <div class="form-group ">
-    <label class="font-weight-bolder">二、肯定教學表現</label>
-    <textarea class="form-control box" name="guide_discussion_teaching_performance" rows="4" required></textarea>
-  </div>
-  <div class="form-group ">
-    <label class="font-weight-bolder">三、判斷表現程度：</label>
-    <textarea class="form-control box" name="judgment_performance" rows="4" required></textarea>
-  </div>
-  <div class="form-group">
-    <label class="font-weight-bolder">四、改進學生學習能力提供之建議：</label>
-    <textarea class="form-control box" name="suggest" rows="4" required></textarea>
-  </div>
-  <div class="form-group ">
-    <label class="font-weight-bolder">五、協助擬定成長活動：</label>
-    <textarea class="form-control box" name="growth_activity" rows="4" required></textarea>
-  </div>
-  <div class="form-login-submit text-center">
-    <button type="submit" class="btn btn-primary " name="submit" value="submit">提交</button>
-  </div>
-</form>
-<script>
-  var num = 2
-  var min_num = 2
-  function addtable() {
-    var row = document.getElementById("myTable").insertRow(num);
-    num++;
-    row.insertCell(0).innerHTML = "<input type=\"text\" list=\"mode\" class=\"form-control\" name=\"growth_mode_" + String(num - 1) + "\"required>";
-    row.insertCell(1).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"abstract_" + String(num - 1) + "\" required>";
-    row.insertCell(2).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"member_" + String(num - 1) + "\" required>";
-    row.insertCell(3).innerHTML = "<input type=\"date\" class=\"form-control\" name=\"done_date_" + String(num - 1) + "\" required>";
-  }
-  function deltable() {
-    var table = document.getElementById("myTable");
-    if (num - 1 >= min_num) {
-      num--;
-      table.deleteRow(num);
-    } else {
-      alert("最少需有" + (min_num - 1) + "列");
-    }
-  }
-</script>
-{% else %}
-<h2 class="text-center">警告</h2>
-<h4 class="text-center">你未登入</h4>
-{% endif %}
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>公開授課系統</title>
+  {% include 'head_source.html' %}
+</head>
+
+<body class="grey lighten-3">
+  <header>
+    {% include 'nav.html' %}
+  </header>
+  <main class="mt-2 p-3">
+    <form class="border border-black p-5 row container " method="post" role="form">
+      {% csrf_token %}
+      <div class="col center s12">
+        <p class="h4 mb-4 text-center font-weight-bold">共同議課<br class="hide-on-med-and-up">設計表</p>
+      </div>
+      {% if message %}
+      <div class="alert alert-danger center col s12">
+        <h2>警告</h2>
+        <h4>{{ message }}</h4>
+      </div>
+      {% endif %}
+      <div class="input-field col s12 m6">
+        <i class="fas fa-user prefix"></i>
+        <input type="text" id="teach_teacher" name="teach_teacher" value="{{ user.teacher_name }}" disabled>
+        <label for="teach_teacher">教學者</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-user-check prefix"></i>
+        <textarea id="observer" name="observer" class="materialize-textarea" required></textarea>
+        <label for="observer">觀察者</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-calendar-day prefix"></i>
+        <input type="text" class="datepicker" id="briefing_date" name="briefing_date" required>
+        <label for="briefing_date">議課日期</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-clock prefix"></i>
+        <input type="text" class="timepicker" id="briefing_time" name="briefing_time" required>
+        <label for="briefing_time">議課時間</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-check-double prefix"></i>
+        <textarea id="affirmation_teaching_performance" name="affirmation_teaching_performance"
+          class="materialize-textarea" required></textarea>
+        <label for="affirmation_teaching_performance">肯定教學表現</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-users prefix"></i>
+        <textarea id="guide_discussion_teaching_performance" name="guide_discussion_teaching_performance"
+          class="materialize-textarea" required></textarea>
+        <label for="guide_discussion_teaching_performance">引導討論教學表現</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-chalkboard-teacher prefix"></i>
+        <textarea id="judgment_performance" name="judgment_performance" class="materialize-textarea"
+          required></textarea>
+        <label for="judgment_performance">判斷表現程度</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-child prefix"></i>
+        <textarea id="suggest" name="suggest" class="materialize-textarea" required></textarea>
+        <label for="suggest">改進學生學習能力提供之建議</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-clone prefix"></i>
+        <textarea id="growth_activity" name="growth_activity" class="materialize-textarea" required></textarea>
+        <label for="growth_activity">協助擬定成長活動</label>
+      </div>
+      <div class="col center s12">
+        <button class="btn btn-info btn-block my-4" type="submit">提交 <i class="fas fa-paper-plane"></i></button>
+      </div>
+    </form>
+  </main>
+  {% include 'footer.html' %}
+  {% include 'foot_source.html' %}
+  <script src="{% static 'date_and_time.js' %}"></script>
+</body>
+
+</html>

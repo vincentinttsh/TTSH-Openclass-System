@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotFound
 from django.views import View
 import datetime, time
 from .models import Design_table, Design_table_datail, Preparation_record, Observation_record, Briefing_record, Attend_data, High_Class as Class
@@ -40,11 +40,11 @@ class attend(View) :
         if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
             return HttpResponseRedirect('/account/create')
         if request.user.teacher_department == '國中部' :
-            return HttpResponseRedirect('/')
+            return HttpResponseForbidden(content='您為國中部的')
         try:
             the_class = Class.objects.get(pk = no) # 取得課程
         except :
-            return render(request, 'class/attend.html', { 'message': '無此課', })
+            return HttpResponseNotFound(content='無此課')
         now = datetime.datetime.now().time()
         if datetime.date.today() != the_class.teach_date or now < the_class.teach_start_time or now > the_class.teach_end_time :
             return render(request, 'class/attend.html', { 'message': '非授課時間', })
@@ -54,8 +54,8 @@ class attend(View) :
             return render(request, 'class/attend.html', { 'message': '已報到', })
         if password == the_class.attend_data.attend_password :
             the_class.attend_data.attend_number += 1
-            the_class.attend_data.save()
             the_class.attend_data.attend_people.add(request.user)
+            the_class.attend_data.save()
             return render(request, 'class/attend.html', { 'message': '報到成功', })
         else :
             return render(request, 'class/attend.html', { 'message': '密碼錯誤', })
@@ -68,11 +68,9 @@ class myclass(View) :
         if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
             return HttpResponseRedirect('/account/create')
         if request.user.teacher_department == '國中部' :
-            return HttpResponseRedirect('/')
+            return HttpResponseForbidden(content='您為國中部的')
         all_class = list()
-        for x in list(Class.objects.all()) :
-            if x.teach_teacher != request.user : # 不是自己的
-                continue
+        for x in list(Class.objects.filter(teach_teacher = request.user)) :
             datelink = str(x.teach_date).replace('-', '') + 'T' # 轉日期格式 YYYY-MM-DD to YYYYMMDD
             startlink, endlink  = str(x.teach_start_time).replace(':', ''), str(x.teach_end_time).replace(':', '') # 轉時間格式 HH:MM:SS to HHMMSS
             all_class.append({
@@ -96,6 +94,8 @@ class myobservation(View) :
             return HttpResponseRedirect('/account/login')
         if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
             return HttpResponseRedirect('/account/create')
+        if request.user.teacher_department == '國中部' :
+            return HttpResponseForbidden(content='您為國中部的')
         all_class = list()
         for x in list(Class.objects.all()) :
             if request.user not in x.attend_data.attend_people.all() : # 未參加
@@ -120,22 +120,29 @@ class design_table_create(View) :
         try:
             now_class = Class.objects.get(pk = no)# 取得課程
         except :
-            return HttpResponseRedirect('/')
+            return HttpResponseNotFound(content='無此課')
         if now_class.teach_teacher != request.user : # 不是你的
-            return HttpResponseRedirect('/')
+            return HttpResponseForbidden(content='不是您的課')
         if Design_table.objects.filter(the_class = now_class).count() > 0 :
             return HttpResponseRedirect('/class/high/design/view/'+str(no))
         return render(request, 'high/design_table.html')
     def post(self, request, no) :
+        try:
+            now_class = Class.objects.get(pk = no)# 取得課程
+        except :
+            return HttpResponseNotFound(content='無此課')
+        if now_class.teach_teacher != request.user : # 不是你的
+            return HttpResponseForbidden(content='不是您的課')
+        if Design_table.objects.filter(the_class = now_class).count() > 0 :
+            return HttpResponseForbidden(content='已填寫')
         for x in request.POST:  # 有空
             if x == '':
                 return render(request, 'high/design_table.html', { 'message': '未填寫完成' })
         try:
-            now_class = Class.objects.get(pk = no)# 取得課程
             start_time = datetime.datetime.strptime(request.POST['start_time'], '%H:%M')  # 轉時間格式
             end_time = datetime.datetime.strptime(request.POST['end_time'], '%H:%M')  # 轉時間格式
             if start_time >= end_time:  # 起始時間大於結束時間
-                return render(request, 'class/design_table.html', {'message': '時間錯誤' })
+                return render(request, 'high/design_table.html', {'message': '時間錯誤' })
             now_table = Design_table(class_name = request.POST['class_name'], teach_teacher = request.user.teacher_name, teach_class = request.POST['teach_class'],
                 source_of_teaching_material = request.POST['teaching_material'], teach_date = request.POST['date'], teach_start_time = request.POST['start_time'],
                 teach_end_time = request.POST['end_time'], background_analysis = request.POST['background_analysis'], teaching_method = request.POST['big_teaching_method'],
@@ -150,7 +157,7 @@ class design_table_create(View) :
                     time_allocation = request.POST['time_allocation_' + str(y)], the_design = now_table).save()
                 x, y = 'teaching_objectives_' + str(y + 1), y + 1
         except :
-            return render(request, 'high/design_table.html', { 'message': '新增錯誤', })
+            return render(request, 'high/design_table.html', { 'message': '新增錯誤'})
         return render(request, 'high/success.html')
 
 class preparation_create(View) :
@@ -162,22 +169,29 @@ class preparation_create(View) :
         try:
             now_class = Class.objects.get(pk = no)# 取得課程
         except :
-            return HttpResponseRedirect('/')
+            return HttpResponseNotFound(content='無此課')
         if now_class.teach_teacher != request.user : # 不是你的
-                return HttpResponseRedirect('/')
+            return HttpResponseForbidden(content='不是您的課')
         if Preparation_record.objects.filter(the_class = now_class).count() > 0 :
             return HttpResponseRedirect('/class/high/preparation/view/'+str(no))
         return render(request, 'high/preparation_record.html')
     def post(self, request, no) :
+        try:
+            now_class = Class.objects.get(pk = no)# 取得課程
+        except :
+            return HttpResponseNotFound(content='無此課')
+        if now_class.teach_teacher != request.user : # 不是你的
+            return HttpResponseForbidden(content='不是您的課')
+        if Preparation_record.objects.filter(the_class = now_class).count() > 0 :
+            return HttpResponseForbidden(content='已填寫')
         for x in request.POST:  # 有空
             if x == '':
                 return render(request, 'high/preparation_record.html', { 'message': '未填寫完成' })
         try:
-            now_class = Class.objects.get(pk = no)# 取得課程
             start_time = datetime.datetime.strptime(request.POST['start_time'], '%H:%M')  # 轉時間格式
             end_time = datetime.datetime.strptime(request.POST['end_time'], '%H:%M')  # 轉時間格式
             if start_time >= end_time:  # 起始時間大於結束時間
-                return render(request, 'high/preparation_record.html', { 'error_message': '時間錯誤' })
+                return render(request, 'high/preparation_record.html', { 'message': '時間錯誤' })
             Preparation_record(subject = request.POST['subject'], author = request.user.teacher_name, teach_date = request.POST['date'], teach_start_time = start_time, 
                 teach_end_time = end_time, teaching_grade = request.POST['teaching_grade'], class_name = request.POST['class_name'], 
                 teach_teacher = request.user.teacher_name, source_of_teaching_material = request.POST['teaching_material'],
@@ -197,18 +211,25 @@ class observation_create(View) :
         try:
             now_class = Class.objects.get(pk = no)# 取得課程
         except :
-            return HttpResponseRedirect('/')
+            return HttpResponseNotFound(content='無此課')
         if request.user not in now_class.attend_data.attend_people.all() : # 未參加
-            return HttpResponseRedirect('/')
+            return HttpResponseForbidden(content='未參加')
         if Observation_record.objects.filter(the_class = now_class, author = request.user).count() > 0 :
-            return HttpResponseRedirect('/class/high/observation/one/view/'+str(no))
+            return HttpResponseRedirect('/class/high/observation/one/view/'+str(Observation_record.objects.get(the_class = now_class, author = request.user).id))
         return render(request, 'high/observation_record.html')
     def post(self, request, no) :
+        try:
+            now_class = Class.objects.get(pk = no)# 取得課程
+        except :
+            return HttpResponseNotFound(content='無此課')
+        if request.user not in now_class.attend_data.attend_people.all() : # 未參加
+            return HttpResponseForbidden(content='未參加')
+        if Observation_record.objects.filter(the_class = now_class, author = request.user).count() > 0 :
+            return HttpResponseForbidden(content='已填寫')
         for x in request.POST:  # 有空
             if x == '':
                 return render(request, 'high/observation_record.html', { 'message': '未填寫完成' })
         try:
-            now_class = Class.objects.get(pk = no)# 取得課程
             Observation_record(author = request.user, observation_date = request.POST['observation_date'], teach_teacher = request.POST['teach_teacher'], 
                 subject = request.POST['subject'], class_name = request.POST['class_name'], learning_atmosphere = request.POST['learning_atmosphere'],
                 learning_process = request.POST['learning_process'], learning_result = request.POST['learning_result'], 
@@ -226,13 +247,21 @@ class briefing_create(View) :
         try:
             now_class = Class.objects.get(pk = no)# 取得課程
         except :
-            return HttpResponseRedirect('/')
+            return HttpResponseNotFound(content='無此課')
         if now_class.teach_teacher!= request.user : # 不是你的
-            return HttpResponseRedirect('/')
+            return HttpResponseForbidden(content='不是您的課')
         if Briefing_record.objects.filter(the_class = now_class).count() > 0 :
             return HttpResponseRedirect('/class/high/briefing/view/'+str(no))
         return render(request, 'high/briefing_record.html')
     def post(self, request, no) :
+        try:
+            now_class = Class.objects.get(pk = no)# 取得課程
+        except :
+            return HttpResponseNotFound(content='無此課')
+        if now_class.teach_teacher!= request.user : # 不是你的
+            return HttpResponseForbidden(content='不是您的課')
+        if Briefing_record.objects.filter(the_class = now_class).count() > 0 :
+            return HttpResponseForbidden(content='已填寫')
         for x in request.POST:  # 有空
             if x == '':
                 return render(request, 'high/briefing_record.html', { 'message': '未填寫完成' })
@@ -257,9 +286,9 @@ class observation_all_view(View) :
         try:
             now_class = Class.objects.get(pk = no)# 取得課程
         except :
-            return render(request, 'high/observation_record_all.html', { 'message': '錯誤' })
+            return HttpResponseNotFound(content='無此課')
         if now_class.teach_teacher!= request.user and request.user.power == False : # 沒權限
-            return HttpResponseRedirect('/')
+            return HttpResponseForbidden(content='沒權限')
         for x in now_class.attend_data.attend_people.all() :
             if Observation_record.objects.filter(the_class = now_class, author = x).count() > 0 :
                 people.append({
@@ -281,9 +310,9 @@ class observation_one_view(View) :
         try:
             now_record = Observation_record.objects.get(pk = no)
         except :
-            return render(request, 'high/observation_record_detail.html', { 'message': '錯誤' })
+            return HttpResponseNotFound(content='錯誤')
         if now_record.the_class.teach_teacher != request.user and now_record.author != request.user and request.user.power == False :  # 沒權限
-            return HttpResponseRedirect('/')
+            return HttpResponseForbidden(content='沒權限')
         return render(request, 'high/observation_record_detail.html',{
             'author' : now_record.author,
             'observation_date' : now_record.observation_date,
@@ -301,45 +330,45 @@ class briefing_view(View) :
         if request.user.is_authenticated == False:  #未登入
             return HttpResponseRedirect('/account/login')
         if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/account/create')
         try:
             now_class = Class.objects.get(pk = no)# 取得課程
         except :
-            return HttpResponseRedirect('/')
+            return HttpResponseNotFound(content='無此課')
         if now_class.teach_teacher != request.user and request.user.power == False : # 沒權限
-            return HttpResponseRedirect('/')
+            return HttpResponseForbidden(content='沒權限')
         if Briefing_record.objects.filter(the_class = now_class).count() > 0 : #取得議課紀錄表
             now_record = Briefing_record.objects.get(the_class = now_class)
-            return render(request, 'high/briefing_record_detail.html',{
-                'observer' : now_record.observer,
-                'teach_teacher' : now_record.teach_teacher,
-                'briefing_date' : now_record.briefing_date,
-                'briefing_time' : now_record.briefing_time, 
-                'affirmation_teaching_performance' : now_record.affirmation_teaching_performance,
-                'guide_discussion_teaching_performance' : now_record.guide_discussion_teaching_performance, 
-                'judgment_performance' : now_record.judgment_performance, 
-                'suggest' : now_record.suggest, 
-                'growth_activity' : now_record.growth_activity
-            })
         else :
-            return render(request, 'high/observation_record_detail.html', { 'message': '錯誤' })
+            return HttpResponseNotFound(content='錯誤')
+        return render(request, 'high/briefing_record_detail.html',{
+            'observer' : now_record.observer,
+            'teach_teacher' : now_record.teach_teacher,
+            'briefing_date' : now_record.briefing_date,
+            'briefing_time' : now_record.briefing_time, 
+            'affirmation_teaching_performance' : now_record.affirmation_teaching_performance,
+            'guide_discussion_teaching_performance' : now_record.guide_discussion_teaching_performance, 
+            'judgment_performance' : now_record.judgment_performance, 
+            'suggest' : now_record.suggest, 
+            'growth_activity' : now_record.growth_activity
+        })
 
 class preparation_view(View) :
     def get(self, request, no) :
         if request.user.is_authenticated == False:  #未登入
             return HttpResponseRedirect('/account/login')
         if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/account/create')
         try:
             now_class = Class.objects.get(pk = no)# 取得課程
         except :
-            return HttpResponseRedirect('/')
+            return HttpResponseNotFound(content='無此課')
         if Preparation_record.objects.filter(the_class = now_class).count() > 0 : #取得備課記錄表
             now_record = Preparation_record.objects.get(the_class = now_class)
         else :
-            return render(request, 'high/observation_record_detail.html', { 'message': '錯誤' })
+            return HttpResponseNotFound(content='錯誤')
         if now_record.the_class.teach_teacher != request.user and request.user not in now_record.the_class.attend_data.attend_people.all() and request.user.power == False : # 沒權限
-            return HttpResponseRedirect('/')
+            return HttpResponseForbidden(content='沒權限')
         return render(request, 'high/preparation_record_detail.html',{
                 'subject' : now_record.subject,
                 'author' : now_record.author,
@@ -362,17 +391,17 @@ class design_table_view(View) :
         if request.user.is_authenticated == False:  #未登入
             return HttpResponseRedirect('/account/login')
         if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/account/create')
         try:
             now_class = Class.objects.get(pk = no)# 取得課程
         except :
-            return HttpResponseRedirect('/')
+            return HttpResponseNotFound(content='無此課')
         if Design_table.objects.filter(the_class = now_class).count() > 0 : #取得教學活動設計表
             now_table = Design_table.objects.get(the_class = now_class)
         else :
-            return render(request, 'high/observation_record_detail.html', { 'message': '錯誤' })
+            return HttpResponseNotFound(content='錯誤')
         if now_table.the_class.teach_teacher != request.user and request.user not in now_table.the_class.attend_data.attend_people.all() and request.user.power == False : # 沒權限
-            return HttpResponseRedirect('/')
+            return HttpResponseForbidden(content='沒權限')
         return render(request, 'high/design_table_detail.html',{
                 'class_name' : now_table.class_name ,
                 'teach_teacher' : now_table.teach_teacher,
@@ -397,7 +426,7 @@ class admin(View):
         if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
             return HttpResponseRedirect('/account/create')
         if request.user.power == False : # 沒權限
-            return HttpResponseRedirect('/')
+            return HttpResponseForbidden(content='沒權限')
         all_class = list()
         if datetime.date.today().month >= 2 and datetime.date.today().month <= 7 :
             start_date, end_date = datetime.date(datetime.date.today().year, 2, 1), datetime.date(datetime.date.today().year, 7, 31)
@@ -438,11 +467,11 @@ class check(View) :
         if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
             return HttpResponseRedirect('/account/create')
         if request.user.power == False : # 沒權限
-            return HttpResponseRedirect('/')
+            return HttpResponseForbidden(content='沒權限')
         try:
             now_class = Class.objects.get(pk = no)# 取得課程
         except :
-            return HttpResponseRedirect('/')
+            return HttpResponseNotFound(content='無此課')
         record, people = dict(), list()
         if Design_table.objects.filter(the_class = now_class).count() > 0 :
             record['design'] = '/class/high/design/view/' + str(no)
@@ -462,12 +491,14 @@ class check(View) :
                 })
         return render(request, 'class/check.html',{ 'class' : record, 'people' : people, 'link' : now_class.teaching_photo })
     def post(self, request, no) :
-        if request.POST['link'] == '' :
-            return render(request, 'class/check.html', { 'message': '未填寫' })
+        if request.user.power == False : # 沒權限
+            return HttpResponseForbidden(content='沒權限')
         try:
             now_class = Class.objects.get(pk = no)# 取得課程
         except :
-            return HttpResponseRedirect('/')
+            return HttpResponseNotFound(content='無此課')
+        if request.POST['link'] == '' :
+            return render(request, 'class/check.html', { 'message': '未填寫' })
         try:
             now_class.teaching_photo = request.POST['link']
             now_class.save()

@@ -1,0 +1,2 @@
+/* 公開觀課系統 custom styles */
+a,button,h1,h2,h3,h4,h5,h6,input,label,p,select,span,td,textarea,th,title{font-family:'Noto Sans TC',sans-serif!important}#brand{font-size:1.5rem}.sidenav li>a{font-size:18px}.modal-footer{text-align:center!important}.tabs .tab a.active,.tabs .tab a:hover{background-color:transparent;color:#26a69a}.tabs .indicator{position:absolute;bottom:0;height:2px;background-color:#26a69a;will-change:left,right}.tabs-content.carousel.carousel-slider .carousel-item.active{position:relative}

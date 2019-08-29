@@ -1,132 +1,110 @@
-{% extends "base.html" %}
-{% block content%}
+<!DOCTYPE html>
+<html lang="en">
 {% load static %}
-<div class="row my-2 text-center">
-  <div class="col-3 col-sm">
-    <label class="font-weight-bold">部門</label>
-  </div>
-  <div class="col-5 col-sm">
-    <label class="font-weight-bold">課程名稱</label>
-  </div>
-  <div class="col-4 col-sm">
-    <label class="font-weight-bold">教室</label>
-  </div>
-  <div class="col-6 col-sm-2">
-    <label class="font-weight-bold">日期</label>
-  </div>
-  <div class="col-3 col-sm">
-    <label class="font-weight-bold">開始時間</label>
-  </div>
-  <div class="col-3 col-sm">
-    <label class="font-weight-bold">結束時間</label>
-  </div>
-  <div class="col-3 col-sm">
-    <label class="font-weight-bold">授課老師</label>
-  </div>
-  <div class="col-3 col-sm">
-    <label class="font-weight-bold">參加人數</label>
-  </div>
-  <div class="col-3 col-sm">
-    <label class="font-weight-bold">詳情</label>
-  </div>
-  <div class="col-3 col-sm">
-    <label class="font-weight-bold">calendar</label>
-  </div>
-</div>
-{% for class in all_class %}
-<hr>
-<div class="row my-2 text-center">
-  <div class="col-3 col-sm">
-    <span>{{ class.department }}</span>
-  </div>
-  <div class="col-5 col-sm">
-    <span>{{ class.subject }}</span>
-  </div>
-  <div class="col-4 col-sm">
-    <span>{{ class.classroom }}</span>
-  </div>
-  <div class="col-6 col-sm-2">
-    <span>{{ class.date }}</span>
-  </div>
-  <div class="col-3 col-sm">
-    <span>{{ class.start_time }}</span>
-  </div>
-  <div class="col-3 col-sm">
-    <span>{{ class.end_time }}</span>
-  </div>
-  <div class="col-3 col-sm">
-    <span>{{ class.teacher }}</span>
-  </div>
-  <div class="col-3 col-sm">
-    <span>{{ class.attend_number }}</span>
-  </div>
-  <div class="col-3 col-sm">
-    <span>
-      <a data-toggle="collapse" href="#collapsedata{{ forloop.counter }}" aria-expanded="false"
-        aria-controls="collapseExample">
-        詳情
-      </a>
-    </span>
-  </div>
-  <div class="col-3 col-sm">
-    <span><a href="{{ class.link }}" target="_blank">新增</a></span>
-  </div>
-</div>
-<div class="collapse" id="collapsedata{{ forloop.counter }}">
-  <hr>
-  <div class="row my-2 text-center">
-    <div class="col-2">
-      <label class="font-weight-bold">報到QR CODE</label>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>公開授課系統</title>
+  {% include 'head_source.html' %}
+</head>
+
+<body class="grey lighten-3">
+  <header>
+    {% include 'nav.html' %}
+  </header>
+  <main class="mt-2 p-3">
+    <div class="container ">
+      <div class="row">
+        <div class="col s12 center">
+          <h4 class="font-weight-bold">所有的公開授課</h4>
+          <hr>
+        </div>
+        <div class="input-field col s12 m6 offset-m3">
+          <i class="fas fa-search prefix"></i>
+          <input type="text" id="searchtarget" name="searchtarget" onchange="searchstory()">
+          <label for="searchtarget">搜尋課程</label>
+        </div>
+      </div>
+      <ul class="collapsible expandable">
+        {% for class in all_class %}
+        <li class="class_list">
+          <div class="collapsible-header" style="font-family:'Noto Sans TC',sans-serif ;">
+            {{ class.department }}-{{ class.date }}-{{ class.teacher }}-{{ class.subject }}
+            <i class="fas fa-caret-down"></i>
+          </div>
+          <div class="collapsible-body row p-3">
+            <div class="col s12 m4 center">
+              <span><i class="fas fa-school"></i> 教室 : {{ class.classroom }}</span>
+            </div>
+            <div class="col s12 hide-on-med-and-up">
+              <hr>
+            </div>
+            <div class="col s12 m4 center">
+              <span><i class="fas fa-users"></i> 參加人數 : {{ class.attend_number }}人</span>
+            </div>
+            <div class="col s12 hide-on-med-and-up">
+              <hr>
+            </div>
+            <div class="col s12 m4 center">
+              <span><i class="fas fa-clock"></i> 時間 : {{ class.start_time }} ~ {{ class.end_time }}</span>
+            </div>
+            <div class="col s12">
+              <hr>
+            </div>
+            <div class="col s6 m4 center">
+              <a class="black-text" href="{{ class.attend_qr }}" target="_blank">
+                <i class="fas fa-qrcode"></i> 報到<br class="hide-on-med-and-up">QR code
+              </a>
+            </div>
+            <div class="col s6 m4 center">
+              <a class="black-text" href="{{ class.link }}" target="_blank"><i class="fas fa-calendar-day"></i> 新增<br
+                  class="hide-on-med-and-up">行事曆</a>
+            </div>
+            <div class="col s12 hide-on-med-and-up">
+              <hr>
+            </div>
+            <div class="col s12 m4 center">
+              <a class="black-text" href="{{ class.check }}"><i class="fas fa-clipboard-check"></i> 審核</a>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
     </div>
-    <div class="col-2">
-      <label class="font-weight-bold">活動設計表</label>
-    </div>
-    <div class="col-2">
-      <label class="font-weight-bold">備課記錄表</label>
-    </div>
-    <div class="col-2">
-      <label class="font-weight-bold">議課紀錄表</label>
-    </div>
-    <div class="col-2">
-      <label class="font-weight-bold">觀課紀錄表</label>
-    </div>
-    <div class="col-2">
-      <label class="font-weight-bold">審核</label>
-    </div>
-  </div>
-  <hr>
-  <div class="row my-2 text-center">
-    <div class="col-2">
-      <span><a href="{{ class.attend_qr }}" target="_blank"> 報到QR CODE </a></span>
-    </div>
-    <div class="col-2">
-      {% if class.design %}
-      <span><a href="{{ class.design }}"><img src="{% static 'check.png' %}" height="32"></a></span>
-      {% else %}
-      <span><img src="{% static 'error.png' %}" height="30"></span>
-      {% endif %}
-    </div>
-    <div class="col-2">
-      {% if class.preparation %}
-      <span><a href="{{ class.preparation }}"><img src="{% static 'check.png' %}" height="32"></a></span>
-      {% else %}
-      <span><img src="{% static 'error.png' %}" height="30"></span>
-      {% endif %}
-    </div>
-    <div class="col-2">
-      {% if class.briefing %}
-      <span><a href="{{ class.briefing }}"><img src="{% static 'check.png' %}" height="32"></a></span>
-      {% else %}
-      <span><img src="{% static 'error.png' %}" height="30"></span>
-      {% endif %}
-    </div>
-    <div class="col-2">
-      <span><a href="{{ class.observation }}">觀課紀錄表</a></span>
-    </div>
-    <div class="col-2">
-      <span><a href="{{ class.check }}">審核</a></span>
-    </div>
-  </div>
-</div>
-{% endfor %}
-{% endblock %}
+  </main>
+  {% include 'footer.html' %}
+  {% include 'foot_source.html' %}
+  <!-- search js -->
+  <script>
+    function searchstory() {
+      var allclass = document.getElementsByClassName("class_list");
+      var target = document.getElementById("searchtarget").value;
+      var len = allclass.length;
+      for (var i = 0; i < len; i++) {
+        if (allclass[i].children[0].innerText.includes(target) || allclass[i].children[1].innerText.includes(target)) {
+          allclass[i].style.display = "";
+        } else {
+          allclass[i].style.display = "none";
+        }
+      }
+    }
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.collapsible');
+      var instances = M.Collapsible.init(elems, {
+        accordion: false,
+        onOpenEnd: function (el) {
+          $(el).find("i.fa-caret-down").removeClass('fa-caret-down').addClass('fa-caret-up');
+        },
+        onCloseEnd: function (el) {
+          $(el).find("i.fa-caret-up").removeClass('fa-caret-up').addClass('fa-caret-down');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

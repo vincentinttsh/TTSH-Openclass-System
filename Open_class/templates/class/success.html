@@ -1,7 +1,28 @@
-{% extends "base.html" %}
-{% block content%}
-<div class="alert alert-success" role="alert">
-    <h2 class="text-center">通知</h2>
-    <h4 class="text-center">成功</h4>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>公開授課系統</title>
+  {% include 'head_source.html' %}
+</head>
+
+<body class="grey lighten-3">
+  <header>
+    {% include 'nav.html' %}
+  </header>
+  <main class="mt-2 p-3">
+    <div class="container">
+      <div class="alert alert-success center">
+        <h2>通知</h2>
+        <h4>成功</h4>
+      </div>
+    </div>
+  </main>
+  {% include 'footer.html' %}
+  {% include 'foot_source.html' %}
+</body>
+
+</html>

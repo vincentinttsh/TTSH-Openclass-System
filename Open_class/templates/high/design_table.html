@@ -1,124 +1,214 @@
-{% extends "base.html" %}
-{% block content%}
-{% if user.is_authenticated  %}
-<form method="post" role="form"> 
-  {% csrf_token %}
-  <h2 class="font-weight-bolder">課程教學活動設計表</h2>
-  {% if message %}
-  <div class="alert alert-danger" role="alert">
-    <h2 class="text-center font-weight-bolder">警告</h2>
-    <h4 class="text-center font-weight-bolder">{{ message }}</h4>
-  </div>
-  {% endif %}
-  <div class="form-group ">
-    <label class="font-weight-bolder">單元名稱</label>
-    <input type="text" class="form-control" name="class_name" placeholder="輸入單元名稱" required>
-  </div>
-  <div class="form-group ">
-    <label class="font-weight-bolder">授課教師</label>
-    <input type="text" class="form-control" name="teacher" value="{{ user.teacher_name }}" disabled>
-  </div>
-  <div class="form-group ">
-    <label class="font-weight-bolder">教材來源</label>
-    <input type="text" class="form-control" name="teaching_material" placeholder="輸入教材來源" required>
-  </div>
-  <div class="form-group ">
-    <label class="font-weight-bolder">授課班級</label>
-    <input type="text" class="form-control" name="teach_class" placeholder="輸入授課班級" required>
-  </div>
-  <div class="form-group ">
-    <label class="font-weight-bolder">教學日期</label>
-    <input type="date" class="form-control" name="date" required>
-  </div>
-  <div class="form-group ">
-    <label class="font-weight-bolder">教學開始時間</label>
-    <input type="time" class="form-control" name="start_time" value="13:00" required>
-  </div>
-  <div class="form-group ">
-    <label class="font-weight-bolder">教學結束時間</label>
-    <input type="time" class="form-control" name="end_time" value="14:00" required>
-  </div>
-  <div class="form-group">
-    <label class="font-weight-bolder">教學目標</label>
-    <textarea class="form-control box" name="big_teaching_objectives" rows="6" required></textarea>
-  </div>
-  <div class="form-group">
-    <label class="font-weight-bolder">學生學習背景分析</label>
-    <textarea class="form-control box" name="background_analysis" rows="6" required></textarea>
-  </div>
-  <div class="form-group">
-    <label class="font-weight-bolder">教學方法</label>
-    <textarea class="form-control box" name="big_teaching_method" rows="6" required></textarea>
-  </div>
-  <div class="form-group">
-    <label class="font-weight-bolder">教學資源</label>
-    <textarea class="form-control box" name="teaching_resources" rows="6" required></textarea>
-  </div>
-  <div class="form-group">
-    <label class="font-weight-bolder">參考資料</label>
-    <textarea class="form-control box" name="reference_material" rows="6" required></textarea>
-  </div>
-  <div class="form-group">
-    <table id="myTable" class="table table-hover">
-      <thead>
-        <tr>
-          <th rowspan="2" class="text-center align-middle">教學目標</th>
-          <th colspan="2" class="text-center">教學活動</th>
-          <th rowspan="2" class="text-center align-middle">使用教具</th>
-          <th rowspan="2" class="text-center align-middle">評量方式</th>
-          <th rowspan="2" class="text-center align-middle">教學方法</th>
-          <th rowspan="2" class="text-center align-middle">時間分配</th>
-        </tr>
-        <tr>
-          <th class="text-center">教師活動</th>
-          <th class="text-center">學生活動</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><input type="text" class="form-control" name="teaching_objectives_1" placeholder="輸入教學目標" required></td>
-          <td><input type="text" class="form-control" name="teacher_activity_1" placeholder="輸入教師活動" required></td>
-          <td><input type="text" class="form-control" name="student_activities_1" placeholder="輸入學生活動" required></td>
-          <td><input type="text" class="form-control" name="teaching_aid_1" placeholder="輸入使用教具" required></td>
-          <td><input type="text" class="form-control" name="assessment_method_1" placeholder="輸入評量方式" required></td>
-          <td><input type="text" class="form-control" name="teaching_method_1" placeholder="輸入教學方法" required></td>
-          <td><input type="text" class="form-control" name="time_allocation_1" placeholder="輸入時間分配" required></td>
-        </tr>
-      </tbody>
-    </table>
-    <input type="button" class="btn btn-success" onclick="addtable()" value="新增一行">
-    <input type="button" class="btn btn-danger" onclick="deltable()" value="刪除一行">
-  </div>
-  <div class="form-login-submit text-center">
-    <button type="submit" class="btn btn-primary " name="submit" value="submit">提交</button>
-  </div>
-</form>
-<script>
-  var num = 3
-  var min_num = 3
-  function addtable() {
-    var row = document.getElementById("myTable").insertRow(num);
-    num++;
-    row.insertCell(0).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"teaching_objectives_" + String(num - 2) +"\" placeholder=\"輸入教學目標\" required>";
-    row.insertCell(1).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"teacher_activity_" + String(num - 2) +"\" placeholder=\"輸入教師活動\" required>";
-    row.insertCell(2).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"student_activities_" + String(num - 2) +"\" placeholder=\"輸入學生活動\" required>";
-    row.insertCell(3).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"teaching_aid_" + String(num - 2) +"\" placeholder=\"輸入使用教具\" required>";
-    row.insertCell(4).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"assessment_method_" + String(num - 2) +"\" placeholder=\"輸入評量方式\" required>";
-    row.insertCell(3).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"teaching_method_" + String(num - 2) +"\" placeholder=\"輸入教學方法\" required>";
-    row.insertCell(4).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"time_allocation_" + String(num - 2) +"\" placeholder=\"輸入時間分配\" required>";
-  }
-  function deltable() {
-    var table = document.getElementById("myTable");
-    if (num - 1 >= min_num) {
-      num--;
-      table.deleteRow(num);
-    } else {
-      alert("最少需有" + (min_num - 2) + "列");
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>公開授課系統</title>
+  {% include 'head_source.html' %}
+</head>
+
+<body class="grey lighten-3">
+  <header>
+    {% include 'nav.html' %}
+  </header>
+  <main class="mt-2 p-3">
+    <form class="border border-black p-5 row container " method="post" role="form">
+      {% csrf_token %}
+      <div class="col center s12">
+        <p class="h4 mb-4 text-center font-weight-bold">課程教學活動<br class="hide-on-med-and-up">設計表</p>
+      </div>
+      {% if message %}
+      <div class="alert alert-danger center col s12">
+        <h2>警告</h2>
+        <h4>{{ message }}</h4>
+      </div>
+      {% endif %}
+      <div class="input-field col s12 m6">
+        <i class="fas fa-book prefix"></i>
+        <input type="text" id="class_name" name="class_name" required>
+        <label for="class_name">單元名稱</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-user prefix"></i>
+        <input type="text" id="teacher" name="teacher" value="{{ user.teacher_name }}" disabled>
+        <label for="teacher">授課教師</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-project-diagram prefix"></i>
+        <input type="text" id="teaching_material" name="teaching_material" required>
+        <label for="teaching_material">教材來源</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-book-reader prefix"></i>
+        <input type="text" id="teach_class" name="teach_class" required>
+        <label for="teach_class">授課班級</label>
+      </div>
+      <div class="input-field col s12 m4">
+        <i class="fas fa-calendar-day prefix"></i>
+        <input type="text" class="datepicker" id="date" name="date" required>
+        <label for="date">教學日期</label>
+      </div>
+      <div class="input-field col s12 m4">
+        <i class="fas fa-clock prefix"></i>
+        <input type="text" class="timepicker" id="start_time" name="start_time" required>
+        <label for="start_time">教學開始時間</label>
+      </div>
+      <div class="input-field col s12 m4">
+        <i class="fas fa-clock prefix"></i>
+        <input type="text" class="timepicker" id="end_time" name="end_time" required>
+        <label for="end_time">教學結束時間</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-bullseye prefix"></i>
+        <textarea id="big_teaching_objectives" name="big_teaching_objectives" class="materialize-textarea"
+          required></textarea>
+        <label for="big_teaching_objectives">教學目標</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-user-check prefix"></i>
+        <textarea id="background_analysis" name="background_analysis" class="materialize-textarea" required></textarea>
+        <label for="background_analysis">學生學習背景分析</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-chalkboard-teacher prefix"></i>
+        <textarea id="big_teaching_method" name="big_teaching_method" class="materialize-textarea" required></textarea>
+        <label for="big_teaching_method">教學方法</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-book prefix"></i>
+        <textarea id="teaching_resources" name="teaching_resources" class="materialize-textarea" required></textarea>
+        <label for="teaching_resources">教學資源</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-clone prefix"></i>
+        <textarea id="reference_material" name="reference_material" class="materialize-textarea" required></textarea>
+        <label for="reference_material">參考資料</label>
+      </div>
+      <div class="col s12">
+        <h5 class="center">詳細流程</h5>
+        <ul id="detail_bar" class="tabs">
+          <li id="1" class="tab col s1 m1"><a href="#part_1" class="active">1</a></li>
+        </ul>
+      </div>
+      <div id="part_1" class="col s12">
+        <div class="input-field col s12">
+          <i class="fas fa-bullseye prefix"></i>
+          <textarea id="teaching_objectives_1" name="teaching_objectives_1" class="materialize-textarea"
+            required></textarea>
+          <label for="teaching_objectives_1">教學目標</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fab fa-teamspeak prefix"></i>
+          <textarea id="teacher_activity_1" name="teacher_activity_1" class="materialize-textarea" required></textarea>
+          <label for="teacher_activity_1">教師活動</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-child prefix"></i>
+          <textarea id="student_activities_1" name="student_activities_1" class="materialize-textarea"
+            required></textarea>
+          <label for="student_activities_1">學生活動</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-chalkboard prefix"></i>
+          <textarea id="teaching_aid_1" name="teaching_aid_1" class="materialize-textarea" required></textarea>
+          <label for="teaching_aid_1">使用教具</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-user-check prefix"></i>
+          <textarea id="assessment_method_1" name="assessment_method_1" class="materialize-textarea"
+            required></textarea>
+          <label for="assessment_method_1">評量方式</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-chalkboard-teacher prefix"></i>
+          <textarea id="teaching_method_1" name="teaching_method_1" class="materialize-textarea" required></textarea>
+          <label for="teaching_method_1">教學方法</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-clock prefix"></i>
+          <textarea id="time_allocation_1" name="time_allocation_1" class="materialize-textarea" required></textarea>
+          <label for="time_allocation_1">時間分配</label>
+        </div>
+      </div>
+      <div class="col center s6">
+        <button class="btn btn-info btn-block mb-4" type="button" onclick="addone()">
+          增加 <i class="fas fa-plus"></i></button>
+      </div>
+      <div class="col center s6">
+        <button class="btn btn-info btn-block mb-4 red" type="button" onclick="delteone()">
+          減少 <i class="fas fa-minus"></i></button>
+      </div>
+      <div class="col center s12">
+        <button class="btn btn-info btn-block my-4" type="submit">提交 <i class="fas fa-paper-plane"></i></button>
+      </div>
+    </form>
+  </main>
+  {% include 'footer.html' %}
+  {% include 'foot_source.html' %}
+  <script src="{% static 'date_and_time.js' %}"></script>
+  <script src="{% static 'tabs.js' %}"></script>
+  <script>
+    var num = 1;
+    var min_num = 1;
+    function addone() {
+      num = num + 1;
+      var context = "\
+      <div id=\"part_" + String(num) + "\" class=\"col s12\" style=\" display : none;\">\
+        <div class=\"input-field col s12\">\
+          <i class=\"fas fa-bullseye prefix\"></i>\
+          <textarea id=\"teaching_objectives_"+ String(num) +"\" name=\"teaching_objectives_"+ String(num) +"\" class=\"materialize-textarea\" required></textarea>\
+          <label for=\"teaching_objectives_"+ String(num) +"\">教學目標</label>\
+        </div>\
+        <div class=\"input-field col s12\">\
+          <i class=\"fab fa-teamspeak prefix\"></i>\
+          <textarea id=\"teacher_activity_"+ String(num) +"\" name=\"teacher_activity_"+ String(num) +"\" class=\"materialize-textarea\" required></textarea>\
+          <label for=\"teacher_activity_"+ String(num) +"\">教師活動</label>\
+        </div>\
+        <div class=\"input-field col s12\">\
+          <i class=\"fas fa-child prefix\"></i>\
+          <textarea id=\"student_activities_"+ String(num) +"\" name=\"student_activities_"+ String(num) +"\" class=\"materialize-textarea\" required></textarea>\
+          <label for=\"student_activities_"+ String(num) +"\">學生活動</label>\
+        </div>\
+        <div class=\"input-field col s12\">\
+          <i class=\"fas fa-chalkboard prefix\"></i>\
+          <textarea id=\"teaching_aid_"+ String(num) +"\" name=\"teaching_aid_"+ String(num) +"\" class=\"materialize-textarea\" required></textarea>\
+          <label for=\"teaching_aid_"+ String(num) +"\">使用教具</label>\
+        </div>\
+        <div class=\"input-field col s12\">\
+          <i class=\"fas fa-user-check prefix\"></i>\
+          <textarea id=\"assessment_method_"+ String(num) +"\" name=\"assessment_method_"+ String(num) +"\" class=\"materialize-textarea\" required></textarea>\
+          <label for=\"assessment_method_"+ String(num) +"\">評量方式</label>\
+        </div>\
+        <div class=\"input-field col s12\">\
+          <i class=\"fas fa-chalkboard-teacher prefix\"></i>\
+          <textarea id=\"teaching_method_"+ String(num) +"\" name=\"teaching_method_"+ String(num) +"\" class=\"materialize-textarea\" required></textarea>\
+          <label for=\"teaching_method_"+ String(num) +"\">教學方法</label>\
+        </div>\
+        <div class=\"input-field col s12\">\
+          <i class=\"fas fa-clock prefix\"></i>\
+          <textarea id=\"time_allocation_"+ String(num) +"\" name=\"time_allocation_"+ String(num) +"\" class=\"materialize-textarea\" required></textarea>\
+          <label for=\"time_allocation_"+ String(num) +"\">時間分配</label>\
+        </div>\
+      </div>";
+      document.getElementById(String(num - 1)).insertAdjacentHTML("afterend", "<li id=\""+ String(num) +"\" class=\"tab col s1 m1\"><a href=\"#part_" + String(num) + "\">" + String(num) + "</a></li>")
+      document.getElementById("part_" + String(num - 1)).insertAdjacentHTML("afterend", context)
+      var el = document.getElementById("detail_bar");
+      var instance = M.Tabs.getInstance(el);
+      instance.updateTabIndicator();
     }
-  }
-</script>
-{% else %}
-<h2 class="text-center">警告</h2>
-<h4 class="text-center">你未登入</h4>
-{% endif %}
-{% endblock %}
+    function delteone() {
+      if(num == min_num){
+        alert("最少需有" + min_num + "個");
+        return;
+      }
+      $('#'+String(num)).remove();
+      $('#part_'+String(num)).remove();
+      num = num - 1;
+    }
+  </script>
+</body>
+
+</html>

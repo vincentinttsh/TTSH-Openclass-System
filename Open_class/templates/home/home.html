@@ -1,33 +1,97 @@
-{% extends "base.html" %}
-{% block content%}
-<div class="table-responsive">
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th class="text-center">部門</th>
-        <th class="text-center">課程名稱</th>
-        <th class="text-center">教室</th>
-        <th class="text-center">日期</th>
-        <th class="text-center">開始時間</th>
-        <th class="text-center">結束時間</th>
-        <th class="text-center">授課老師</th>
-        <th class="text-center">calendar</th>
-      </tr>
-    </thead>
-    <tbody>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>公開授課系統</title>
+  {% include 'head_source.html' %}
+</head>
+
+<body class="grey lighten-3">
+  <header>
+    {% include 'nav.html' %}
+  </header>
+  <main class="mt-2 p-3">
+    <div class="container">
+      <div class="row">
+        <div class="col s12 center">
+          <h4 class="font-weight-bold">所有的公開觀課</h4>
+          <hr>
+        </div>
+        <div class="input-field col s12 m6 offset-m3">
+          <i class="fas fa-search prefix"></i>
+          <input type="text" id="searchtarget" name="searchtarget" onchange="searchstory()">
+          <label for="searchtarget">搜尋課程</label>
+        </div>
+      </div>
+      <ul class="collapsible popout">
         {% for class in all_class %}
-      <tr>
-        <th class="text-center">{{ class.department }}</th>
-        <td class="text-center">{{ class.subject }}</td>
-        <td class="text-center">{{ class.classroom }}</td>
-        <td class="text-center">{{ class.date }}</td>
-        <td class="text-center">{{ class.start_time }}</td>
-        <td class="text-center">{{ class.end_time }}</td>
-        <td class="text-center">{{ class.teacher }}</td>
-        <td class="text-center"><a href="{{ class.link }}" target="_blank" >新增</a></td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-{% endblock %}
+        <li class="class_list">
+          <div class="collapsible-header" style="font-family:'Noto Sans TC',sans-serif ;">
+            <i class="fas fa-book"></i>
+            {{ class.date }}-{{ class.teacher }}老師-{{ class.subject }}
+            <i class="fas fa-caret-down"></i>
+          </div>
+          <div class="collapsible-body row p-3">
+            <div class="col s12 m4 center">
+              <span><i class="fas fa-school"></i> 授課教室：{{ class.classroom }}</span>
+            </div>
+            <div class="col s12 hide-on-med-and-up">
+              <hr>
+            </div>
+            <div class="col s12 m4 center">
+              <span><i class="fas fa-clock"></i> 時間 : {{ class.start_time }} ~ {{ class.end_time }}</span>
+            </div>
+            <div class="col s12 hide-on-med-and-up">
+              <hr>
+            </div>
+            <div class="col s12 m4 center">
+              <a class="black-text" href="{{ class.link }}" target="_blank">
+                <i class="fas fa-calendar-day"></i> 新增google行事曆
+              </a>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    </div>
+  </main>
+  {% include 'foot_source.html' %}
+  {% include 'footer.html' %}
+  <!-- search js -->
+  <script>
+    function searchstory() {
+      var allclass = document.getElementsByClassName("class_list");
+      var target = document.getElementById("searchtarget").value;
+      var len = allclass.length;
+      for (var i = 0; i < len; i++) {
+        if (allclass[i].children[0].innerText.includes(target) || allclass[i].children[1].innerText.includes(target)) {
+          allclass[i].style.display = "";
+        } else {
+          allclass[i].style.display = "none";
+        }
+      }
+    }
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.collapsible');
+      var instances = M.Collapsible.init(elems, {
+        onOpenEnd: function (el) {
+          $(el).find("i.fa-caret-down").removeClass('fa-caret-down').addClass('fa-caret-up');
+          $(el).find("div.collapsible-header").addClass('teal-text');
+        },
+        onCloseEnd: function (el) {
+          $(el).find("i.fa-caret-up").removeClass('fa-caret-up').addClass('fa-caret-down');
+          $(el).find("div.collapsible-header").removeClass('teal-text');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

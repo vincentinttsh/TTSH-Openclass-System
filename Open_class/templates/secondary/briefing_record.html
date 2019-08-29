@@ -1,102 +1,257 @@
-{% extends "base.html" %}
-{% block content%}
-{% if user.is_authenticated  %}
-<form class="form-login" action="" method="post" role="form"> {% csrf_token %}
-  <h2 class="form-login-heading font-weight-bolder">共同議課紀錄表</h2>
-  {% if message %}
-  <div class="alert alert-danger" role="alert">
-    <h2 class="text-center font-weight-bolder">警告</h2>
-    <h4 class="text-center font-weight-bolder">{{ message }}</h4>
-  </div>
-  {% endif %}
-  <div class="form-group ">
-    <label for="teach_teacher" class="font-weight-bolder">教學者</label>
-    <input type="text" class="form-control" name="teach_teacher" value="{{ user.teacher_name }}" disabled>
-  </div>
-  <div class="form-group ">
-    <label for="observer" class="font-weight-bolder">觀察者</label>
-    <textarea class="form-control box" name="observer" rows="3" placeholder="觀察者" required></textarea>
-  </div>
-  <div class="form-group ">
-    <label for="briefing_date" class="font-weight-bolder">議課日期</label>
-    <input type="date" class="form-control" name="briefing_date" required>
-  </div>
-  <div class="form-group ">
-    <label for="briefing_time" class="font-weight-bolder">議課時間</label>
-    <input type="time" class="form-control" name="briefing_time" value="13:00" required>
-  </div>
-  <h6>請依據觀察工具之紀錄分析內容，與授課教師討論後填寫：</h6>
-  <div class="form-group ">
-    <label for="advantages_and_features" class="font-weight-bolder">一、教與學之優點及特色（含教師教學行為、學生學習表現、師生互動與學生同儕互動之情形）：</label>
-    <textarea class="form-control box" name="advantages_and_features" rows="4" required></textarea>
-  </div>
-  <div class="form-group ">
-    <label for="adjust_or_change" class="font-weight-bolder">二、教與學待調整或改變之處（含教師教學行為、學生學習表現、師生互動與學生同儕互動之情形）：</label>
-    <textarea class="form-control box" name="adjust_or_change" rows="4" required></textarea>
-  </div>
-  <div class="form-group">
-    <label for="adjust_or_change" class="font-weight-bolder">三、授課教師預定專業成長計畫（於回饋人員與授課教師討論後，由回饋人員填寫）：</label>
-    <table id="myTable" class="table table-hover">
-      <thead>
-        <tr>
-          <th>成長方式 可自行文字敘述</th>
-          <th>內容概要說明</th>
-          <th>協助或合作人員</th>
-          <th>預計完成日期</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><input type="text" list="mode" class="form-control" name="growth_mode_1" required></td>
-          <td><input type="text" class="form-control" name="abstract_1" required></td>
-          <td><input type="text" class="form-control" name="member_1" required></td>
-          <td><input type="date" class="form-control" name="done_date_1" required></td>
-        </tr>
-      </tbody>
-    </table>
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>公開授課系統</title>
+  {% include 'head_source.html' %}
+</head>
+
+<body class="grey lighten-3">
+  <header>
+    {% include 'nav.html' %}
+  </header>
+  <main class="mt-2 p-3">
+    <form class="border border-black p-5 row container " method="post" role="form">
+      {% csrf_token %}
+      <div class="col center s12">
+        <p class="h4 mb-4 text-center font-weight-bold">共同議課<br class="hide-on-med-and-up">紀錄表</p>
+      </div>
+      {% if message %}
+      <div class="alert alert-danger center col s12">
+        <h2>警告</h2>
+        <h4>{{ message }}</h4>
+      </div>
+      {% endif %}
+      <div class="input-field col s12 m6">
+        <i class="fab fa-teamspeak prefix"></i>
+        <input type="text" id="teach_teacher" name="teach_teacher" value="{{ user.teacher_name }}" disabled>
+        <label for="teach_teacher">教學者</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-user prefix"></i>
+        <textarea id="observer" name="observer" class="materialize-textarea" required></textarea>
+        <label for="observer">觀察者</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-calendar-day prefix"></i>
+        <input type="text" class="datepicker" id="briefing_date" name="briefing_date" required>
+        <label for="briefing_date">議課日期</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-clock prefix"></i>
+        <input type="text" class="timepicker" id="briefing_time" name="briefing_time" required>
+        <label for="briefing_time">議課時間</label>
+      </div>
+      <div class="col s12">
+        <h5 class="center">請依據觀察工具之紀錄分析內容，與授課教師討論後填寫：</h5>
+      </div>
+      <div class="input-field col s12 m2">
+        <button type="button" data-target="advantages_and_features_description"
+          class="btn btn-block modal-trigger">說明</button>
+      </div>
+      <div class="input-field col s12 m10">
+        <i class="fas fa-user-check prefix"></i>
+        <textarea id="advantages_and_features" name="advantages_and_features" class="materialize-textarea"
+          required></textarea>
+        <label for="advantages_and_features">教與學之優點及特色</label>
+      </div>
+      <div class="input-field col s12 m2">
+        <button type="button" data-target="adjust_or_change_description" class="btn btn-block modal-trigger">說明</button>
+      </div>
+      <div class="input-field col s12 m10">
+        <i class="fas fa-user-cog prefix"></i>
+        <textarea id="adjust_or_change" name="adjust_or_change" class="materialize-textarea" required></textarea>
+        <label for="adjust_or_change">教與學待調整或改變之處</label>
+      </div>
+      <div class="input-field col s12 m2">
+        <button type="button" data-target="plan_description" class="btn btn-block modal-trigger">說明</button>
+      </div>
+      <div class="input-field col s12 m10">
+        <h5 class="center">授課教師預定專業成長計畫</h5>
+      </div>
+      <div class="col s12">
+        <ul id="detail_bar" class="tabs  tabs-fixed-width">
+          <li id="1" class="tab col s1 m1"><a href="#part_1" class="active">1</a></li>
+        </ul>
+      </div>
+      <div id="part_1" class="col s12">
+        <div class="input-field col s12">
+          <i class="fas fa-child prefix"></i>
+          <input type="text" list="mode" id="growth_mode_1" name="growth_mode_1" required>
+          <label for="growth_mode_1">成長方式</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-clone prefix"></i>
+          <input type="text" id="abstract_1" name="abstract_1" required>
+          <label for="abstract_1">內容概要說明</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-users prefix"></i>
+          <input type="text" id="member_1" name="member_1" required>
+          <label for="member_1">協助或合作人員</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-clock prefix"></i>
+          <input type="text" class="datepicker" id="done_date_1" name="done_date_1" required>
+          <label for="done_date_1">預計完成日期</label>
+        </div>
+      </div>
+      <div class="col center s6">
+        <button class="btn btn-info btn-block mb-4" type="button" onclick="addone()">
+          增加 <i class="fas fa-plus"></i></button>
+      </div>
+      <div class="col center s6">
+        <button class="btn btn-info btn-block mb-4 red" type="button" onclick="delteone()">
+          減少 <i class="fas fa-minus"></i></button>
+      </div>
+      <div class="input-field col s12 m10">
+        <i class="fas fa-clone prefix"></i>
+        <textarea id="learning_and_harvesting" name="learning_and_harvesting" class="materialize-textarea"
+          required></textarea>
+        <label for="learning_and_harvesting">回饋人員的學習與收穫</label>
+      </div>
+      <div class="col center s12">
+        <button class="btn btn-info btn-block my-4" type="submit">提交 <i class="fas fa-paper-plane"></i></button>
+      </div>
+    </form>
     <datalist id="mode">
       <option disabled>其他：請文字敘述</option>
       <option>研讀書籍</option>
       <option>參加研習</option>
       <option>觀看錄影帶</option>
       <option">諮詢資深教師</option>
-      <option>參加學習社群</option>
-      <option>重新試驗教學</option>
+        <option>參加學習社群</option>
+        <option>重新試驗教學</option>
     </datalist>
-    <input type="button" class="btn btn-success" onclick="addtable()" value="新增一行">
-    <input type="button" class="btn btn-danger" onclick="deltable()" value="刪除一行">
-  </div>
-  <div class="form-group">
-    <label for="learning_and_harvesting" class="font-weight-bolder">四、回饋人員的學習與收穫：</label>
-    <textarea class="form-control box" name="learning_and_harvesting" rows="4" required></textarea>
-  </div>
-  <div class="form-login-submit text-center">
-    <button type="submit" class="btn btn-primary " name="submit" value="submit">提交</button>
-  </div>
-</form>
-<script>
-  var num = 2
-  var min_num = 2
-  function addtable() {
-    var row = document.getElementById("myTable").insertRow(num);
-    num++;
-    row.insertCell(0).innerHTML = "<input type=\"text\" list=\"mode\" class=\"form-control\" name=\"growth_mode_" + String(num - 1) + "\"required>";
-    row.insertCell(1).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"abstract_" + String(num - 1) + "\" required>";
-    row.insertCell(2).innerHTML = "<input type=\"text\" class=\"form-control\" name=\"member_" + String(num - 1) + "\" required>";
-    row.insertCell(3).innerHTML = "<input type=\"date\" class=\"form-control\" name=\"done_date_" + String(num - 1) + "\" required>";
-  }
-  function deltable() {
-    var table = document.getElementById("myTable");
-    if (num - 1 >= min_num) {
-      num--;
-      table.deleteRow(num);
-    } else {
-      alert("最少需有" + (min_num - 1) + "列");
+    <div id="advantages_and_features_description" class="modal bottom-sheet">
+      <div class="modal-content center">
+        <h4 class="font-weight-bold">教與學之優點及特色</h4>
+        <p>
+          含教師教學行為、學生學習表現、師生互動與學生同儕互動之情形
+        </p>
+      </div>
+      <div class="modal-footer">
+        <a class="modal-close waves-effect waves-green btn-flat">確認</a>
+      </div>
+    </div>
+    <div id="adjust_or_change_description" class="modal bottom-sheet">
+      <div class="modal-content center">
+        <h4 class="font-weight-bold">教與學待調整或改變之處</h4>
+        <p>
+          含教師教學行為、學生學習表現、師生互動與學生同儕互動之情形
+        </p>
+      </div>
+      <div class="modal-footer">
+        <a class="modal-close waves-effect waves-green btn-flat">確認</a>
+      </div>
+    </div>
+    <div id="plan_description" class="modal bottom-sheet">
+      <div class="modal-content center">
+        <h4 class="font-weight-bold">授課教師預定專業成長計畫</h4>
+        <p>
+          於回饋人員與授課教師討論後，由回饋人員填寫
+        </p>
+      </div>
+      <div class="modal-footer">
+        <a class="modal-close waves-effect waves-green btn-flat">確認</a>
+      </div>
+    </div>
+  </main>
+  {% include 'footer.html' %}
+  {% include 'foot_source.html' %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.datepicker');
+      var instances = M.Datepicker.init(elems, {
+        format: "yyyy-mm-dd",
+        i18n: {
+          cancel: "取消",
+          clear: "清除",
+          done: "確認",
+          months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+          monthsShort: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
+          weekdays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+          weekdaysShort: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+          weekdaysAbbrev: ['日', '一', '二', '三', '四', '五', '六'],
+        }
+      });
+      var elems = document.querySelectorAll('.timepicker');
+      var instances = M.Timepicker.init(elems, {
+        twelveHour: false,
+        i18n: {
+          cancel: "取消",
+          clear: "清除",
+          done: "確認",
+        }
+      });
+      var elems = document.querySelectorAll('.tabs');
+      var instance = M.Tabs.init(elems, {});
+      var elems = document.querySelectorAll('.modal');
+      var instances = M.Modal.init(elems, {});
+    });
+  </script>
+  <script>
+    var num = 1;
+    var min_num = 1;
+    function addone() {
+      num = num + 1;
+      var context = "\
+      <div id=\"part_" + String(num) + "\" class=\"col s12\" style=\" display : none;\">\
+        <div class=\"input-field col s12\">\
+          <i class=\"fas fa-child prefix\"></i>\
+          <input type=\"text\" list=\"mode\" id=\"growth_mode_" + String(num) + "\" name=\"growth_mode_" + String(num) + "\" required>\
+          <label for=\"growth_mode_" + String(num) + "\">成長方式</label>\
+        </div>\
+        <div class=\"input-field col s12\">\
+          <i class=\"fas fa-clone prefix\"></i>\
+          <input type=\"text\" id=\"abstract_" + String(num) + "\" name=\"abstract_" + String(num) + "\" required>\
+          <label for=\"abstract_" + String(num) + "\">內容概要說明</label>\
+        </div>\
+        <div class=\"input-field col s12\">\
+          <i class=\"fas fa-users prefix\"></i>\
+          <input type=\"text\" id=\"member_" + String(num) + "\" name=\"member_" + String(num) + "\" required>\
+          <label for=\"member_" + String(num) + "\">協助或合作人員</label>\
+        </div>\
+        <div class=\"input-field col s12\">\
+          <i class=\"fas fa-clock prefix\"></i>\
+          <input type=\"text\" class=\"datepicker\" id=\"done_date_" + String(num) + "\" name=\"done_date_" + String(num) + "\" required>\
+          <label for=\"done_date_" + String(num) + "\">預計完成日期</label>\
+        </div>\
+      </div>";
+      document.getElementById(String(num - 1)).insertAdjacentHTML("afterend", "<li id=\"" + String(num) + "\" class=\"tab col s1 m1\"><a href=\"#part_" + String(num) + "\">" + String(num) + "</a></li>")
+      document.getElementById("part_" + String(num - 1)).insertAdjacentHTML("afterend", context)
+      var el = document.getElementById("detail_bar");
+      var instance = M.Tabs.getInstance(el);
+      instance.updateTabIndicator();
+      var elems = document.querySelectorAll('.datepicker');
+      var instances = M.Datepicker.init(elems, {
+        format: "yyyy-mm-dd",
+        i18n: {
+          cancel: "取消",
+          clear: "清除",
+          done: "確認",
+          months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+          monthsShort: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
+          weekdays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+          weekdaysShort: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+          weekdaysAbbrev: ['日', '一', '二', '三', '四', '五', '六'],
+        }
+      });
     }
-  }
-</script>
-{% else %}
-<h2 class="text-center">警告</h2>
-<h4 class="text-center">你未登入</h4>
-{% endif %}
-{% endblock %}
+    function delteone() {
+      if (num == min_num) {
+        alert("最少需有" + min_num + "個");
+        return;
+      }
+      $('#' + String(num)).remove();
+      $('#part_' + String(num)).remove();
+      num = num - 1;
+    }
+  </script>
+</body>
+
+</html>
