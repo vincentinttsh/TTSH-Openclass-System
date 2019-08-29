@@ -1,93 +1,94 @@
-{% extends "base.html" %}
-{% block content%}
-{% if message %}
-<div class="alert alert-danger" role="alert">
-  <h2 class="text-center font-weight-bold">警告</h2>
-  <h4 class="text-center font-weight-bold">{{ message }}</h4>
-</div>
-{% else %}
-<div class="row my-2">
-  <div class="col">
-    <h2 class="font-weight-bolder">共同備課記錄表</h2>
-  </div>
-</div>
-<hr class="my-4 ">
-<div class="row my-2">
-  <div class="col-sm-2 col-12">
-    <label class="font-weight-bolder">教學時間</label>
-  </div>
-  <div class="col-sm-4 col-6">
-    <input type="text" class="form-control" value="{{date}}" disabled>
-  </div>
-  <div class="col-sm-6 col-6">
-    <input type="text" class="form-control" value="{{ start_time }} 至 {{ end_time }}" disabled>
-  </div>
-</div>
-<div class="row my-2">
-  <div class="col-4 col-sm-2">
-    <label class="font-weight-bolder">教學年級</label>
-  </div>
-  <div class="col-8 col-sm-4">
-    <input type="text" class="form-control" value="{{teaching_grade}}" disabled>
-  </div>
-  <div class="col-4 col-sm-2">
-    <label class="font-weight-bolder">教學節數</label>
-  </div>
-  <div class="col-8 col-sm-4">
-    <input type="text" class="form-control" value="{{teaching_sessions}}" disabled>
-  </div>
-</div>
-<div class="row my-2">
-  <div class="col-4">
-    <label class="font-weight-bolder">教學單元</label>
-  </div>
-  <div class="col-8">
-    <input type="text" class="form-control" value="{{class_name}}" disabled>
-  </div>
-</div>
-<div class="row my-2">
-  <div class="col-4 col-sm-2">
-    <label class="font-weight-bolder">教材來源</label>
-  </div>
-  <div class="col-8 col-sm-6">
-    <input type="text" class="form-control" value="{{teaching_material}}" disabled>
-  </div>
-  <div class="col-4 col-sm-2">
-    <label class="font-weight-bolder">教學者</label>
-  </div>
-  <div class="col-8 col-sm-2">
-    <input type="text" class="form-control" value="{{teacher}}" disabled>
-  </div>
-</div>
-<div class="row my-2">
-  <div class="col">
-    <label class="font-weight-bolder">一、教材內容：</label>
-    <textarea class="form-control box" disabled>{{content}}</textarea>
-  </div>
-</div>
-<div class="row my-2">
-  <div class="col">
-    <label class="font-weight-bolder">二、教學目標：</label>
-    <textarea class="form-control box" disabled>{{teaching_objectives}}</textarea>
-  </div>
-</div>
-<div class="row my-2">
-  <div class="col">
-    <label class="font-weight-bolder">三、學生經驗或學習背景分析：</label>
-    <textarea class="form-control box" disabled>{{student_experience}}</textarea>
-  </div>
-</div>
-<div class="row my-2">
-  <div class="col">
-    <label class="font-weight-bolder">四、教學活動：</label>
-    <textarea class="form-control box" disabled>{{teaching_activity}}</textarea>
-  </div>
-</div>
-<div class="row my-2">
-  <div class="col">
-    <label class="font-weight-bolder">五、學生學習成效評估方式：</label>
-    <textarea class="form-control box" disabled>{{evaluation_method}}</textarea>
-  </div>
-</div>
-{% endif %}
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>公開授課系統</title>
+  {% include 'head_source.html' %}
+  <style>
+    input,
+    textarea {
+      color: #000000 !important;
+    }
+  </style>
+</head>
+
+<body class="grey lighten-3">
+  <header>
+    {% include 'nav.html' %}
+  </header>
+  <main class="mt-2 p-3">
+    <section class="border border-black p-5 row container">
+      <div class="col center s12">
+        <p class="h4 mb-4 text-center font-weight-bold">共同備課<br class="hide-on-med-and-up">記錄表</p>
+      </div>
+      <div class="input-field col s12 m4">
+        <i class="fas fa-calendar-day prefix"></i>
+        <input type="text" id="date" value="{{date}}" disabled>
+        <label for="date">教學日期</label>
+      </div>
+      <div class="input-field col s12 m8">
+        <i class="fas fa-clock prefix"></i>
+        <input type="text" id="time" value="{{ start_time }} 至 {{ end_time }}" disabled>
+        <label for="time">教學時間</label>
+      </div>
+      <div class="input-field col s12 m4">
+        <i class="fas fa-book-reader prefix"></i>
+        <input type="text" id="teaching_grade" value="{{teaching_grade}}" disabled>
+        <label for="teaching_grade">教學年級</label>
+      </div>
+      <div class="input-field col s12 m4">
+        <i class="fas fa-book prefix"></i>
+        <input type="text" id="class_name" value="{{class_name}}" disabled>
+        <label for="class_name">教學單元</label>
+      </div>
+      <div class="input-field col s12 m4">
+        <i class="fas fa-chalkboard prefix"></i>
+        <input type="text" id="teaching_sessions" value="{{teaching_sessions}}" disabled>
+        <label for="teaching_sessions">教學節數</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-project-diagram prefix"></i>
+        <input type="text" id="teaching_material" value="{{teaching_material}}" disabled>
+        <label for="teaching_material">教材來源</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-user prefix"></i>
+        <input type="text" id="teacher" name="teacher" value="{{teacher}}" disabled>
+        <label for="teacher">教學者</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-clone prefix"></i>
+        <textarea id="content" class="materialize-textarea" disabled>{{content}}</textarea>
+        <label for="content">教材內容</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-bullseye prefix"></i>
+        <textarea id="teaching_objectives" class="materialize-textarea" disabled>{{teaching_objectives}}</textarea>
+        <label for="teaching_objectives">教學目標</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-child prefix"></i>
+        <textarea id="student_experience" class="materialize-textarea" disabled>{{student_experience}}</textarea>
+        <label for="student_experience">學生經驗或學習背景分析</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-chalkboard-teacher prefix"></i>
+        <textarea id="teaching_activity" class="materialize-textarea" disabled>{{teaching_activity}}</textarea>
+        <label for="teaching_activity">教學活動</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-user-check prefix"></i>
+        <textarea id="evaluation_method" class="materialize-textarea" disabled>{{evaluation_method}}</textarea>
+        <label for="evaluation_method">學生學習成效評估方式</label>
+      </div>
+    </section>
+  </main>
+  {% include 'footer.html' %}
+  {% include 'foot_source.html' %}
+</body>
+
+</html>

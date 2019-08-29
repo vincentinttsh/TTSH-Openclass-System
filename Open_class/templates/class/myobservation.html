@@ -1,38 +1,92 @@
-{% extends "base.html" %}
-{% block content%}
-<div class="table-responsive">
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th class="text-center">課程名稱</th>
-        <th class="text-center">日期</th>
-        <th class="text-center">活動設計表</th>
-        <th class="text-center">備課記錄表</th>
-        <th class="text-center">觀課紀錄表</th>
-      </tr>
-    </thead>
-    <tbody>
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>公開授課系統</title>
+  {% include 'head_source.html' %}
+</head>
+
+<body class="grey lighten-3">
+  <header>
+    {% include 'nav.html' %}
+  </header>
+  <main class="mt-2 p-3">
+    <div class="container ">
+      <section class="row">
+        <div class="col s12 center">
+          <h4 class="font-weight-bold">所有{{user.teacher_name}}的<br class="hide-on-med-and-up">觀課紀錄</h4>
+          <hr>
+        </div>
+        <div class="input-field col s12 m6 offset-m3">
+          <i class="fas fa-search prefix"></i>
+          <input type="text" id="searchtarget" name="searchtarget" onchange="searchstory()">
+          <label for="searchtarget">搜尋課程</label>
+        </div>
+      </section>
+      <ul class="collapsible popout">
         {% for class in all_class %}
-      <tr>
-        <td class="text-center">{{ class.subject }}</td>
-        <td class="text-center">{{ class.date }}</td>
-        {% load static %}
-        {% if class.design %}
-        <td class="text-center"><a href="{{ class.design }}"><img src="{% static 'check.png' %}" height="32"></a>
-        </td>
-        {% else %}
-        <td class="text-center"><img src="{% static 'error.png' %}" height="30"></td>
-        {% endif %}
-        {% if class.preparation %}
-        <td class="text-center"><a href="{{ class.preparation }}"><img src="{% static 'check.png' %}" height="32"></a>
-        </td>
-        {% else %}
-        <td class="text-center"><img src="{% static 'error.png' %}" height="30"></td>
-        {% endif %}
-        <td class="text-center"><a href="{{ class.observation }}">觀課紀錄表</a></td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-{% endblock %}
+        <li class="class_list">
+          <div class="collapsible-header" style="font-family:'Noto Sans TC',sans-serif ;">
+            <i class="fas fa-eye"></i> {{ class.date }}-{{ class.subject }}<i class="fas fa-caret-down"></i>
+          </div>
+          <div class="collapsible-body row p-3">
+            <div class="col s4 center">
+              <span>活動<br class="hide-on-med-and-up">設計表</span>
+            </div>
+            <div class="col s4 center">
+              <span>備課<br class="hide-on-med-and-up">記錄表</span>
+            </div>
+            <div class="col s4 center">
+              <span>觀課<br class="hide-on-med-and-up">紀錄表</span>
+            </div>
+            <div class="col s12">
+              <hr>
+            </div>
+            <div class="col s4 center">
+              {% if class.design %}
+              <a href="{{ class.design }}"><i class="fas fa-check-circle small teal-text"></i></a>
+              {% else %}
+              <span><i class="fas fa-times-circle small red-text"></i></span>
+              {% endif %}
+            </div>
+            <div class="col s4 center">
+              {% if class.preparation %}
+              <a href="{{ class.preparation }}"><i class="fas fa-check-circle small teal-text"></i></a>
+              {% else %}
+              <span><i class="fas fa-times-circle small red-text"></i></span>
+              {% endif %}
+            </div>
+            <div class="col s4 center">
+              <a href="{{ class.observation }}"><i class="fas fa-clipboard-list small teal-text"></i></a>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </main>
+  {% include 'footer.html' %}
+  {% include 'foot_source.html' %}
+  <!-- search js -->
+  <script>
+    function searchstory() {
+      var allclass = document.getElementsByClassName("class_list");
+      var target = document.getElementById("searchtarget").value;
+      var len = allclass.length;
+      for (var i = 0; i < len; i++) {
+        if (allclass[i].children[0].innerText.includes(target) || allclass[i].children[1].innerText.includes(target)) {
+          allclass[i].style.display = "";
+        } else {
+          allclass[i].style.display = "none";
+        }
+      }
+    }
+  </script>
+  <script src="{% static 'collapsible.js' %}"></script>
+</body>
+
+</html>

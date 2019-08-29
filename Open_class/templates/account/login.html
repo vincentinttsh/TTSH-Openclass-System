@@ -1,74 +1,78 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 {% load static %}
-{% block content%}
-{% if user.is_authenticated  %}
-<h2 class="text-center">警告</h2>
-<h4 class="text-center">你已登入</h4>
-{% else %}
-<form method="POST" role="form"> {% csrf_token %}
-  <div class="form-group row">
-    <div class="col ">
-      <h2 class="font-weight-bolder text-center">登入</h2>
-      <hr class="my-4">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>公開授課系統</title>
+  {% include 'head_source.html' %}
+</head>
+
+<body class="grey lighten-3">
+  <header>
+    {% include 'nav.html' %}
+  </header>
+  <main class="mt-2 p-3">
+    <div class="container center-align">
+      {% if user.is_authenticated  %}
+      <section class="container">
+        <h2 class="text-center">警告</h2>
+        <h4 class="text-center">你已登入</h4>
+      </section>
+      {% else %}
+      <form method="POST" role="form" class="border border-black">
+        {% csrf_token %}
+        <section>
+          <h4 class="font-weight-bold center-align">登入</h4>
+          <hr class="my-4">
+        </section>
+        <section class="container blue lighten-4">
+          <h4 class="font-weight-bold text-center">請注意</h4>
+          <p class="text-center">
+            當你登入時，即代表你同意本網站的《<a href="#privacy" class="modal-trigger">隱私權政策</a>》與《<a href="#terms"
+              class="modal-trigger">服務條款</a>》
+          </p>
+        </section>
+        <section class="container red accent-2">
+          <h4 class="font-weight-bold text-center">警告</h4>
+          <p>你只能使用XXXX@ttsh.tp.edu.tw的google帳號登入</p>
+        </section>
+        <section>
+          <a href="{% url 'social:begin' 'google-oauth2' %}">
+            <img src="{% static 'btn_google.png' %}" alt="login with Google" height="50">
+          </a>
+        </section>
+      </form>
     </div>
-  </div>
-  <div class="form-group row justify-content-center">
-    <div class="col-md-auto">
-      <h4 class="font-weight-bolder text-center">請注意</h4>
-      <p>當你登入時，即代表你同意本網站的
-        《<a href="#" data-toggle="modal" data-target="#privacy">隱私權政策</a>》
-        與
-        《<a href="#" data-toggle="modal" data-target="#terms">服務條款</a>》
-      </p>
-    </div>
-  </div>
-  <div class="form-group row justify-content-center">
-    <div class="col-md-auto">
-      <h4 class="font-weight-bolder text-center">警告</h4>
-      <p>你只能使用XXXX@ttsh.tp.edu.tw的google帳號登入</p><br>
-    </div>
-  </div>
-  <div class="form-group row justify-content-center">
-    <div class="col-md-auto">
-      <a href="{% url 'social:begin' 'google-oauth2' %}">
-        <img src="{% static 'btn_google.png' %}" alt="login with Google" height="50">
-      </a>
-    </div>
-  </div>
-</form>
-<div class="modal fade" id="privacy" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="privacyLabel">隱私權政策</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+    <div class="modal" id="privacy">
+      <div class="modal-content">
+        <h4 class="font-weight-bold text-center">隱私權政策</h4>
+        <hr class="my-4 ">
         <p>
-          非常歡迎您光臨「台北市立大同高級中學公開觀課系統」（以下簡稱本網站），為了讓您能夠安心的使用本網站的各項服務與資訊，特此向您說明本網站的隱私權保護政策，以保障您的權益，請您詳閱下列內容：
+          非常歡迎您光臨「台北市立大同高級中學公開授課系統」（以下簡稱本網站），為了讓您能夠安心的使用本網站的各項服務與資訊，特此向您說明本網站的隱私權保護政策，以保障您的權益，請您詳閱下列內容：
         </p>
-        <h5 class="font-weight-bolder">一、隱私權保護政策的適用範圍</h5>
+        <h5 class="font-weight-bold">一、隱私權保護政策的適用範圍</h5>
         <p>
           隱私權保護政策內容，包括本網站如何處理在您使用網站服務時收集到的個人識別資料。隱私權保護政策不適用於本網站以外的相關連結網站，也不適用於非本網站所委託或參與管理的人員。
         </p>
-        <h5 class="font-weight-bolder">二、個人資料的蒐集、處理及利用方式</h5>
+        <h5 class="font-weight-bold">二、個人資料的蒐集、處理及利用方式</h5>
         <p>
           當您造訪本網站或使用本網站所提供之功能服務時，我們將視該服務功能性質，請您提供必要的個人資料，並在該特定目的範圍內處理及利用您的個人資料；非經您書面同意，本網站不會將個人資料用於其他用途。
           本網站在您使用互動性功能時，會保留您所提供的資訊等。
           於一般瀏覽時，伺服器會自行記錄相關行徑，包括您使用連線設備的IP位址、使用時間、使用的瀏覽器、瀏覽及點選資料記錄等，做為我們增進網站服務的參考依據，此記錄為內部應用，決不對外公佈。
         </p>
-        <h5 class="font-weight-bolder">三、資料之保護</h5>
+        <h5 class="font-weight-bold">三、資料之保護</h5>
         <p>
           本網站主機均設有防火牆、防毒系統等相關的各項資訊安全設備及必要的安全防護措施，加以保護網站及您的個人資料採用嚴格的保護措施，
           只由經過授權的人員才能接觸您的個人資料，如因業務需要有必要委託其他單位提供服務時，本網站亦會嚴格要求其遵守保密義務，並且採取必要檢查程序以確定其將確實遵守。
         </p>
-        <h5 class="font-weight-bolder">四、網站對外的相關連結</h5>
+        <h5 class="font-weight-bold">四、網站對外的相關連結</h5>
         <p>
           本網站的網頁提供其他網站的網路連結，您也可經由本網站所提供的連結，點選進入其他網站。但該連結網站不適用本網站的隱私權保護政策，您必須參考該連結網站中的隱私權保護政策。
         </p>
-        <h5 class="font-weight-bolder">五、與第三人共用個人資料之政策</h5>
+        <h5 class="font-weight-bold">五、與第三人共用個人資料之政策</h5>
         <p>
           本網站絕不會提供、交換、出租或出售任何您的個人資料給其他個人、團體、私人企業，但有法律依據或合約義務者，不在此限。
           前項但書之情形包括但不限於：
@@ -83,55 +87,47 @@
           <br>
           E. 本網站委託廠商協助蒐集、處理或利用您的個人資料時，將對委外廠商或個人善盡監督管理之責。
         </p>
-        <h5 class="font-weight-bolder">六、Cookie之使用</h5>
+        <h5 class="font-weight-bold">六、Cookie之使用</h5>
         <p>
           為了提供您最佳的服務，本網站會在您的電腦中放置並取用我們的Cookie，
           若您不願接受Cookie的寫入，您可在您使用的瀏覽器功能項中設定隱私權等級為高，即可拒絕Cookie的寫入，但可能會導至網站某些功能無法正常執行 。
         </p>
-        <h5 class="font-weight-bolder">七、隱私權保護政策之修正</h5>
+        <h5 class="font-weight-bold">七、隱私權保護政策之修正</h5>
         <p>
           本網站隱私權保護政策將因應需求隨時進行修正，修正後的條款將刊登於網站上。
         </p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button class="waves-effect waves-light btn modal-close">關閉</button>
       </div>
     </div>
-  </div>
-</div>
-<div class="modal fade" id="terms" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="termsLabel">服務條款</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <h5 class="font-weight-bolder">一、接受條款 </h5>
+    <div class="modal" id="terms">
+      <div class="modal-content">
+        <h4 class="font-weight-bold text-center">服務條款</h4>
+        <hr class="my-4 ">
+        <h5 class="font-weight-bold">一、接受條款 </h5>
         <p>
-          台北市立大同高級中學公開觀課系統（以下簡稱本網站）
+          台北市立大同高級中學公開授課系統（以下簡稱本網站）
           當您申請使用，即表示您已閱讀並同意本網站條款之所有內容。
           本網站有權於任何時間修改或變更入會條款之內容，建議您隨時注意該修改或變更。
         </p>
-        <h5 class="font-weight-bolder">二、本網站宗旨</h5>
+        <h5 class="font-weight-bold">二、本網站宗旨</h5>
         <p>
           建立一完整系統提供教師以下服務:
           <br>
-          (1) 登記開放觀課時間
+          (1) 登記開放授課時間
           <br>
-          (2) 開放觀課時間查詢與簽到
+          (2) 開放授課時間查詢與簽到
           <br>
           (3) 填寫規定之表格
         </p>
-        <h5 class="font-weight-bolder">三、您的義務 </h5>
+        <h5 class="font-weight-bold">三、您的義務 </h5>
         <p>
           (1) 依註冊頁面之提示提供您本人正確、最新及完整的資料。
           <br>
           (2) 請隨時維持並更新您的個人資料，確保其為最新、最正確資料。
         </p>
-        <h5 class="font-weight-bolder">四、資料之保護 </h5>
+        <h5 class="font-weight-bold">四、資料之保護 </h5>
         <p>
           您同意本網站將您所提供的個人資料儲存與本網站之資料庫中，並受到本網站隱私權規範保障，本網站不會向任何人出售或出借你的個人識別資料，
           若本網站因遭駭客入侵等不可抗力之情形造成資料遺失或外流，本網站開發人員將不必負任何法律責任。
@@ -148,36 +144,46 @@
           <br>
           (5) 其他本網站有正當理由認為需揭露個人資料之情形。
         </p>
-        <h5 class="font-weight-bolder">五、保管義務</h5>
+        <h5 class="font-weight-bold">五、保管義務</h5>
         <p>
           您有責任帳號的機密安全。您必須完全負起因利用該帳號所進行之一切行動之責任。
           若您帳號遭到未經授權之使用，或發生其他任何安全問題時，您必須立即通知本網站，每次您連線完畢，請記得登出結束您的帳號使用。
           因您未遵守本項約定所生之任何損失或損害，本網站將無法亦不予負責。
         </p>
-        <h5 class="font-weight-bolder">五、保管義務</h5>
+        <h5 class="font-weight-bold">五、保管義務</h5>
         <p>
           您有責任帳號的機密安全。您必須完全負起因利用該帳號所進行之一切行動之責任。
           若您帳號遭到未經授權之使用，或發生其他任何安全問題時，您必須立即通知本網站，每次您連線完畢，請記得登出結束您的帳號使用。
           因您未遵守本項約定所生之任何損失或損害，本網站將無法亦不予負責。
         </p>
-        <h5 class="font-weight-bolder">六、與第三人網站的連結</h5>
+        <h5 class="font-weight-bold">六、與第三人網站的連結</h5>
         <p>
           本網站或協力廠商可能會提供連結至其他網站。您可能會因此連結至其他業者經營的網站，但不表示本網站與該等業者有任何關係。
         </p>
-        <h5 class="font-weight-bolder">七、其他特殊事項</h5>
+        <h5 class="font-weight-bold">七、其他特殊事項</h5>
         <p>
           您同意於本網站所發表之一切內容僅代表您個人立場與行為，並同意承擔所有相關衍生之責任，本網站不負任何責任。
         </p>
-        <h5 class="font-weight-bolder">七、其他</h5>
+        <h5 class="font-weight-bold">七、其他</h5>
         <p>
           其他未盡事項，皆依中華民國法律規定及網際網路規範辦理。
         </p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button class="waves-effect waves-light btn modal-close">關閉</button>
       </div>
     </div>
-  </div>
-</div>
-{% endif %}
-{% endblock %}
+    {% endif %}
+    </div>
+  </main>
+  {% include 'footer.html' %}
+  {% include 'foot_source.html' %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.modal');
+      var instances = M.Modal.init(elems);
+    });
+  </script>
+</body>
+
+</html>

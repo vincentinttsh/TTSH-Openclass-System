@@ -1,0 +1,22 @@
+{% load static %}
+<script src="{% static 'vendor/jquery-3.3.1.slim.min.js' %}"></script>
+<!-- bootstrap -->
+<script src="{% static 'vendor/popper.min.js' %}"></script>
+<!-- bootstrap core -->
+<script src="{% static 'vendor/bootstrap.min.js' %}"></script>
+<!-- Compiled and minified JavaScript -->
+<script src="{% static 'vendor/materialize.min.js' %}"></script>
+<!-- nav dropdown js -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var elems = document.querySelectorAll('.dropdown-trigger');
+    var instances = M.Dropdown.init(elems, {
+      coverTrigger: false,
+      constrainWidth: false,
+    });
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems);
+    var elems = document.querySelectorAll('#head');
+    var instances = M.Collapsible.init(elems);
+  });
+</script>
