@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>公開授課系統</title>
+  {% include 'head_source.html' %}
+</head>
+
+<body class="grey lighten-3" onload="navinit()">
+  <header>
+    {% include 'nav.html' %}
+  </header>
+  <main class="mt-2 p-3 container center">
+    <h3 class="font-weight-bold ">網站資訊</h3>
+    <hr class="my-4 ">
+    <p>
+      非常歡迎您光臨「台北市立大同高級中學公開授課系統」
+    </p>
+    <h5 class="font-weight-bold">一、本網站使用套件</h5>
+    <ul>
+      <li class="font-weight-bold black-text">
+        <h6>
+          <a class="font-weight-bold black-text" href="https://github.com/twbs/bootstrap">Bootstrap</a>
+        </h6>
+        <a class="font-weight-bold black-text" href="{% static 'vendor/bootstrap_LICENSE' %}">
+          Code released under the MIT License.
+        </a>
+      </li>
+      <li class="font-weight-bold black-text">
+        <h6>
+          <a href="https://github.com/Dogfalo/materialize" class="font-weight-bold black-text">materialize</a>
+        </h6>
+        <a class="font-weight-bold black-text" href="{% static 'vendor/materialize_LICENSE' %}">
+          Code released under the MIT license.
+        </a>
+      </li>
+      <li class="font-weight-bold black-text">
+        <h6> <a href="https://jquery.com/" class="font-weight-bold black-text">jQuery</a></h6>
+        <a class="font-weight-bold black-text" href="{% static 'vendor/jquery_LICENSE' %}">
+          released under the terms of the MIT license.
+        </a>
+      </li>
+      <li class="font-weight-bold black-text">
+        <h6> <a href="https://fontawesome.com/" class="font-weight-bold black-text">Font Awesome</a></h6>
+        <a class="font-weight-bold black-text" href="{% static 'fontawesome/LICENSE.txt' %}">
+          Font Awesome Free License
+        </a>
+      </li>
+      <li class="font-weight-bold black-text">
+        <h6> <a href="https://www.djangoproject.com/" class="font-weight-bold black-text">Django</a></h6>
+        <a class="font-weight-bold black-text" href="{% static 'vendor/django_LICENSE' %}">
+          Django license
+        </a>
+      </li>
+      <li class="font-weight-bold black-text">
+        <h6>
+          <a href="https://github.com/python-social-auth/social-app-django"
+            class="font-weight-bold black-text">social-auth-app-django</a>
+        </h6>
+        <a class="font-weight-bold black-text" href="{% static 'vendor/social-auth-app-django_LICENSE' %}">
+          This project follows the BSD license.
+        </a>
+      </li>
+      <li class="font-weight-bold black-text">
+        <h6>
+          <a href="https://github.com/MickaelBergem/django-generate-secret-key"
+            class="font-weight-bold black-text">django-generate-secret-key</a>
+        </h6>
+        <a class="font-weight-bold black-text" href="{% static 'vendor/django-generate-secret-key_LICENSE' %}">
+          MIT license
+        </a>
+      </li>
+      <li class="font-weight-bold black-text">
+        <h6>
+          <a href="http://initd.org/psycopg/" class="font-weight-bold black-text">psycopg2</a>
+        </h6>
+        <a class="font-weight-bold black-text" href="{% static 'vendor/psycopg2_LICENSE' %}">
+          psycopg2 license
+        </a>
+      </li>
+      <li class="font-weight-bold black-text">
+        <h6>
+          <a href="https://www.python.org/" class="font-weight-bold black-text">python</a>
+        </h6>
+        <a class="font-weight-bold black-text" href="https://docs.python.org/3/license.html">
+          PSF LICENSE AGREEMENT
+        </a>
+      </li>
+    </ul>
+    <h5 class="font-weight-bold">二、本網站作者</h5>
+    <h6>
+      大同高中校友 郭子緯 
+      <a class="black-text" href="https://vincentinttsh.github.io">(vincentinttsh)</a>
+    </h6>
+    <h5 class="font-weight-bold">三、本網站原始碼</h5>
+    <h6> 
+      <a class="black-text" href="https://github.com/vincentinttsh/TTSH-Openclass-System">原始碼</a>
+    </h6>
+    <h5 class="font-weight-bold">四、版本歷史</h5>
+    <h6> 
+      <a class="black-text" href="https://github.com/vincentinttsh/TTSH-Openclass-System/releases">按這裡</a>
+    </h6>
+  </main>
+  {% include 'footer.html' %}
+  {% include 'foot_source.html' %}
+</body>
+
+</html>
