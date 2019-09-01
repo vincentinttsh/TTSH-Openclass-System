@@ -56,7 +56,10 @@ class attend(View) :
             the_class.attend_data.attend_number += 1
             the_class.attend_data.attend_people.add(request.user)
             the_class.attend_data.save()
-            return render(request, 'class/attend.html', { 'message': '報到成功', })
+            return render(request, 'class/attend.html', { 
+                'message': '報到成功',
+                'link' : '/class/high/observation/create/' + str(the_class.id)
+            })
         else :
             return render(request, 'class/attend.html', { 'message': '密碼錯誤', })
 

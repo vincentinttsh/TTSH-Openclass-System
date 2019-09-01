@@ -19,6 +19,9 @@
       <div class="alert alert-primary center">
         <h2>訊息</h2>
         <h4>{{ message }}</h4>
+        {% if link %}
+        <a class="btn btn-default" href="{{ link }}">按這裡填觀課表單</a>
+        {% endif %}
       </div>
     </div>
   </main>
