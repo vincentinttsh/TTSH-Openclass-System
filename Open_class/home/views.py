@@ -1,9 +1,12 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from public_class_secondary.models import Secondary_Class as SClass
 from public_class_high.models import High_Class as HClass
 import datetime
 
 def home(request):
+    if request.user.is_authenticated and (request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == ''): # 未註冊
+        return HttpResponseRedirect('/account/create')
     all_class = list()
     calendar_link = 'http://www.google.com/calendar/event?action=TEMPLATE&text=公開授課（'
     Class = HClass
