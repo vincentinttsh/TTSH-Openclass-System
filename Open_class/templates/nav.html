@@ -1,120 +1,79 @@
 {% load static %}
-<nav class="blue lighten-2">
-  <div class="nav-wrapper ">
-    <div class="hide-on-med-and-down">
-      <a id="brand" href="/" class="brand-logo center show-on-large">
-        <img src="{% static 'ttsh.jpg' %}" height="30px" alt="TTSH">
-        公開授課系統
-      </a>
-    </div>
-    <div class="hide-on-large-only">
-      <a id="brand" href="/" class="brand-logo center">
-        <img src="{% static 'ttsh.jpg' %}" height="30px" alt="TTSH">
-      </a>
-    </div>
-    <a data-target="mobile-side" class="sidenav-trigger"><i class="fas fa-align-left"></i></a>
-    <ul id="nav-mobile" class="left hide-on-med-and-down">
+<nav class="navbar navbar-expand-md navbar-light blue lighten-2">
+  <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+    <ul class="navbar-nav mr-auto">
       {% if user.is_staff %}
-      <li><a href="/admin/" target="_blank">管理界面</a></li>
+      <li class="nav-item ">
+        <a class="nav-link" href="/admin/" target="_blank"> 管理界面</a>
+      </li>
       {% endif %}
       {% if user.power %}
-      <li><a class='dropdown-trigger' data-target='dropdown_department'>管理課程</a></li>
-      <ul id='dropdown_department' class='dropdown-content'>
-        <li><a href="/class/high/admin">高中部</a></li>
-        <li><a href="/class/secondary/admin">國中部</a></li>
-      </ul>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          管理課程
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/class/high/admin">高中部</a>
+          <a class="dropdown-item" href="/class/secondary/admin">國中部</a>
+        </div>
+      </li>
       {% endif %}
       {% if user.is_authenticated  %}
-      <li><a class='dropdown-trigger' data-target='dropdown_own'>公開觀課</a></li>
-      <ul id='dropdown_own' class='dropdown-content'>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          公開觀課
+        </a>
         {% if user.teacher_department == "國中部" %}
-        <li><a href="/class/secondary/create">新增</a></li>
-        <li><a href="/class/secondary/myclass">我的課程</a></li>
-        <li><a href="/class/secondary/myobservation">我的觀課紀錄</a></li>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/class/secondary/create">新增</a>
+          <a class="dropdown-item" href="/class/secondary/myclass">我的課程</a>
+          <a class="dropdown-item" href="/class/secondary/myobservation">我的觀課紀錄</a>
+        </div>
         {% else %}
-        <li><a href="/class/high/create">新增</a></li>
-        <li><a href="/class/high/myclass">我的課程</a></li>
-        <li><a href="/class/high/myobservation">我的觀課紀錄</a></li>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/class/high/create">新增</a>
+          <a class="dropdown-item" href="/class/high/myclass">我的課程</a>
+          <a class="dropdown-item" href="/class/high/myobservation">我的觀課紀錄</a>
+        </div>
         {% endif %}
-      </ul>
-      {% endif %}
-      <li><a class='dropdown-trigger' data-target='dropdown_policy'>關於本網站</a></li>
-      <ul id='dropdown_policy' class='dropdown-content'>
-        <li><a href="/about/privacy">隱私權政策</a></li>
-        <li><a href="/about/terms">服務條款</a></li>
-        <li><a href="/about/about">網站資訊</a></li>
-      </ul>
-    </ul>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
-      {% if user.is_authenticated  %}
-      <li>
-        <a>{{ user.teacher_name }} 您好</a>
       </li>
-      <li>
-        <a href="/account/logout">登出</a>
+      {% endif %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          關於本網站
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/about/privacy">隱私權政策</a>
+          <a class="dropdown-item" href="/about/terms">服務條款</a>
+          <a class="dropdown-item" href="/about/about">網站資訊</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="mx-auto order-0">
+    <a class="navbar-brand " href="/">
+      <img src="{% static 'ttsh.jpg' %}" height="40" alt="TTSH">
+      公開觀課系統
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+  <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+    <ul class="navbar-nav ml-auto">
+      {% if user.is_authenticated  %}
+      <li class="nav-item ">
+        <a class="nav-link" href="#">{{ user.teacher_name }} 您好</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="/account/logout">登出</a>
       </li>
       {% else %}
-      <li>
-        <a href="/account/login">登入</a>
-      </li>
-      {% endif %}
-    </ul>
-    <ul class="sidenav" id="mobile-side">
-      {% if user.is_staff %}
-      <li>
-        <a href="/admin/" class="waves-effect waves-teal" style="padding: 0 16px;">管理界面</a>
-      </li>
-      {% endif %}
-      <li class="no-padding">
-        <ul id="head" class="collapsible collapsible-accordion">
-          {% if user.power %}
-          <li>
-            <a class="collapsible-header waves-effect waves-teal" tabindex="0">管理課程</a>
-            <div class="collapsible-body">
-              <ul>
-                <li><a href="/class/high/admin">高中部</a></li>
-                <li><a href="/class/secondary/admin">國中部</a></li>
-              </ul>
-            </div>
-          </li>
-          {% endif %}
-          {% if user.is_authenticated  %}
-          <li>
-            <a class="collapsible-header waves-effect waves-teal" tabindex="0">公開觀課</a>
-            <div class="collapsible-body">
-              <ul>
-                {% if user.teacher_department == "國中部" %}
-                <li><a href="/class/secondary/create">新增</a></li>
-                <li><a href="/class/secondary/myclass">我的課程</a></li>
-                <li><a href="/class/secondary/myobservation">我的觀課紀錄</a></li>
-                {% else %}
-                <li><a href="/class/high/create">新增</a></li>
-                <li><a href="/class/high/myclass">我的課程</a></li>
-                <li><a href="/class/high/myobservation">我的觀課紀錄</a></li>
-                {% endif %}
-              </ul>
-            </div>
-          </li>
-          {% endif %}
-          <li>
-            <a class="collapsible-header waves-effect waves-teal" tabindex="0">關於本網站</a>
-            <div class="collapsible-body">
-              <ul>
-                <li><a href="/about/privacy">隱私權政策</a></li>
-                <li><a href="/about/terms">服務條款</a></li>
-                <li><a href="/about/about">網站資訊</a></li>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </li>
-      {% if user.is_authenticated  %}
-      <li>
-        <a href="/account/logout" class="waves-effect waves-teal" style="padding: 0 16px;">登出</a>
-      </li>
-      {% else %}
-      <li>
-        <a href="/account/login" class="waves-effect waves-teal" style="padding: 0 16px;">登入</a>
+      <li class="nav-item ">
+        <a class="nav-link" href="/account/login">登入</a>
       </li>
       {% endif %}
     </ul>
