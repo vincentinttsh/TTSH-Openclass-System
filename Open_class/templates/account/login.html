@@ -37,7 +37,7 @@
           </p>
         </section>
         <section>
-          <a href="{% url 'social:begin' 'google-oauth2' %}">
+          <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}">
             <img src="{% static 'btn_google.png' %}" alt="login with Google" height="50">
           </a>
         </section>

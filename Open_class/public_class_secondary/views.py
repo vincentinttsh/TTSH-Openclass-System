@@ -5,6 +5,8 @@ from django.views import View
 import datetime, time
 from .random_code import randomString
 from django.conf import settings
+from public_class_high.models import High_Class
+from public_class_high.models import Preparation_record as Hprep, Design_table as Hdesign
 
 class create(View) :
     def get(self, request) :
@@ -36,11 +38,9 @@ class create(View) :
 class attend(View) :
     def get(self, request, no, password) :
         if request.user.is_authenticated == False: # 未登入
-            return HttpResponseRedirect('/account/login')
+            return HttpResponseRedirect('/account/login?next=' + request.path)
         if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
             return HttpResponseRedirect('/account/create')
-        if request.user.teacher_department == '高中部' :
-            return HttpResponseForbidden(content='您為高中部的')
         try:
             the_class = Class.objects.get(pk = no) # 取得課程
         except :
@@ -97,8 +97,6 @@ class myobservation(View) :
             return HttpResponseRedirect('/account/login')
         if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
             return HttpResponseRedirect('/account/create')
-        if request.user.teacher_department == '高中部' :
-            return HttpResponseForbidden(content='您為高中部的')
         all_class = list()
         for x in list(Class.objects.all()) :
             if request.user not in x.attend_data.attend_people.all() : # 未參加
@@ -112,6 +110,18 @@ class myobservation(View) :
                 all_class[-1]['design'] = '/class/secondary/design/view/' + str(x.id)
             if Preparation_record.objects.filter(the_class = x).count() > 0 :
                 all_class[-1]['preparation'] = '/class/secondary/preparation/view/' + str(x.id)
+        for x in list(High_Class.objects.all()) :
+            if request.user not in x.attend_data.attend_people.all() : # 未參加
+                continue
+            all_class.append({
+                'subject' : x.subject,
+                'date' : x.teach_date,
+                'observation' : '/class/high/observation/create/' + str(x.id),
+            })
+            if Hdesign.objects.filter(the_class = x).count() > 0 :
+                all_class[-1]['design'] = '/class/high/design/view/' + str(x.id)
+            if Hprep.objects.filter(the_class = x).count() > 0 :
+                all_class[-1]['preparation'] = '/class/high/preparation/view/' + str(x.id)
         return render(request, 'class/myobservation.html',{ 'all_class' : all_class })
 
 class design_table_create(View) :
