@@ -20,3 +20,13 @@
     var instances = M.Collapsible.init(elems);
   });
 </script>
+<script>
+  $(document).ready(function () {
+    var docHeight = $(window).height();
+    var footerHeight = $('#footer').height();
+    var footerTop = $('#footer').position().top + footerHeight;
+    console.log(-20 + (docHeight - footerTop));
+    if (footerTop < docHeight)
+      $('#footer').css('margin-top', -20 + (docHeight - footerTop) + 'px');
+  });
+</script>
