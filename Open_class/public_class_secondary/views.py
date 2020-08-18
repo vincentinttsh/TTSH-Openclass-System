@@ -230,8 +230,8 @@ class observation_create(View) :
             return HttpResponseForbidden(content='未參加')
         if Observation_record.objects.filter(the_class = now_class, author = request.user).count() > 0 :
             return HttpResponseForbidden(content='已填寫')
-        for x in request.POST:  # 有空
-            if x == '':
+        for x, y in request.POST, request.POST.key():  # 有空
+            if x == '' and '_text' not in y:
                 return render(request, 'secondary/observation_record.html', { 'message': '未填寫完成' })
         try:
             Observation_record(context = request.POST['context'], author = request.user, observation_date = request.POST['observation_date'],
