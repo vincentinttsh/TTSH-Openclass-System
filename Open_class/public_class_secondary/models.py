@@ -19,7 +19,7 @@ class Attend_dataAdmin(admin.ModelAdmin):
 
 class Secondary_Class(models.Model) :
     teach_teacher = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='老師')
-    subject = models.CharField(max_length = 20, verbose_name='上課科目')
+    subject = models.CharField(max_length = 200, verbose_name='上課科目')
     class_room = models.CharField(max_length = 10, verbose_name='上課教室')
     teach_date = models.DateField(verbose_name='上課日期')
     teach_start_time = models.TimeField(verbose_name='上課開始時間')
@@ -38,9 +38,9 @@ class Secondary_ClassAdmin(admin.ModelAdmin):
     ordering = ('teach_date', 'teach_start_time', 'teach_end_time', 'teach_teacher')
 
 class Design_table(models.Model) :
-    class_name = models.CharField(max_length = 20, verbose_name='單元名稱')
-    teach_teacher = models.CharField(max_length = 6, verbose_name='授課老師')
-    teach_class = models.CharField(max_length = 20, verbose_name='授課班級')
+    class_name = models.CharField(max_length = 200, verbose_name='單元名稱')
+    teach_teacher = models.CharField(max_length = 20, verbose_name='授課老師')
+    teach_class = models.CharField(max_length = 200, verbose_name='授課班級')
     teaching_objectives = models.TextField(verbose_name='教學目標')
     the_class = models.ForeignKey(Secondary_Class, on_delete=models.CASCADE, verbose_name='課程')
     class Meta:
@@ -74,11 +74,11 @@ class Preparation_record(models.Model) :
     teach_date = models.DateField(verbose_name='教學日期')
     teach_start_time = models.TimeField(verbose_name='教學開始時間')
     teach_end_time = models.TimeField(verbose_name='教學結束時間')
-    teaching_grade = models.CharField(max_length = 20, verbose_name='教學年級')
-    class_name = models.CharField(max_length = 20, verbose_name='教學單元')
+    teaching_grade = models.CharField(max_length = 100, verbose_name='教學年級')
+    class_name = models.CharField(max_length = 100, verbose_name='教學單元')
     teaching_sessions = models.IntegerField(verbose_name='教學節數')
-    teach_teacher = models.CharField(max_length = 6, verbose_name='教學者')
-    source_of_teaching_material = models.CharField(max_length = 20, verbose_name='教材來源')
+    teach_teacher = models.CharField(max_length = 20, verbose_name='教學者')
+    source_of_teaching_material = models.CharField(max_length = 100, verbose_name='教材來源')
     content = models.TextField(verbose_name='教材內容')
     teaching_objectives = models.TextField(verbose_name='教學目標')
     student_experience = models.TextField(verbose_name='學生經驗或學習背景分析')
@@ -101,9 +101,9 @@ class Observation_record(models.Model) :
     context = models.TextField(verbose_name='摘記')
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='填表人', related_name='class_observation')
     observation_date = models.DateField(verbose_name='觀課日期')
-    teach_teacher = models.CharField(max_length = 6, verbose_name='授課教師')
-    subject = models.CharField(max_length = 20, verbose_name='科目')
-    teach_class = models.CharField(max_length = 20, verbose_name='觀課班級')
+    teach_teacher = models.CharField(max_length = 20, verbose_name='授課教師')
+    subject = models.CharField(max_length = 100, verbose_name='科目')
+    teach_class = models.CharField(max_length = 100, verbose_name='觀課班級')
     # 教學策略
     teaching_strategy_1 = models.IntegerField(verbose_name='要求學生參與教學活動-量化結果')
     teaching_strategy_1_text = models.TextField(verbose_name='要求學生參與教學活動-質性描述')
@@ -152,7 +152,7 @@ class Observation_recordAdmin(admin.ModelAdmin) :
     ordering = ('observation_date',)
 
 class Briefing_record(models.Model) :
-    teach_teacher = models.CharField(max_length = 6, verbose_name='教學者')
+    teach_teacher = models.CharField(max_length = 20, verbose_name='教學者')
     observer = models.TextField(verbose_name='觀察者')
     briefing_date = models.DateField(verbose_name='議課日期')
     briefing_time = models.TimeField(verbose_name='議課時間')

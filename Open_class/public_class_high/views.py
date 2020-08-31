@@ -7,6 +7,9 @@ from .random_code import randomString
 from django.conf import settings
 from public_class_secondary.models import Secondary_Class
 from public_class_secondary.models import Design_table as SDesign, Preparation_record as SPrep
+import csv
+from django.http import HttpResponse
+
 
 class create(View) :
     def get(self, request) :
@@ -415,7 +418,24 @@ class design_table_view(View) :
             return HttpResponseNotFound(content='錯誤')
         if now_table.the_class.teach_teacher != request.user and request.user not in now_table.the_class.attend_data.attend_people.all() and request.user.power == False : # 沒權限
             return HttpResponseForbidden(content='沒權限')
-        return render(request, 'high/design_table_detail.html',{
+        if request.user.power is True :
+            return render(request, 'high/design_table_detail_admin.html',{
+                'class_name' : now_table.class_name ,
+                'teach_teacher' : now_table.teach_teacher,
+                'teach_class' :  now_table.teach_class ,
+                'teaching_material' : now_table.source_of_teaching_material ,
+                'date' : now_table.teach_date, 
+                'start_time': now_table.teach_start_time,
+                'end_time' : now_table.teach_end_time ,
+                'background_analysis' : now_table.background_analysis,
+                'big_teaching_method' : now_table.teaching_method,
+                'teaching_resources' : now_table.teaching_resources,
+                'reference_material' : now_table.reference_material,
+                'big_teaching_objectives' : now_table.teaching_objectives,
+                'detail' : Design_table_datail.objects.filter(the_design = now_table).all()
+            })
+        else:
+            return render(request, 'high/design_table_detail.html',{
                 'class_name' : now_table.class_name ,
                 'teach_teacher' : now_table.teach_teacher,
                 'teach_class' :  now_table.teach_class ,
@@ -518,3 +538,77 @@ class check(View) :
         except :
             return render(request, 'class/check.html', { 'message': '錯誤' })
         return render(request, 'class/success.html')
+
+
+class PrintToCsv(View):
+    def get(self, request):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="high.csv"'
+        if request.user.is_authenticated == False: # 未登入
+            return HttpResponseRedirect('/account/login')
+        if request.user.teacher_name == '' or request.user.teacher_subject == '' or request.user.teacher_department == '': # 未註冊
+            return HttpResponseRedirect('/account/create')
+        if request.user.power == False : # 沒權限
+            return HttpResponseForbidden(content='沒權限')
+        allClass = Class.objects.all().order_by('teach_date')
+        data = []
+        title = [
+            "科別",
+            "姓名",
+            "課堂主題",
+            "班級",
+            "上課地點",
+            "上課日期",
+            "觀課人數",
+            "上課開始時間",
+            "上課結束時間",
+            "教學活動設計表",
+            "共同備課記錄表",
+            "公開觀課紀錄表",
+            "共同議課紀錄表",
+        ]
+        for one in allClass:
+            if Design_table.objects.filter(the_class=one).count() > 0 :
+                className = Design_table.objects.get(the_class=one)
+                className = className.teach_class
+            else:
+                className = "尚未填寫"
+            temp = [
+                one.teach_teacher.teacher_subject,
+                one.teach_teacher.teacher_name,
+                one.subject,
+                className,
+                one.class_room,
+                one.teach_date,
+                len(one.attend_data.attend_people.all()),
+                one.teach_start_time,
+                one.teach_end_time
+            ]
+            if Design_table.objects.filter(the_class = one).count() > 0:
+                temp.append("完成")
+            else:
+                temp.append("還沒")
+            if Preparation_record.objects.filter(the_class = one).count() > 0:
+                temp.append("完成")
+            else:
+                temp.append("還沒")
+            check = 0
+            for x in one.attend_data.attend_people.all() :
+                if Observation_record.objects.filter(the_class = one, author = x).count() > 0:
+                    check += 1
+            if len(one.attend_data.attend_people.all()) == 0:
+                temp.append("無")
+            elif len(one.attend_data.attend_people.all()) == check:
+                temp.append("完成")
+            else:
+                temp.append("還沒")
+            if Briefing_record.objects.filter(the_class = one).count() > 0 :
+                temp.append("完成")
+            else:
+                temp.append("還沒")
+            data.append(temp)
+        writer = csv.writer(response)
+        writer.writerow(title)
+        for x in data:
+            writer.writerow(x)
+        return response

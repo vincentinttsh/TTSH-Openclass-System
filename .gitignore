@@ -3,3 +3,4 @@ googlesecretkey.txt
 secretkey.txt
 db.sqlite3
 .vscode/
+.DS_Store

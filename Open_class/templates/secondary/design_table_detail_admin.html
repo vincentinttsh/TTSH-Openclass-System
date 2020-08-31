@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>公開授課系統</title>
+  {% include 'head_source.html' %}
+  <style>
+    input,
+    textarea {
+      color: #000000 !important;
+    }
+  </style>
+</head>
+
+<body class="grey lighten-3">
+  <header>
+    {% include 'nav.html' %}
+  </header>
+  <main class="mt-2 p-3">
+    <section class="border border-black p-5 row container ">
+      <div class="col center s12">
+        <p class="h4 mb-4 text-center font-weight-bold">課程教學活動<br class="hide-on-med-and-up">設計表</p>
+      </div>
+      <div class="input-field col s12 m4">
+        <i class="fas fa-book prefix"></i>
+        <input type="text" id="class_name" value="{{class_name}}" disabled>
+        <label for="class_name">單元名稱</label>
+      </div>
+      <div class="input-field col s12 m4">
+        <i class="fas fa-user prefix"></i>
+        <input type="text" id="teacher" value="{{ teacher }}" disabled>
+        <label for="teacher">授課教師</label>
+      </div>
+      <div class="input-field col s12 m4">
+        <i class="fas fa-book-reader prefix"></i>
+        <input type="text" id="teach_class" value="{{teach_class}}" disabled>
+        <label for="teach_class">授課班級</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-bullseye prefix"></i>
+        <input type="text" id="teaching_objectives" value="{{teaching_objectives}}" disabled>
+        <label for="teaching_objectives">教學目標</label>
+      </div>
+      <div class="col s12">
+        <h5 class="center">詳細流程</h5>
+      </div>
+      {% for x in detail %}
+      <div class="col s12">
+        <ul id="detail_bar" class="tabs">
+          <li class="tab col s1 m1"><a href="#part_{{forloop.counter}}" class="active">{{forloop.counter}}</a></li>
+        </ul>
+      </div>
+      <div id="part_{{forloop.counter}}" class="col s12">
+        <div class="input-field col s12">
+          <i class="fab fa-teamspeak prefix"></i>
+          <input type="text" id="activity" value="{{x.teaching_activity}}" disabled >
+          <label for="activity">教師活動</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-chalkboard prefix"></i>
+          <input type="text" id="aid" value="{{x.teaching_aid}}" disabled >
+          <label for="aid">使用教具</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-user-check prefix"></i>
+          <input type="text" id="assessment" value="{{x.assessment_method}}" disabled >
+          <label for="assessment">評量方式</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-chalkboard-teacher prefix"></i>
+          <input type="text" id="teaching" value="{{x.teaching_method}}" disabled >
+          <label for="teaching">教學方法</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-clock prefix"></i>
+          <input type="text" id="time" value="{{x.time_allocation}}" disabled >
+          <label for="time">時間分配</label>
+        </div>
+      </div>
+      {% endfor %}
+    </section>
+  </main>
+  {% include 'footer.html' %}
+  {% include 'foot_source.html' %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.tabs');
+      var instance = M.Tabs.init(elems, {});
+    });
+  </script>
+</body>
+
+</html>

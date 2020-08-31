@@ -19,7 +19,7 @@ class Attend_dataAdmin(admin.ModelAdmin):
 
 class High_Class(models.Model) :
     teach_teacher = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='老師')
-    subject = models.CharField(max_length = 20, verbose_name='上課科目')
+    subject = models.CharField(max_length = 200, verbose_name='上課科目')
     class_room = models.CharField(max_length = 10, verbose_name='上課教室')
     teach_date = models.DateField(verbose_name='上課日期')
     teach_start_time = models.TimeField(verbose_name='上課開始時間')
@@ -38,10 +38,10 @@ class High_ClassAdmin(admin.ModelAdmin):
     ordering = ('teach_date', 'teach_start_time', 'teach_end_time', 'teach_teacher')
 
 class Design_table(models.Model) :
-    class_name = models.CharField(max_length = 20, verbose_name='單元名稱')
-    teach_teacher = models.CharField(max_length = 6, verbose_name='授課老師')
-    source_of_teaching_material = models.CharField(max_length = 20, verbose_name='教材來源')
-    teach_class = models.CharField(max_length = 20, verbose_name='授課班級')
+    class_name = models.CharField(max_length = 200, verbose_name='單元名稱')
+    teach_teacher = models.CharField(max_length = 200, verbose_name='授課老師')
+    source_of_teaching_material = models.CharField(max_length = 200, verbose_name='教材來源')
+    teach_class = models.CharField(max_length = 200, verbose_name='授課班級')
     teach_date = models.DateField(verbose_name='教學日期')
     teach_start_time = models.TimeField(verbose_name='教學開始時間')
     teach_end_time = models.TimeField(verbose_name='教學結束時間')
@@ -81,15 +81,15 @@ class Design_table_datailAdmin(admin.ModelAdmin):
     pass
 
 class Preparation_record(models.Model) :
-    subject = models.CharField(max_length = 20, verbose_name='學科')
-    author = models.CharField(max_length = 6, verbose_name='填寫者')
+    subject = models.CharField(max_length = 200, verbose_name='學科')
+    author = models.CharField(max_length = 200, verbose_name='填寫者')
     teach_date = models.DateField(verbose_name='教學日期')
     teach_start_time = models.TimeField(verbose_name='教學開始時間')
     teach_end_time = models.TimeField(verbose_name='教學結束時間')
-    teaching_grade = models.CharField(max_length = 20, verbose_name='教學年級')
-    class_name = models.CharField(max_length = 20, verbose_name='教學單元')
-    teach_teacher = models.CharField(max_length = 6, verbose_name='教學者')
-    source_of_teaching_material = models.CharField(max_length = 20, verbose_name='教材來源')
+    teaching_grade = models.CharField(max_length = 200, verbose_name='教學年級')
+    class_name = models.CharField(max_length = 200, verbose_name='教學單元')
+    teach_teacher = models.CharField(max_length = 20, verbose_name='教學者')
+    source_of_teaching_material = models.CharField(max_length = 200, verbose_name='教材來源')
     content = models.TextField(verbose_name='教材內容')
     teaching_objectives = models.TextField(verbose_name='教學目標')
     student_experience = models.TextField(verbose_name='學生經驗')
@@ -110,9 +110,9 @@ class Preparation_recordAdmin(admin.ModelAdmin) :
 class Observation_record(models.Model) :
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='觀課者姓名')
     observation_date = models.DateField(verbose_name='觀課日期')
-    teach_teacher = models.CharField(max_length = 6, verbose_name='教學者')
-    subject = models.CharField(max_length = 20, verbose_name='科目')
-    class_name = models.CharField(max_length = 20, verbose_name='單元名稱')
+    teach_teacher = models.CharField(max_length = 20, verbose_name='教學者')
+    subject = models.CharField(max_length = 200, verbose_name='科目')
+    class_name = models.CharField(max_length = 200, verbose_name='單元名稱')
     learning_atmosphere = models.TextField(verbose_name='全班學習氣氛')
     learning_process = models.TextField(verbose_name='學生學習歷程')
     learning_result = models.TextField(verbose_name='學生學習結果')
@@ -130,7 +130,7 @@ class Observation_recordAdmin(admin.ModelAdmin) :
     ordering = ('observation_date',)
 
 class Briefing_record(models.Model) :
-    teach_teacher = models.CharField(max_length = 6, verbose_name='教學者')
+    teach_teacher = models.CharField(max_length = 20, verbose_name='教學者')
     observer = models.TextField(verbose_name='觀察者')
     briefing_date = models.DateField(verbose_name='議課日期')
     briefing_time = models.TimeField(verbose_name='議課時間')
