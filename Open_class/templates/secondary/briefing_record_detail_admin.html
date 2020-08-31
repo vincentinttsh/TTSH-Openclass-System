@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>公開授課系統</title>
+  {% include 'head_source.html' %}
+  <style>
+    input,
+    textarea {
+      color: #000000 !important;
+    }
+  </style>
+</head>
+
+<body class="grey lighten-3">
+  <header>
+    {% include 'nav.html' %}
+  </header>
+  <main class="mt-2 p-3">
+    <section class="border border-black p-5 row container">
+      <div class="col center s12">
+        <p class="h4 mb-4 text-center font-weight-bold">共同議課<br class="hide-on-med-and-up">紀錄表</p>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fab fa-teamspeak prefix"></i>
+        <input type="text" id="teach_teacher" value="{{ teach_teacher }}" disabled>
+        <label for="teach_teacher">教學者</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-user prefix"></i>
+        <textarea id="observer" class="materialize-textarea" disabled>{{observer}}</textarea>
+        <label for="observer">觀察者</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-calendar-day prefix"></i>
+        <input type="text" id="briefing_date" value="{{briefing_date}}" disabled>
+        <label for="briefing_date">議課日期</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-clock prefix"></i>
+        <input type="text" id="briefing_time" value="{{ briefing_time }}" disabled>
+        <label for="briefing_time">議課時間</label>
+      </div>
+      <div class="col s12">
+        <h5 class="center">請依據觀察工具之紀錄分析內容，與授課教師討論後填寫：</h5>
+      </div>
+      <div class="input-field col s12 m2">
+        <button type="button" data-target="advantages_and_features_description"
+          class="btn btn-block modal-trigger">說明</button>
+      </div>
+      <div class="input-field col s12 m10">
+        <i class="fas fa-user-check prefix"></i>
+        <textarea id="advantages_and_features" class="materialize-textarea"
+          disabled>{{advantages_and_features}}</textarea>
+        <label for="advantages_and_features">教與學之優點及特色</label>
+      </div>
+      <div class="input-field col s12 m2">
+        <button type="button" data-target="adjust_or_change_description" class="btn btn-block modal-trigger">說明</button>
+      </div>
+      <div class="input-field col s12 m10">
+        <i class="fas fa-user-cog prefix"></i>
+        <textarea id="adjust_or_change" class="materialize-textarea" disabled>{{adjust_or_change}}</textarea>
+        <label for="adjust_or_change">教與學待調整或改變之處</label>
+      </div>
+      <div class="input-field col s12 m2">
+        <button type="button" data-target="plan_description" class="btn btn-block modal-trigger">說明</button>
+      </div>
+      <div class="input-field col s12 m10">
+        <h5 class="center">授課教師預定專業成長計畫</h5>
+      </div>
+      {% for x in detail %}
+      <div class="col s12">
+        <ul id="detail_bar" class="tabs">
+          <li class="tab col s1 m1"><a href="#part_{{forloop.counter}}" class="active">{{forloop.counter}}</a></li>
+        </ul>
+      </div>
+      <div id="part_{{forloop.counter}}" class="col s12">
+        <div class="input-field col s12">
+          <i class="fas fa-child prefix"></i>
+          <input type="text" id="growth_mode" value="{{x.growth_mode}}" disabled>
+        <label for="growth_mode">成長方式</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-clone prefix"></i>
+        <input type="text" id="abstract" value="{{x.abstract}}" disabled>
+        <label for="abstract">內容概要說明</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-users prefix"></i>
+        <input type="text" id="member" value="{{x.member}}" disabled>
+        <label for="member">協助或合作人員</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-clock prefix"></i>
+        <input type="text" id="done_date" value="{{x.done_date}}" disabled>
+        <label for="done_date">預計完成日期</label>
+      </div>
+      </div>
+      {% endfor %}
+      <div class="input-field col s12 m10">
+        <i class="fas fa-clone prefix"></i>
+        <textarea id="learning_and_harvesting" class="materialize-textarea" disabled>{{learning_and_harvesting}}</textarea>
+        <label for="learning_and_harvesting">回饋人員的學習與收穫</label>
+      </div>
+    </section>
+    <div id="advantages_and_features_description" class="modal bottom-sheet">
+      <div class="modal-content center">
+        <h4 class="font-weight-bold">教與學之優點及特色</h4>
+        <p>
+          含教師教學行為、學生學習表現、師生互動與學生同儕互動之情形
+        </p>
+      </div>
+      <div class="modal-footer">
+        <a class="modal-close waves-effect waves-green btn-flat">確認</a>
+      </div>
+    </div>
+    <div id="adjust_or_change_description" class="modal bottom-sheet">
+      <div class="modal-content center">
+        <h4 class="font-weight-bold">教與學待調整或改變之處</h4>
+        <p>
+          含教師教學行為、學生學習表現、師生互動與學生同儕互動之情形
+        </p>
+      </div>
+      <div class="modal-footer">
+        <a class="modal-close waves-effect waves-green btn-flat">確認</a>
+      </div>
+    </div>
+    <div id="plan_description" class="modal bottom-sheet">
+      <div class="modal-content center">
+        <h4 class="font-weight-bold">授課教師預定專業成長計畫</h4>
+        <p>
+          於回饋人員與授課教師討論後，由回饋人員填寫
+        </p>
+      </div>
+      <div class="modal-footer">
+        <a class="modal-close waves-effect waves-green btn-flat">確認</a>
+      </div>
+    </div>
+  </main>
+  {% include 'footer.html' %}
+  {% include 'foot_source.html' %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.tabs');
+      var instance = M.Tabs.init(elems, {});
+      var elems = document.querySelectorAll('.modal');
+      var instances = M.Modal.init(elems, {});
+    });
+  </script>
+</body>
+
+</html>

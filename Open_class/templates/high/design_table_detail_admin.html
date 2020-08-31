@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>公開授課系統</title>
+  {% include 'head_source.html' %}
+  <style>
+    input,
+    textarea {
+      color: #000000 !important;
+    }
+  </style>
+</head>
+
+<body class="grey lighten-3">
+  <header>
+    {% include 'nav.html' %}
+  </header>
+  <main class="mt-2 p-3">
+    <section class="border border-black p-5 row container">
+      {% csrf_token %}
+      <div class="col center s12">
+        <p class="h4 mb-4 text-center font-weight-bold">課程教學活動<br class="hide-on-med-and-up">設計表</p>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-book prefix"></i>
+        <input type="text" id="class_name" value="{{class_name}}" disabled>
+        <label for="class_name">單元名稱</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-user prefix"></i>
+        <input type="text" id="teacher" value="{{ teach_teacher }}" disabled>
+        <label for="teacher">授課教師</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-project-diagram prefix"></i>
+        <input type="text" id="teaching_material" value="{{teaching_material}}" disabled>
+        <label for="teaching_material">教材來源</label>
+      </div>
+      <div class="input-field col s12 m6">
+        <i class="fas fa-book-reader prefix"></i>
+        <input type="text" id="teach_class" value="{{ teach_class }}" disabled>
+        <label for="teach_class">授課班級</label>
+      </div>
+      <div class="input-field col s12 m4">
+        <i class="fas fa-calendar-day prefix"></i>
+        <input type="text" id="date" value="{{date}}" disabled>
+        <label for="date">教學日期</label>
+      </div>
+      <div class="input-field col s12 m8">
+        <i class="fas fa-clock prefix"></i>
+        <input type="text" id="time" value="{{ start_time }} 至 {{ end_time }}" disabled>
+        <label for="time">教學時間</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-bullseye prefix"></i>
+        <textarea id="big_teaching_objectives" class="materialize-textarea"
+          disabled>{{big_teaching_objectives}}</textarea>
+        <label for="big_teaching_objectives">教學目標</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-user-check prefix"></i>
+        <textarea id="background_analysis" class="materialize-textarea" disabled>{{background_analysis}}</textarea>
+        <label for="background_analysis">學生學習背景分析</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-chalkboard-teacher prefix"></i>
+        <textarea id="big_teaching_method" class="materialize-textarea" disabled>{{big_teaching_method}}</textarea>
+        <label for="big_teaching_method">教學方法</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-book prefix"></i>
+        <textarea id="teaching_resources" class="materialize-textarea" disabled>{{teaching_resources}}</textarea>
+        <label for="teaching_resources">教學資源</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="fas fa-clone prefix"></i>
+        <textarea id="reference_material" class="materialize-textarea" disabled>{{reference_material}}</textarea>
+        <label for="reference_material">參考資料</label>
+      </div>
+      <div class="col s12">
+        <h5 class="center">詳細流程</h5>
+      </div>
+      {% for x in detail %}
+      <div class="col s12">
+        <ul id="detail_bar" class="tabs">
+          <li class="tab col s1 m1"><a href="#part_{{forloop.counter}}" class="active">{{forloop.counter}}</a></li>
+        </ul>
+      </div>
+      <div id="part_{{forloop.counter}}" class="col s12">
+        <div class="input-field col s12">
+          <i class="fas fa-bullseye prefix"></i>
+          <textarea id="teaching_objectives" class="materialize-textarea" disabled>{{x.teaching_objectives}}</textarea>
+          <label for="teaching_objectives">教學目標</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fab fa-teamspeak prefix"></i>
+          <textarea id="teacher_activity" class="materialize-textarea" disabled>{{x.teacher_activity}}</textarea>
+          <label for="teacher_activity">教師活動</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-child prefix"></i>
+          <textarea id="student_activities" class="materialize-textarea" required>{{x.student_activities}}</textarea>
+          <label for="student_activities">學生活動</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-chalkboard prefix"></i>
+          <textarea id="teaching_aid" class="materialize-textarea" required>{{x.teaching_aid}}</textarea>
+          <label for="teaching_aid">使用教具</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-user-check prefix"></i>
+          <textarea id="assessment_method" class="materialize-textarea" required>{{x.assessment_method}}</textarea>
+          <label for="assessment_method">評量方式</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-chalkboard-teacher prefix"></i>
+          <textarea id="teaching_method" class="materialize-textarea" required>{{x.teaching_method}}</textarea>
+          <label for="teaching_method">教學方法</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="fas fa-clock prefix"></i>
+          <textarea id="time_allocation" class="materialize-textarea" required>{{x.time_allocation}}</textarea>
+          <label for="time_allocation">時間分配</label>
+        </div>
+      </div>
+      {% endfor %}
+    </section>
+  </main>
+  {% include 'footer.html' %}
+  {% include 'foot_source.html' %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.tabs');
+      var instance = M.Tabs.init(elems, {});
+    });
+  </script>
+</body>
+
+</html>
