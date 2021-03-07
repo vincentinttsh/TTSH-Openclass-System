@@ -19,6 +19,7 @@ class create(View) :
             return HttpResponseRedirect('/account/create')
         if request.user.teacher_department == '國中部': # 高中國中需分開
             return HttpResponseRedirect('class/secondary/create')
+        # return HttpResponseForbidden("時間已截止")
         return render(request, 'class/create.html')
     def post(self, request) :
         for x in request.POST:  # 有空

@@ -19,6 +19,7 @@ class create(View) :
             return HttpResponseRedirect('/account/create')
         if request.user.teacher_department == '高中部': # 高中國中需分開
             return HttpResponseRedirect('class/high/create')
+        # return HttpResponseForbidden("時間已截止")
         return render(request, 'class/create.html')
     def post(self, request) :
         for x in request.POST:  # 有空
@@ -233,8 +234,9 @@ class observation_create(View) :
             return HttpResponseForbidden(content='未參加')
         if Observation_record.objects.filter(the_class = now_class, author = request.user).count() > 0 :
             return HttpResponseForbidden(content='已填寫')
-        for x, y in request.POST, request.POST.key():  # 有空
-            if x == '' and '_text' not in y:
+        check_list = request.POST.dict()
+        for key in check_list.keys():
+            if '_text' not in key and check_list[key] == '':
                 return render(request, 'secondary/observation_record.html', { 'message': '未填寫完成' })
         try:
             Observation_record(context = request.POST['context'], author = request.user, observation_date = request.POST['observation_date'],
