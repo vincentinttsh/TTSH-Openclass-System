@@ -8,7 +8,7 @@ autopep8 = "*"
 pylint = "*"
 
 [packages]
-django = "==2.2.18"
+django = "==2.2.20"
 social-auth-app-django = "==3.1.0"
 django-generate-secret-key = "==1.0.2"
 
