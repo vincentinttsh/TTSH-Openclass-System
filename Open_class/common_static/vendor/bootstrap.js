@@ -3,7 +3,7 @@ This file is customized for this project, please do not use this file on your pr
 Released under the MIT license
 */
 /*!
-  * Bootstrap v4.2.1 (https://getbootstrap.com/)
+  * Bootstrap v4.2.1.1 (https://getbootstrap.com/)
   * Copyright 2011-2018 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
