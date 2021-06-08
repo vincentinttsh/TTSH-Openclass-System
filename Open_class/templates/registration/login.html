@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>公開授課系統</title>
+    {% include 'head_source.html' %}
+</head>
+
+<body class="grey lighten-3">
+    <header>
+        {% include 'nav.html' %}
+    </header>
+    <main class="mt-2 p-3">
+        <div class="container center-align">
+            {% if user.is_authenticated %}
+            <section class="container">
+                <h2 class="text-center">警告</h2>
+                <h4 class="text-center">你已登入</h4>
+            </section>
+            {% else %}
+            <form method="POST" role="form" class="border border-black">
+                {% csrf_token %}
+                <section>
+                    <h4 class="font-weight-bold center-align">登入</h4>
+                    <hr class="my-4">
+                </section>
+                <table>
+                    <tr>
+                        <td>{{ form.username.label_tag }}</td>
+                        <td>{{ form.username }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.password.label_tag }}</td>
+                        <td>{{ form.password }}</td>
+                    </tr>
+                </table>
+                <input type="submit" value="登入">
+            </form>
+        </div>
+        {% endif %}
+        </div>
+    </main>
+    {% include 'footer.html' %}
+    {% include 'foot_source.html' %}
+</body>
+
+</html>
