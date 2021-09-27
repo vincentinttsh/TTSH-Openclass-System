@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpRespons
 from django.views import View
 import datetime, time
 from .models import Design_table, Design_table_datail, Preparation_record, Observation_record, Briefing_record, Attend_data, High_Class as Class
+from .models import Able_Create
 from .random_code import randomString
 from django.conf import settings
 from public_class_secondary.models import Secondary_Class
@@ -19,9 +20,21 @@ class create(View) :
             return HttpResponseRedirect('/account/create')
         if request.user.teacher_department == '國中部': # 高中國中需分開
             return HttpResponseRedirect('class/secondary/create')
-        # return HttpResponseForbidden("時間已截止")
+        try: 
+            able = Able_Create.objects.get(mode="default")
+        except Able_Create.DoesNotExist:
+            able = None
+        if able != None and able.able == False:
+            return HttpResponseForbidden("時間已截止")
+
         return render(request, 'class/create.html')
     def post(self, request) :
+        try: 
+            able = Able_Create.objects.get(mode="default")
+        except Able_Create.DoesNotExist:
+            able = None
+        if able != None and able.able == False:
+            return HttpResponseForbidden("時間已截止")
         for x in request.POST:  # 有空
             if x == '':
                 return render(request, 'class/create.html', {'error_message': '未填寫完成'})

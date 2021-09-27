@@ -2,6 +2,18 @@ from django.db import models
 from django.contrib import admin
 from account.models import User
 
+class Able_Create(models.Model):
+    class Meta:
+        verbose_name, verbose_name_plural = '開放註冊課程', '開放註冊課程'
+    mode = models.CharField(max_length=100, verbose_name="模式", default="default")
+    able = models.BooleanField(default=True, verbose_name="開放註冊課程")
+    def __str__(self):
+        return self.mode
+
+@admin.register(Able_Create)
+class Able_CreateAdmin(admin.ModelAdmin):
+    pass
+
 class Attend_data(models.Model) :
     attend_password = models.CharField(max_length = 10, verbose_name='參加密碼')
     attend_number = models.IntegerField(default=0, verbose_name='參加人數')
